@@ -1,8 +1,86 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
-\bibitem{JuslinBBS:2008}
-P.~N. Juslin and D.~V{\"a}stfj{\"a}ll, ``Emotional responses to music: The need
-  to consider underlying mechanisms,'' {\em Behavioral and Brain Sciences},
-  vol.~31, no.~5, pp.~559--621, 2008.
+\bibitem{GDIF}
+A.~R. Jensenius, T.~Kvifte, and R.~I. God{\o}y, ``Towards a gesture description
+  interchange format,'' in {\em Proc. of the 2006 International Conference on
+  New Interfaces for Musical Expression (NIME06)}, pp.~176--179, 2006.
+
+\bibitem{wanderley}
+A.~Hunt, M.~M. Wanderley, and R.~Kirk, ``Towards a model for instrumental
+  mapping in expert musical interaction,'' in {\em Proc. of International
+  Computer Music Conference (ICMC 2000)}, pp.~2--5, 2000.
+
+\bibitem{allosphere}
+T.~H{\"o}llerer, J.~Kuchera-Morin, and X.~Amatriain, ``The allosphere: A
+  large-scale immersive surround-view instrument,'' in {\em Proc. of Workshop
+  on Emerging Displays Technologies}, pp.~21 -- 28, ACM Press, 2007.
+
+\bibitem{HEB}
+D.~Holten, ``Hierarchical edge bundles: Visualization of adjacency relations in
+  hierarchical data,'' {\em IEEE Transactions on Visualization and Computer
+  Graphiscs}, vol.~12, pp.~741--748, September/October 2006.
+
+\bibitem{tuckey}
+J.~W. Tuckey, ``The technical tools of statistics,'' {\em The American
+  Statistician}, vol.~19, pp.~23--28, April 1965.
+
+\bibitem{tufte1}
+E.~R. Tufte, {\em Beautiful Evidence}.
+\newblock Graphics Press, 2006.
+
+\bibitem{tufte2}
+E.~R. Tufte, {\em Envisioning Information}.
+\newblock Graphics Press, 1990.
+
+\bibitem{usd}
+R.~Kling, ``The organizational context of user-centered software designs,''
+  {\em MIS Quarterly}, vol.~1, pp.~41--52, December 1977.
+
+\bibitem{inclusiveinterconnections}
+G.~Booth, ``Inclusive interconnections: Towards open-ended parameter-sharing
+  for laptop ensemble,'' Master's thesis, University of Huddersfield,
+  Huddersfield, England, 2010.
+
+\bibitem{integra}
+J.~Bullock, D.~Beattie, and J.~Turner, ``Integra live: a new graphical user
+  interface for live electronic music,'' in {\em Proc. of International
+  Conference on New Interfaces for Musical Expression}, pp.~387 -- 392, 2011.
+
+\bibitem{jamoma}
+T.~Place and T.~Lossius, ``Jamoma: A modular standard for structuring patches
+  in max,'' in {\em Proc. of International Computer Music Conference (ICMC
+  2006)}, 2006.
+
+\bibitem{junxion}
+STEIM, ``Junxion - products of interest,'' {\em Computer Music Journal},
+  vol.~28, pp.~105--107, Summer 2004.
+
+\bibitem{MPGcarepackage}
+N.~Wolek, ``The mpg carepackage: coordinating collective improvisation in
+  max/msp,'' in {\em Proc. of the Society for Electro-Acoustic Music in the
+  United States (SEAMUS 2010)}, 2010.
+
+\bibitem{senseStage}
+M.~Baalman, V.~de~Belleval, C.~L. Salter, J.~Malloch, J.~Thibodeau, and M.~M.
+  Wanderley, ``Sense/stage - low cost, open source wireless sensor
+  infrastructure for live performance and interactive, real-time
+  environments,'' in {\em Proc. of Linux Audio Conference}, pp.~242--249, 2010.
+
+\bibitem{osc}
+M.~Wright and A.~Freed, ``Open soundcontrol: A new protocol for communicating
+  with sound synthesizers,'' in {\em Proc. of International Computer Music
+  Conference (ICMC 1997)}, pp.~101--104, 1997.
+
+\bibitem{vizmapper}
+V.~Rudraraju, ``A tool for configuring mappings for musical systems using
+  wireless sensor networks,'' Master's thesis, McGill University, Montreal,
+  Canada, December 2011.
+
+\bibitem{malloch}
+J.~Malloch, S.~Sinclair, and M.~M. Wanderley, ``A network-based framework for
+  collaborative development and performance of digital musical instruments.,''
+  {\em R. Kronland-Martinet, S. Ystad, and K Jensen. (Eds.): CMMR 2007, - Proc.
+  of Computer Music Modeling and Retrieval 2007, Conference, LNCS 4969. Berlin
+  Heidelberg: Springer-Verlag}, pp.~401--425, 2008.
 
 \end{thebibliography}
