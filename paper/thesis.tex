@@ -1,0 +1,148 @@
+\documentclass [12pt,letterpaper]{report}
+
+% Standard packages
+\usepackage{amsmath}		% Extra math definitions
+\usepackage{graphics}		% PostScript figures
+\usepackage{setspace}		% 1.5 spacing
+\usepackage{longtable}          	% Tables spanning pages
+\usepackage{subfig}
+\usepackage[ampersand]{easylist}
+
+% Aaron's Packages
+
+% Custom packages
+\usepackage[first]{Style/datestamp}			% Datestamp on first page of each chapter
+\usepackage[fancyhdr]{Style/McECEThesis}	% Thesis style
+\usepackage{Style/McGillLogo}			% McGill University crest
+
+% $Id: ThesisEx.tex,v 1.1 2005/06/09 12:48:46 kabal Exp $
+
+\usepackage{color}
+\def\headrulehook{\color{red}}		% Color the header rule
+
+%===== page layout
+% Define the side margins for a right-side page
+\insidemargin = 1.3in
+\outsidemargin = 0.8in
+
+% Above margin is space above the header
+% Below margin is space below footer
+\abovemargin = 1.1in
+\belowmargin = 0.75in
+
+%========= Document start
+
+\begin {document}
+
+%===== Title page
+
+\title{A Flexible Tool for the Visualization and Manipulation of Musical Mapping Networks}
+\author{Aaron Henry Krajeski}
+\date{\Month\ \number\year}
+\organization{%
+  \\[0.2in]
+  \McGillCrest {!}{1in}\\	% McGill University crest
+  \\[0.1in]
+  Department of Music Technology\\
+  Schulich School of Music, McGill University\\
+  Montreal, Canada}
+\note{%
+  {\color{red} \hrule height 0.4ex}
+  \vskip 3ex
+  A thesis submitted to McGill University in partial fulfillment of the
+  requirements for the degree of Master of Arts.
+  \vskip 3ex
+  \copyright\ \the\year\ Aaron Henry Krajeski
+}
+
+\maketitle
+
+%===== Justification, spacing for the main text
+\raggedbottom
+\onehalfspacing
+\pagenumbering{roman}
+
+%===== Abstract, Sommaire & Acknowledgments
+\section*{\centering Abstract}
+
+This report describes the use of \LaTeX{} to format a thesis.
+A number of topics are covered: content and organization of the thesis,
+ \LaTeX{} macros for controlling the thesis layout, formatting mathematical
+ expressions, generating bibliographic references, importing figures and
+ graphs, generating graphs in {\small MATLAB}, and formatting tables.
+The \LaTeX{} macros used to format a thesis (and this document) are
+ described.
+
+\newpage
+
+\section*{\centering Acknowledgments}
+Acknowledge this, asshole.
+\pagebreak
+
+\section*{Preface}
+
+There are some things I should probably pre-face, certainly not reface.
+%Thesis regulations require that contributions by others in the collection of materials and data, the design and construction of apparatus, the performance of experiments, the analysis of data, and the preparation of the thesis be acknowledged.
+\pagebreak
+
+%========== Tables of contents, figures, tables
+\tableofcontents
+\listoffigures
+	various graphs of response time (discussion)
+	screenshot of drawing
+	screenshot of saving/loading
+	screenshot of main view
+	screenshot of grid view
+\listoftables
+
+\newpage
+\chapter*{List of Acronyms}\markright{List of Terms}
+
+\begin{longtable}{ll}
+  IDMIL	& 	Input Devices for Musical Interaction Laboratory\\ 
+  MVC 	& 	Model View Controller\\
+  DMI 	& 	Digital Musical Instrument\\
+  OSC 	& 	Open Sound Control\\
+  GUI		& 	Graphical User Interface
+\end{longtable}
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+%%========== Chapters
+%\typeout{}
+%\include{chapters/mikes/C-1}
+%
+\typeout{}
+\include{chapters/introduction}
+%
+\typeout{}
+\include{chapters/background}
+%
+\typeout{}
+\include{chapters/design}
+%
+\typeout{}
+\include{chapters/results}
+%
+\typeout{}
+\include{chapters/conclusions}
+%%==========
+
+
+
+%%========== Appendices
+%\appendix
+%
+%%==========
+%\typeout{}
+%\input{A-A}
+
+%========== Bibliography
+\typeout{}
+\begin{singlespace}
+  \bibliography{../mybib}
+  \bibliographystyle{ieeetr}
+\end{singlespace}
+
+\end{document}

@@ -1,0 +1,40 @@
+Notes on Vijay's thesis:
+
+  Things need to be more flexible
+  What level are things written for? It seems quite elementary, is that normal?
+
+  Page 19: "In the computer science context, a mapping is an abstract data type or concrete data structure, commonly referred to as an associative array or dictionary [9]."
+
+  MSN - Musical sensor network
+  Why not imagine all DMIs as MSNs?
+  Vijay argues this is a "simpler" concept
+
+  !Data Visualization Design!
+
+  Grudin [19] seems like an important guy
+
+  Use automatic processing (graphics) not controlled processing (text)
+
+  Recognition > Recall
+
+  It is more confusing to be confronted with an empty set than too much [36]
+
+  On Page 46 there is the Wandereley/DePalle list of DMI stuffs
+
+  ? Deployment environment (59)
+
+  Page 60-61 have the description of an interesting implementation that obviously Vijay did not get to. Webmapper.
+
+  Page 65: # control surfaces ~= # of sound generators (safe assumption)
+
+  ? Bezier curves and bundling
+
+  Page 69: This is the method that Holten uses [1]. In future work, using Holten’s connection clustering algorithm in Vizmapper would be a net benefit, however it is not included at the time of this thesis.
+
+  Page 77: This is like link, there should be a visual display, smoothing, thresholds, etc.
+
+  Future work on page 80
+
+  Page 83 is motherfucking killer.
+
+  Todos: get vizmapper, webmapper

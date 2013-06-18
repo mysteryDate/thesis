@@ -1,0 +1,403 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Baalman%
+\ \protect \BOthers {.}}{%
+Baalman%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2010}}%
+}]{%
+senseStage}
+\APACinsertmetastar {%
+senseStage}%
+\begin{APACrefauthors}%
+Baalman, M.%
+, de Belleval, V.%
+, Salter, C\BPBI L.%
+, Malloch, J.%
+, Thibodeau, J.%
+\BCBL {}\ \BBA {} Wanderley, M\BPBI M.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2010}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Sense/{S}tage - {L}ow cost, open source wireless sensor
+  infrastructure for live performance and interactive, real-time environments}
+  {Sense/{S}tage - {L}ow cost, open source wireless sensor infrastructure for
+  live performance and interactive, real-time environments}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Proc. of {L}inux {A}udio {C}onference} {Proc. of {L}inux
+  {A}udio {C}onference}\ (\BPG~242-249).
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Booth%
+}{%
+Booth%
+}{%
+{\protect \APACyear {2010}}%
+}]{%
+inclusiveInterconnections}
+\APACinsertmetastar {%
+inclusiveInterconnections}%
+\begin{APACrefauthors}%
+Booth, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2010}.
+\newblock
+\APACrefbtitle {Inclusive {I}nterconnections: Towards Open-Ended
+  Parameter-Sharing for Laptop Ensemble} {Inclusive {I}nterconnections: Towards
+  open-ended parameter-sharing for laptop ensemble}.
+\newblock
+\BUMTh, University of Huddersfield, Huddersfield, England.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Bullock%
+, Beattie%
+\BCBL {}\ \BBA {} Turner%
+}{%
+Bullock%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2011}}%
+}]{%
+integra}
+\APACinsertmetastar {%
+integra}%
+\begin{APACrefauthors}%
+Bullock, J.%
+, Beattie, D.%
+\BCBL {}\ \BBA {} Turner, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Integra {L}ive: a new graphical user interface for live
+  electronic music} {Integra {L}ive: a new graphical user interface for live
+  electronic music}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Proc. of {I}nternational {C}onference on {N}ew
+  {I}nterfaces for {M}usical {E}xpression} {Proc. of {I}nternational
+  {C}onference on {N}ew {I}nterfaces for {M}usical {E}xpression}\ (\BPG~387 -
+  392).
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Holten%
+}{%
+Holten%
+}{%
+{\protect \APACyear {2006}}%
+}]{%
+HEB}
+\APACinsertmetastar {%
+HEB}%
+\begin{APACrefauthors}%
+Holten, D.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2006}{September/October}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Hierarchical {E}dge {B}undles: Visualization of
+  Adjacency Relations in Hierarchical Data} {Hierarchical {E}dge {B}undles:
+  Visualization of adjacency relations in hierarchical data}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{{IEEE} {T}ransactions on {V}isualization and {C}omputer
+  {G}raphics}{12}{5}{741-748}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Hunt%
+, Wanderley%
+\BCBL {}\ \BBA {} Kirk%
+}{%
+Hunt%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2000}}%
+}]{%
+wanderley}
+\APACinsertmetastar {%
+wanderley}%
+\begin{APACrefauthors}%
+Hunt, A.%
+, Wanderley, M\BPBI M.%
+\BCBL {}\ \BBA {} Kirk, R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2000}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Towards a Model for Instrumental Mapping in Expert
+  Musical Interaction} {Towards a model for instrumental mapping in expert
+  musical interaction}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Proc. of {I}nternational {C}omputer {M}usic {C}onference
+  ({ICMC} 2000)} {Proc. of {I}nternational {C}omputer {M}usic {C}onference
+  ({ICMC} 2000)}\ (\BPG~2-5).
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Jensenius%
+, Kvifte%
+\BCBL {}\ \BBA {} God{\o}y%
+}{%
+Jensenius%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2006}}%
+}]{%
+GDIF}
+\APACinsertmetastar {%
+GDIF}%
+\begin{APACrefauthors}%
+Jensenius, A\BPBI R.%
+, Kvifte, T.%
+\BCBL {}\ \BBA {} God{\o}y, R\BPBI I.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2006}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Towards a Gesture Description Interchange Format}
+  {Towards a gesture description interchange format}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Proc. of the 2006 {I}nternational {C}onference on {N}ew
+  {I}nterfaces for {M}usical {E}xpression ({NIME}06)} {Proc. of the 2006
+  {I}nternational {C}onference on {N}ew {I}nterfaces for {M}usical {E}xpression
+  ({NIME}06)}\ (\BPG~176-179).
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Malloch%
+, Sinclair%
+\BCBL {}\ \BBA {} Wanderley%
+}{%
+Malloch%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2008}}%
+}]{%
+malloch}
+\APACinsertmetastar {%
+malloch}%
+\begin{APACrefauthors}%
+Malloch, J.%
+, Sinclair, S.%
+\BCBL {}\ \BBA {} Wanderley, M\BPBI M.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2008}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A network-based framework for collaborative development
+  and performance of digital musical instruments.} {A network-based framework
+  for collaborative development and performance of digital musical
+  instruments.}{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Proc. of {C}omputer {M}usic {M}odeling and {R}etrieval
+  ({CMMR} 2008)} {Proc. of {C}omputer {M}usic {M}odeling and {R}etrieval
+  ({CMMR} 2008)}\ (\BPG~401-425).
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Place%
+\ \BBA {} Lossius%
+}{%
+Place%
+\ \BBA {} Lossius%
+}{%
+{\protect \APACyear {2006}}%
+}]{%
+jamoma}
+\APACinsertmetastar {%
+jamoma}%
+\begin{APACrefauthors}%
+Place, T.%
+\BCBT {}\ \BBA {} Lossius, T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2006}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Jamoma: A Modular Standard for Structuring Patches in
+  Max} {Jamoma: A modular standard for structuring patches in max}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Proc. of {I}nternational {C}omputer {M}usic {C}onference
+  ({ICMC} 2006).} {Proc. of {I}nternational {C}omputer {M}usic {C}onference
+  ({ICMC} 2006).}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Rudraraju%
+}{%
+Rudraraju%
+}{%
+{\protect \APACyear {2011}}%
+}]{%
+vizmapper}
+\APACinsertmetastar {%
+vizmapper}%
+\begin{APACrefauthors}%
+Rudraraju, V.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2011}.
+\newblock
+\APACrefbtitle {A Tool for Configuring Mappings for Musical Systems using
+  Wireless Sensor Networks} {A tool for configuring mappings for musical
+  systems using wireless sensor networks}.
+\newblock
+\BUMTh, McGill University, Montreal, Canada.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+STEIM%
+}{%
+STEIM%
+}{%
+{\protect \APACyear {2004}}%
+}]{%
+junxion}
+\APACinsertmetastar {%
+junxion}%
+\begin{APACrefauthors}%
+STEIM.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2004}{Summer}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Products of Interest} {Products of interest}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Computer Music Journal}{28}{2}{105-107}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Tuckey%
+}{%
+Tuckey%
+}{%
+{\protect \APACyear {1965}}%
+}]{%
+tuckey}
+\APACinsertmetastar {%
+tuckey}%
+\begin{APACrefauthors}%
+Tuckey, J\BPBI W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1965}{April}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The Technical Tools of Statistics} {The technical tools
+  of statistics}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{The American Statistician}{19}{2}{23-28}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Tufte%
+}{%
+Tufte%
+}{%
+{\protect \APACyear {1990}}%
+}]{%
+tufte2}
+\APACinsertmetastar {%
+tufte2}%
+\begin{APACrefauthors}%
+Tufte, E\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{1990}.
+\newblock
+\APACrefbtitle {Envisioning Information} {Envisioning information}.
+\newblock
+\APACaddressPublisher{}{Graphics Press}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Tufte%
+}{%
+Tufte%
+}{%
+{\protect \APACyear {2006}}%
+}]{%
+tufte1}
+\APACinsertmetastar {%
+tufte1}%
+\begin{APACrefauthors}%
+Tufte, E\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2006}.
+\newblock
+\APACrefbtitle {Beautiful Evidence} {Beautiful evidence}.
+\newblock
+\APACaddressPublisher{}{Graphics Press}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Wolek%
+}{%
+Wolek%
+}{%
+{\protect \APACyear {2010}}%
+}]{%
+MPGcarepackage}
+\APACinsertmetastar {%
+MPGcarepackage}%
+\begin{APACrefauthors}%
+Wolek, N.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2010}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The {MPG} Carepackage: coordinating collective
+  improvisation in {M}ax/{MSP}} {The {MPG} carepackage: coordinating collective
+  improvisation in {M}ax/{MSP}}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Proc. of the {S}ociety for {E}lectro-{A}coustic {M}usic
+  in the {U}nited {S}tates ({SEAMUS} 2010).} {Proc. of the {S}ociety for
+  {E}lectro-{A}coustic {M}usic in the {U}nited {S}tates ({SEAMUS} 2010).}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Wright%
+\ \BBA {} Freed%
+}{%
+Wright%
+\ \BBA {} Freed%
+}{%
+{\protect \APACyear {1997}}%
+}]{%
+osc}
+\APACinsertmetastar {%
+osc}%
+\begin{APACrefauthors}%
+Wright, M.%
+\BCBT {}\ \BBA {} Freed, A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1997}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Open {S}ound {C}ontrol: A New Protocol for Communicating
+  with Sound Synthesizersound Control: A New Protocol for Communicating with
+  Sound Synthesizers} {Open {S}ound {C}ontrol: A new protocol for communicating
+  with sound synthesizersound control: A new protocol for communicating with
+  sound synthesizers}.{\BBCQ}
+\newblock
+\BIn{} \APACrefbtitle {Proc. of {I}nternational {C}omputer {M}usic {C}onference
+  ({ICMC} 1997)} {Proc. of {I}nternational {C}omputer {M}usic {C}onference
+  ({ICMC} 1997)}\ (\BPG~101-104).
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}

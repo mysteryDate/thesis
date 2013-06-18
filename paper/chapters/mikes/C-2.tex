@@ -1,0 +1,302 @@
+\newcommand\Dfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+\newcommand{\mathBF}[1]{\mbox{\boldmath $#1$}}
+\newcommand{\C}[1]{\mathBF{#1}}
+
+\chapter{Related Work}
+
+This chapter needs to cover a very large amount of research topics include 
+\begin{easylist}[enumerate]
+& Affective Computing
+	&& What is it?
+	&& How does emotional communication fit in?
+& Sonification
+	&& What is it?
+	&& How does affective information fit in?
+	&& Process monitoring
+	&& Auditory Icons vs. Earcons vs. Parameter Mapping
+	&& Does this raise any aesthetic issues? 
+& Music and Emotion
+	&& What is it?
+	&& Research determining structural and acoustic factors
+		&&& State of the art of emotion recognition systems
+		&&& State of the art systems for affective music generation
+	 
+\end{easylist}
+
+\section{Music and Emotion}
+
+\subsection{What are the Mechanisms for Induction of Emotion in Music?}
+
+Because music is just sound, without any inherent meaning, emotional theories relying on appraisal don't seem to fit.  If music did trigger emotion this way, music would somehow be related to ones goals in life, outside of music.  Music would be capable of furthering ones life objectives or alternatively, stymying them, thereby eliciting an emotional response.  Although one could imagine a case in which music could block ones life goals--maybe for instance, by changing to a woefully uncool, unhip song right before asking ones crush to dance, this sort of emotional response is not due to the acoustic properties of the sound itself, but rather other properties.  
+
+To explain why music is capable of eliciting emotion, researchers have explored other possible mechanisms.  In an influential article from 2008, researchers Patrik N. Juslin and Daniel V\:{a}stfj\:{a}l proposed six additional mechanisms for emotion elicitation in music, all of which did not depend upon cognitive appraisal.  These were 
+
+\begin{description}
+\item[brain stem reflexes] automatic reactions like the startle reflex and sensory dissonance.  Music as \textit{sound} in the most basic sense.
+\item[evaluative conditioning]
+\item[emotional contagion]
+\item[visual imagery]
+\item[episodic memory]
+\item[musical expectancy]
+\end{description}
+
+Of these, brain stem reflexes and emotional contagion are the most useful for the present project.  As noted by Juslin \cite[Table. 4]{JuslinBBS:2008}, these are both low on volitional influence, have a high speed of induction, low availability to consciousness, and high modularity.  These features make them good candidates for consideration for sonification, and point to using acoustic cues that are determined from speech and those relatively low in arousal.
+
+\subsection{Emotionally Salient Structural and Acoustic Cues}
+
+The previous section showed us what mechanisms were promising for our theoretical background.  This section discusses the structural and acoustic cues which are influenced.  
+
+\subsection{Emotion Recognition in Music}
+Make sure to quote Schmidts 2012 PhD thesis, and the KIMs ISMIR 2010 review. 
+
+These guys only sometimes use the cues predicted by Juslin and Sloboda Etc.  They may have good results, and they certainly are interesting.  
+
+Coutinhou is another guy to talk about here.  He uses \textit{only} the cues predicted from research.
+
+They also are not limited to purely acoustic features.  Using lyrics is also popular.  From these results, we should only be concerned with acoustic cues?  I don't think so, because it is possible for affective computing systems to use 
+
+\subsection{Affective Music Generation Systems}
+
+Although there is much about what features predict emotions, there is little about actual design issues.  From here, we can draw from Affective Music Generation literature as suggested by Barass 2011 Sonification Handbook.  
+
+We can also talk about what makes a pleasant sound.  The design should be overall very pleasant, but still be able to convey something like disgust for instance.
+
+It is also interesting to note that one application of my system may be control of a sound system.  For instance, someone with limited mobility might move a sound to a particular place in a 2D AV space to express something.  So interfaces for controlling this movement are also brought in, but this is properly a subfield of HCI. 
+
+
+\section{Affective Computing}
+
+Much work in affective computing concerns the detection of emotion, its analysis, or the modelling of emotion.  There are many papers however that deal with the communication of emotion, or the way that emotion or affect can impact the interface as a whole, including the affect of those that are using it.  Out of 60 papers that have so far been published in the IEEE transactions on affective computing,  nine have been concerned with this feature.  Some have been concerned with the effect of touch on interaction, (list others)
+
+Within Affective Display, we see a few broad tendencies.  The field itself can be broken up into two camps, roughly those that are interested in affective agents---computationally affective beings capable of having meaningful emotional interactions with the user, and those interested in the role of ``pleasantness."  Pleasantness is important as for human interaction, a pleasant interaction makes the machine seem to  ``work better."  Pleasantness is a little bit broader than the first category because it can  
+
+
+The communication of emotion is an important aspect of affective computing as ultimately the goal of any system is to somehow convey an emotion.  
+
+
+
+
+
+
+
+\subsection{Multiple Images}
+
+%To reconstruct 3D geometry from images, camera poses have to be known. The earliest work in camera pose estimation is  from photogrammetry. The so called ``space resection" or ``spatial resection" in photogrammetry is to estimate a camera pose by measuring at least three feature points evenly distributed across an image (mainly aerial images), whose 3D coordinates are known, and normally geo-referenced. The recovery of relative poses of two cameras is called ``relative orientation" in photogrammetry. Finsterwalder \cite {Finsterwalder1899, Finsterwalder1903} stated that the relative orientation of two images can be established by using five pairs of homologous image points. Kruppa \cite {Kruppa1913} studied the possible solutions for the relative orientation problem. Based on these results, several {\it five-point} algorithms for estimating two-view geometry have recently been developed \cite{Nister04, Li06}. I do not review the extensive literature on stereo or multiple-view stereo here, since most stereo papers focus on pixel-wise correspondence from calibrated views in which the camera poses are known. Excellent surveys can be found in \cite{Scharstein02, Seitz06}. 
+
+%The bundle adjustment method originally developed in photogrammetry deals with the recovery of multiple camera poses for aerial images collected from a strip or block for the purpose of producing topographic maps, which has been re-invented for solving problems such as structure from motion (SfM) in computer vision community. 
+
+%For a large number of images, in some certain scenarios such as a frame of video, the methods \cite{ Pollefeys04, Nister04b, FitzgibbonZisserman1998} have automatically generated impressive 3D models. These methods start with a sequence of images taken by an uncalibrated camera under very short baselines \cite{RemondinoEi-Hakim2006}. The interest points are automatically extracted, tracked or matched across views. The relations between multiple views are computed by using a bundle method \cite{Bill00}, and the 3D models are then automatically created by dense depth map generation \cite{Scharstein02, Seitz06}. These approaches normally require good features in multiple images and very short baselines between consecutive images. In cases of occlusions, illumination changes, and luck of texture, the algorithms often fail. Bundle methods require an appropriate initialization, which can be difficult to obtain. In the paper \cite{Debevec96}, the initial values for a non-linear optimization are computed through scene constraints.
+
+%In contrast to a dense 3D reconstruction, sparse scene geometry can be recovered  automatically from large, unorganized photo collections \cite{Snavely2006, Agarwal2009}. The core of the method is a robust ``structure from motion" algorithm. In the paper \cite{Snavely2006}, the feature points in each image are first extracted by using a SIFT keypoint detector \cite{Lowe04}, and then the fundamental matrix for each pair image is robustly estimated using the eight-point algorithm \cite{Hartley2004} and RANSAC \cite{Fischler87}. A set of camera parameters and 3D locations for matched points are incrementally estimated with algorithms such as Levenberg-Marquardt \cite{Nocedal99}. The recovered camera parameters and 3D points are then used for better rendering, transitioning, and navigating photographs. Based on this research, Microsoft has created a streaming multi-resolution Web-based service called Photosynth ~\cite{photosynth-url}, and an open source software ``Bundler" ~\cite{bundler-url} is available for structure-from-motion (SfM) using unordered image collections. 
+
+%Recent efforts have also tried to generate dense reconstructions from Internet photo collections \cite{Goesele07, Furukawa10}. Goesele et al. \cite{Goesele07} proposed the first multi-view stereo method applied to Internet photo collections. To handle variations in the images, they developed an adaptive view selection procedure to automatically identify image subsets that are similar in appearance and scale.  Furukawa et al. \cite{Furukawa10} introduced an approach for enabling existing multi-view stereo methods \cite{Seitz06} to operate on large unstructured photo collections. They formulated the overlapping clustering problem as a constrained optimization, and developed a new merging method that robustly eliminates low-quality or erroneous points. The authors claimed that it is the first to demonstrate an unstructured multi-view stereo approach at city-scale. 
+
+%A representative approach in automatic generation of 3D photorealistic models from ground-level images captured along the streets is presented in a recent paper \cite{Xiao09}. The authors first use multi-view semantic segmentation to segment images into meaningful patches labeled with specific object classes such as building, sky or ground. Buildings are then separated into independent blocks with a partition scheme using major line structures of the scene. An inverse patch-based orthographic composition and structure analysis is proposed for the facade modeling that regularizes the noisy and missing reconstructed 3D data. This method produced visually compelling results with a strong assumption of building regularity, the Manhattan-world assumption. Limitations include limited camera field of view because the images were captured from a ground-based camera. The upper parts of large buildings may not be modeled. Instead of working on perspective images, the method \cite{Micusik09} worked directly on the street view panoramic image sequences based on a piecewise planar structure assumption.
+
+%Interactive 3D reconstruction methods \cite{Debevec96, Cipolla99, vandenHengel07, Xiao08, Sinha08} reconstruct 3D models with user intervention. Facade \cite{Debevec96} was one of the most successful image-based modeling systems. The core algorithm of the modeling part in \cite{Debevec96} is based on the paper \cite{Taylor95} which is a structure from motion algorithm exploiting constraints that are characteristic of architectural scenes. The user needs to manually match edges in the images to edges in the model to recover parameters of both cameras and parametric polyhedral primitives for reconstruction of the architectural scene. The methods \cite{Cipolla99,  Sinha08} use vanishing point constraints for architectural scenes where parallel lines are abundant. A working system called $ \it PhotoBuilder$ was designed and implemented that allows a user to select a set of images either parallel or perpendicular in the world to build a model \cite{Cipolla99}. In the paper \cite{Sinha08}, the user draws outlines on the photographs to reconstruct piecewise planar 3D models of architectural structures and urban scenes from unordered photograph collections. The authors in \cite {Xiao08} proposed to approximate orthographic images by fronto-parallel reference images for each facade. They decomposed a facade into rectilinear patches, and each patch was then augmented with a depth value optimized using the structure-from-motion depth data. The user intervention takes place in image space for controlling the decomposition and depth augmentation. The method \cite{vandenHengel07} interactively reconstructed 3D models by tracing the shape of the object over one or more frames of the video. Another representative interactive approach \cite{Muller07} combines the procedural modeling pipeline with image analysis to produce photorealistic building models. In general, this type of methods need experts to specify rules to describe existing buildings. 
+
+%There has also been a considerable amount of work involving 3D reconstruction from aerial images \cite {Zebedin2006, FischerKLCFPS98, GruenWang2004, Zhu2004}. The paper \cite{Zebedin2006} is a representative work in city modeling from aerial images, and has been used for producing 3D models for Microsoft Bing maps. This work focuses on rooftop modeling and is complementary to ground-based methods (\cite{Xiao08, Xiao09}).
+
+\subsection{Single Images}
+
+%In contrast to the use of a number of images, 3D reconstruction from single images has drawn considerable attention from the computer vision and photogrammetry communities \cite{Hoiem2005, Saxena2009, Horry97tourinto, Oh01, Lowe91, CRIMINISIZISSERMAN2000, WangR08, zhangli01, Mueller2006, Liebowitz99, Sturm99amethod, HeuvelFrank98, ZhangZ01}. The existing single view reconstruction methods may be roughly divided into two broad categories: non-metric and metric reconstruction. 
+
+\subsubsection{Non-metric Reconstruction}
+
+%The non-metric reconstruction methods do not reconstruct accurate geometry but focus on producing nice visual approximation \cite{Horry97tourinto, Oh01, zhangli01, Hoiem2005, Saxena2009}. ``Automatic photo pop-up" \cite{Hoiem2005} and ``Make3D" \cite{Saxena2009} are two recent representative works. The system in the paper \cite{Hoiem2005} automatically constructs simple 3D models from a single outdoor image, based on the assumption that that a scene is composed of a single ground plane, piece-wise planar objects extruded vertically to the ground, and the sky. The main idea is to statistically model {\it geometric classes} defined by their orientation in the scene. They first classify each pixel as ground, vertical, or sky. These labels are then used to determine where to ``cut" and ``fold" in the image, and produce a simple ``pop-up" type fly-through from an image. The method fails on scenes which do not satisfy this assumption. 
+
+%``Make3D" \cite{Saxena2009} is a supervised learning based approach to address the problem of estimating depth maps from a single image. First, they create a training data set which consists of numerous images and their corresponding ground-truth depth maps collected from a laser scanner. Based on this training data set, they use a hierarchical multi-scale Markov Random Field (MRF) to model the depths and the relation between depths at different image locations. Since they do not employ explicit assumptions about the structure of the scene, this enables their method to generalize well \cite{Saxena2009}. 
+
+%Other methods like the paper \cite{zhangli01}, model free-form scenes by letting the user specify a sparse set of constraints, such as surface positions and normals, on a single painting or photograph  and then optimizing for the best 3D model to satisfy these constraints. Instead of placing strong assumptions on either the shape or reflectance properties of the scene, they assume that the scene is represented by a piecewise continuous surface. Tour into the Picture \cite{Horry97tourinto} uses a spidery mesh to obtain a simple scene model from the image of the scene with a graphical user interface. This method produces impressive results for scenes that can be approximated by a one-point perspective \cite{Hoiem2005}. 
+
+\subsubsection{Metric Reconstruction}
+
+%Metric reconstruction focuses on precise geometry recovery. Recovering 3D geometry from a single 2D image may have an infinite number of possible 3D interpretations without any assumptions. An illustration of this ill-posed problem is shown in Figure \ref {fig:C2:illposed}. Figure \ref{fig:C2:ill1} shows that the vertices of the cube and the polyhedron both project to the same 2D points. Figure \ref {fig:C2:ill2} shows that the relative scale of two objects can not be determined unless one assumes, for example, that they lie on a same ``ground" plane. 
+
+%\begin{figure}[H]
+%\centering
+%\subfloat[Two distinct objects have the same 2D projections ]{\label{fig:C2:ill1}\includegraphics[width= 0.4\textwidth]{figures/C2/illposedproblem1.jpg}} 
+%\hspace{.1in}
+%\subfloat[Relative scale of two objects can not be determined unless one assumes, for example, that they lie on a same ``ground" plane] {\label{fig:C2:ill2}\includegraphics[width= 0.4\textwidth]{figures/C2/illposedproblem2.jpg}}
+%\caption{Illustration of the ill-posed problem (the original from \cite{Grossmann02}, reproduced here with permission)}
+%\label{fig:C2:illposed}
+%\end{figure}
+
+%According to Grossmann, the methods of 3D metric reconstruction from single images can be roughly classified as ``model-based" and ``constraint-based" \cite{Grossmann02}. Most of model-based approaches \cite{Lowe91, Debevec96} require a model-to-image fitting process, and constraint-based methods  \cite{CRIMINISIZISSERMAN2000, Liebowitz99, Sturm99amethod, HeuvelFrank98, ZhangZ01} normally explore geometric properties, such as planarity, parallelism, and orthogonality, to reconstruct 3D geometry.
+
+%The main idea of model-based approaches is to obtain the reconstruction as a collection of ``primitives" that best fits the image data \cite{Grossmann02}. Typically, the user needs to correspond model edges \cite{Jelinek01, Debevec96} with their image edges, and then the algorithms automatically compute model parameters such as width and height through finding a best fit to the image. As shown in \cite{Grossmann02}, the cost function that measures the disparity between the projected edges of the model and the edges marked in the image is represented by
+
+%\begin{equation}
+%   O_{cost} = \sum_{i=1}^N \| x_i - P_i(M(\Theta), R, T, K) \|^2,
+%\label{eq:C2:cost}
+%\end{equation} 
+%where $x_1, ..., x_n$ are the image observations, $P_i$ is a projection function, $\Theta$ is a real-valued vector containing all the parameters, $M$ is the function to associate the 3D points to the parameters, $R$, $T$, and $K$ are camera orientation, translation, and intrinsic parameters, respectively. We have designed a new model-based approach to reconstruct the dimensions of rectilinear buildings. The difference from the existing methods  
+%\cite{Lowe91, Debevec96, Jelinek01} is that our method does not require model-to-image projection and readjustment procedures, although the interactive correspondences between image and model features are the same. This algorithm will be explained in Chapter 3.  
+%
+%Model-based methods in photogrammetry community are often called ``CAD-based" \cite{Grossmann02}. The so called CAD-based photogrammetry is due to the fact that photogrammetric tools are intended to be integrated with existing CAD system \cite {Heuvel00trendsin}. The limitation of the model-based methods is obvious. They can only reconstruct objects for which models of the objects are available or can be decomposed into simpler shapes \cite{Grossmann02}. 
+%
+%The constraint-based methods exploit geometric properties inherent in the image such as parallelism and orthogonality for a reconstruction \cite{Grossmann02}. Vanishing point estimation and camera calibration are common steps in these types of methods. Caprile and Torre \cite{Caprile90} described methods to use vanishing points to recover intrinsic parameters from a single camera and extrinsic parameters from a pair of cameras. They showed that, the orthocenter of the image triangle formed by the vanishing points is the principal point, and from the vanishing points corresponding to three mutually orthogonal directions, at most three intrinsic parameters can be estimated. Although they were mainly concerned with stereo cameras, their method is considered to be a means of access for the single view calibration problem. In photogrammetry, the relation between vanishing points and camera calibration is well documented in \cite{Williamson90Dim}.
+%
+%Zhang et al. \cite{ZhangZ01} reconstructed 3D rectilinear building models from a single image. They proposed an adjustment model for computing vanishing points, and then determined camera focal length and camera orientation using calculated vanishing points. Given a dimension of the cubic building, the camera translation and other two dimensions of the building were determined. 
+%Figure \ref{fig:C2:VPOrientation} shows the relationship between the vanishing points and camera orientation described in \cite{ZhangZ01}. In Figure \ref{fig:C2:VPOrientation}, assume vanishing points in three orthogonal directions are $X_{\infty}, Y_{\infty}, Z_{\infty}$, and $S$ denotes the perspective center, then
+%the focal length 
+%
+%\begin{equation}
+%  f = \sqrt{-(x_{X\infty} * x_{Y\infty} + y_{X\infty} * y_{Y\infty})},
+%\label{eq:C2:VP1}
+%\end{equation} 
+%and the camera orientation parameters are
+%
+%\begin{equation}
+%  \tan(\varphi) = \frac{\sqrt{f^2 + x_{Z\infty}^2 + y_{Z\infty}^2}}
+%{\sqrt{f^2 + x_{X\infty}^2 + y_{X\infty}^2}}, \;
+%\tan(\omega) = \frac{f}{\sqrt{x_{Y\infty}^2 + y_{Y\infty}^2}},\;
+%\tan(\kappa) =  \frac{x_{Y\infty}}{y_{Y\infty}}.
+%\label{eq:C2:VP2}
+%\end{equation} 
+%
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width= 0.5\textwidth]{figures/C2/VPOrientation.jpg} 
+%\caption{Relationship of vanishing points and camera orientation parameters (from \cite{ZhangZ01}, reproduced here with permission)}
+%\label{fig:C2:VPOrientation}
+%\end{figure}
+%
+%We compared our model-based method with the vanishing point based method \cite{ZhangZ01}, and our results are more accurate than the vanishing point based method's. The comparison is presented in Chapter 3. 
+% 
+%Criminisi et al \cite{CRIMINISIZISSERMAN2000, CriminisiAVM01} focus on scenes containing planes and parallel lines, and assume that, at least a vanishing line of a reference plane and a vanishing point for a direction not parallel to the plane are available. Algorithms have been described to obtain measurements such as the distance between planes parallel to a reference plane, computing area and length ratios on two parallel planes, and computing the camera's location. The limitation of this method is that the scene to be reconstructed must compose of parallel planes linked by segments \cite{Grossmann02}. 
+%
+%A Bayesian method is presented in \cite{HanZhu03} to recover 3D information from a single image. Multiple piecewise planar object reconstruction from single images is addressed through the constraints of connectivity and perspective symmetry in \cite{LiZG07}. An automatic 3D reconstruction of single indoor image is presented in \cite{HuangBill09}.
+%
+%\subsection{Summary}
+%
+%Fully automatic 3D reconstruction from video has generated impressive 3D models. But these methods normally require good features in multiple images and very short baselines between consecutive images. Problems such as 
+%occlusions, illumination changes, and lack of texture will cause the algorithms fail. Under arbitrary camera configurations such as Internet photos,  sparse scene geometry can be recovered completely automatically. To generate dense reconstruction from such photo collections, view selection algorithms have to be developed to select images that are similar in appearance and scale so that multi-view stereo methods can apply. Interactive methods achieve best results but are difficult to scale up to large-scale.
+%
+%3D reconstruction from single images relies on different assumptions, and fails when the assumptions are violated. Non-metric reconstruction methods focus on producing nice visual approximations instead of precise geometry. Methods such as ``automatic photo pop-up" and ``Make3D" automatically reconstruct 3D from single images. Metric reconstruction methods focus on precise geometry recovery. Model-based methods often require a model-to-image fitting process to recover the geometry of the scene as well as camera poses under the condition that the model of the scene is available. Urban structure is complicated with arbitrary shapes, but the majority of buildings are rectilinear or piecewise planar. These assumptions are the basis for model-based methods ($e.g.,$ \cite{Debevec96, LiZG07}). Constraint-based methods normally rely on more generic properties of the scene such as planarity, parallelism, orthogonality etc., and vanishing point estimation and camera calibration play an important role during the reconstruction. Although constraint-based approaches can treat more general scenes, they rely on a small collection of geometric properties which limits their applicability \cite{Grossmann02}.       
+%
+%\section{3D Modeling Using Range Data}
+%
+%There have been numerous projects for reconstructing statues, such as Stanford's ``Digital Michelangelo Project"~\cite{standig-url} and IBM's ``Piet\a`a Project" ~\cite{ibmpp-url}, historical sites \cite{El-hakimdetailed3d07, El-Hakim08, Guidi05}, building facades \cite{Frueh2003, Frueh05, ZhengSWLMCC10, NanSZCC10}, and urban building models \cite{Stamos02, Verma06, Stamosliuchen08, Chenchen08, MateiSSKK08, ZhouNeumann2008, ZhouN09, ZhouN10, ZhouN11, PoullisYou2009, Rottensteiner2003, Vosselman01mapbased} using laser scanning data. Range segmentation plays an important role in generating 3D models. Hoover et al. \cite{ Hoover1996} provided a comprehensive study on comparison of existing segmentation algorithms. We briefly discuss some of them along with some recent segmentation methods. 
+%
+%\subsection{Range Segmentation}  
+%
+%Previous range segmentation methods \cite{ Hoover1996} mainly focus on small objects in well-controlled laboratory environment, which can be roughly classified into ``edge-based", ``region based", and ``hybrid" \cite{CChenPhD07}. Edge-based segmentation extracts both depth and surface normal discontinuities, and often fails if the image consists of weak edges.
+%To avoid a fixed threshold, Bellon and Silva \cite{BellonSilva02} developed a method with an adaptive threshold based on the local neighborhood of each point for segmenting simple objects such as planar or polyhedral objects. Most edge-based segmentation works well on objects with simple shapes such as cubes and spheres and often fails to segment objects with complicated curved surfaces
+%\cite{CChenPhD07}. Region-based segmentation generates a group of pixels in terms of similar properties such as surface curvature. Some algorithms only work well on surfaces with simple shapes like polyhedral or spherical ($e.g.,$ \cite{HanMudge87, Jiang96}).  Approaches to segmenting objects with arbitrary shapes often involve variable-order surface fitting and are computationally intensive ($e.g.,$ \cite{Besl88, DjebaliMS02}). Region-based methods produce closed contours but can be limited in terms of providing accurate edge information \cite{CChenPhD07}. Hybrid approaches combine edge detection with region growing ($e.g.,$ \cite{YokoyaMartin89, BSiebert92}), and attempt to take advantage of strength from both sources\cite{CChenPhD07}. 
+%
+%\subsection{Modeling Using Aerial LiDAR}
+%
+%In recent years, creation of 3D building models from aerial LiDAR data has received considerable attention from the computer vision community ($e.g.,$ \cite{You03, Verma06, MateiSSKK08, PoullisYou2009, ZhouN10}). In photogrammetry, this research has been under investigation since the late 80's ($e.g.,$ \cite{Weidner95, KrausPfeifer98, Ackermann99, Vosselmanbuilding99, MaasVosselman99, Vosselman01building, RottensteinerBriese02, Elaksher02}). 
+%
+%Two algorithms for creating building models using aerial LiDAR are presented in \cite{MaasVosselman99}. The first algorithm analyzes invariant moments of the point clouds to extract building models. The second algorithm uses the plane intersection principle to determine the roof structure. Vosselman et. al. \cite{Vosselman01building} present two strategies to reconstruct building models
+%from segmented planar surfaces and ground plans. They employ a 3D Hough transform to detect planar segments, and merge them using least-squares estimation. Building modes are reconstructed by either detecting intersection lines and the so-called height jump edges or refining a course 3D model.
+%
+%In computer vision, Frueh and Zakhor \cite{FruehZ03} automatically created textured 3D building models using both ground- and aerial- based LiDAR data. The aerial LiDAR is employed to generate a DSM which contains terrain, and building roof information that is normally difficult to obtain from the ground-based LiDAR. The
+%DSM is then merged with facade models using Monte-Carlo-Localization. The 
+%redundant parts in two meshes are eliminated and gaps are filled. You et. al. \cite{You03} propose an interactive method for modeling buildings from aerial LiDAR data using pre-defined primitive libraries. Their method resembling a model based approach is limited in terms of the availability of primitive libraries. 
+%
+%Recent methods \cite{Verma06, MateiSSKK08, ZhouNeumann2008, ZhouN09, PoullisYou2009} introduced an automatic pipeline of creating 3D building modes from aerial LiDAR data with a focus on rooftop modeling. The common components include: a classification algorithm to remove trees and noise, a segmentation algorithm to separate individual building patches and ground points, and a modeling algorithm to generate mesh models from building patches \cite{ZhouNeumann2008}. In the modeling stage, these methods first extract individual planar building roofs by using a plane fitting algorithm, then use different heuristics to form a complete rooftop consisting of multiple planar pieces. For instance, Verma et al. \cite{Verma06} employ a graph-based method to represent
+%the relationships between various planar patches of a
+%complex roof structure; Matei et al. \cite{MateiSSKK08} regularize roof outlines by estimating the building orientation based on minimizing the number of vertices in a rectilinear approximation of the building; Poullis and You \cite{PoullisYou2009} create simple 3D models by simplifying boundaries of fitted planes. Instead of making assumptions on the angles between roof edges, Zhou and Neumann \cite{ZhouNeumann2008, ZhouN09} learn a set of principal directions of roof edges to align roof boundaries. In general, these methods all detect roofs using either predefined patterns such as planar shapes \cite{Verma06, MateiSSKK08, PoullisYou2009, ZhouNeumann2008, ZhouN09} or user-defined primitive libraries \cite{You03}, which are not generalized well to handle roofs with arbitrary shapes. To deal with roofs with arbitrary shape, Zhou and Neumann \cite{ZhouN10, ZhouN11} extend the classic dual contouring \cite{JuTao02} into a 2.5D method to produce crack-free models composed of arbitrarily shaped roofs and vertical walls connecting them.
+%
+%\subsection{Modeling Using Ground-based or Mobile LiDAR}
+%
+%In this section, we consider the work using ground-based LiDAR for outdoor environments with a focus on buildings. Unlike well-controlled laboratory environments~\cite{standig-url}, outdoor scenes contain buildings, trees, cars, pedestrians, and many other man-made or natural objects. Due to the positioning constraint for any ground-level data acquisition system, it is difficult to always obtain a complete and sufficient sampling of all the building surfaces. For instance, the rooftops and back of the buildings often cannot be scanned by a mobile LiDAR scanning system. The sampling rate of surface also varies in terms of its distance and orientation to the scanner \cite{Chenchen08}. For instance, the point clouds from upper level of a high building are normally sparser than those from the lower level. Moreover, laser beams can penetrate transparent surfaces such as glass windows, doors and walls, which result in insufficient LiDAR data collected from these surfaces. 
+%
+%In this thesis, we consider ground-based laser scanning as a type of stationary scanning method, in which multiple scans at different locations are needed to obtain ``complete" data. Because building roofs are still often missing due to the viewpoint constraint, the meaning of ``complete" is relative to the laser scanning data acquired from one location. To process the multiple scans, range registration is needed to combine the separated scans into a complete data set. A common 3D-to-3D registration method is the Iterative Closest Point (ICP) algorithm \cite{Besl92}; a typical 3D building modeling method using ground-based LiDAR is presented in \cite{Stamos02}. This is a bottom-up method which involves point-wise normal computation and classification using Principle Component Analysis (PCA), cluster merging, surface fitting, and boundary extraction. Based on an assumption that the surfaces of a building can be represented as a bounded polyhedron, Chen and Chen \cite{Chenchen08} detected planar regions and their intersections to generate piecewise planar building models from sparse laser scanning data. A top-down approach is presented in \cite {schnabel07ransac, schnabel07efficient}, which is based on a sequential RANSAC \cite{Fischler87} strategy to detect planes, spheres, cylinders, cones and tori from unorganized point clouds. In our work, we combined a bottom-up with top-down scheme to detect building facades from noisy mobile LiDAR data. This method is presented in Chapter 4.   
+%
+%Recent work \cite{NanSZCC10} introduced an interactive tool to building detailed building models from mobile LiDAR data, in which the balconies of a building can be well modeled. The key idea is that the user-defined building blocks are automatically adjusted to fit well to the point data, considering the contextual relations with nearby similar blocks.
+%
+%Mobile LiDAR data is continuously collected from the laser scanners mounted on a vehicle while driving at a posted speed. The earliest work in \cite{Zhao01reconstructingurban} employed two one-dimensional laser scanners mounted on the roof of a vehicle, scanning the scene horizontally and vertically, respectively. Based on a flat terrain assumption, a 3D model is reconstructed by registering and integrating horizontal and vertical scans. Frueh et al. \cite{Frueh2003, Frueh05} developed a set of algorithms for generating textured facade meshes of cities from a series of vertical 2D surface scans and camera images. They classified points into foreground and background layers using a concept similar to \cite{ChangLA01}, and detected major building structures  in the depth images. Large holes in the background layer are filled. 
+%
+%\subsection{Summary}
+%
+%The research on range data processing has moved from well-controlled laboratory environments to real-world scenes. Previous methods \cite{Hoover1996} are generally used for small object modeling and reconstruction. Edge- and region- based methods are restricted to surfaces with simple geometric shapes. The hybrid methods attempt to take the strength from both. 
+%
+%Most methods in building modeling from aerial LiDAR focus on simple parametric building models such as polyhedral, prismatic, and flat roof models. In photogrammetry,  auxiliary data such as footprint, map etc. are often employed to aid the reconstruction. Recent methods in 2.5D dual contouring \cite{ZhouN10, ZhouN11} produce crack-free models consisting of arbitrarily shaped roofs and vertical walls connecting them, which shows a promising result. The building models created from airborne solution are always coarse compared with those from the data collected from short distances such as ground-based or mobile LiDAR. Most methods using mobile LiDAR focus on generating photorealistic building models because of the sufficient geometric information containing in the point clouds. The challenging problems include noise, data inconsistency such as windows, and incomplete data. A common method to address incomplete data problem is to combine aerial with ground-based or mobile LiDAR to result in complete building models \cite{Frueh2003}.   
+%
+%\section{3D Modeling Using Images and Range Data}
+%
+%To use both images and range data for 3D modeling, these two different modalities have to be co-registered. The problem of image-to-range registration involves alignment of the 2D image with the 2D projection of the range data, consisting of estimating the relative camera pose with respect to the range sensor. The registration result is critical not only for texture-mapping 3D models of large-scale scenes, but also for applications such as image based upsampling of range data \cite{Dolson10, Diebel05b, yang07, Torres-Mendez2004} and image-guided range segmentation \cite{Deveau05, BarneaFilin08}. Upsampling range data is another means to use images with LiDAR data for 3D modeling. Sparse LiDAR point clouds for instance, collected from single or cheap lasers, can not represent the detailed geometry of the scene
+%appropriately. Upsampled LiDAR data using camera images, which contain dense enough points representing the scene, could be of significant value, $e.g.,$ enabling an inexpensive LiDAR/camera system to perform as well as an expensive LiDAR only system. In the following, I will review the methods in image-to-range registration, upsampling range data, and image-guided range segmentation.
+%
+%\subsection{Image-to-Range Registration}
+%
+%Existing image-to-range registration methods range from keypoint-based matching \cite{DingLZ08, Aguilera09, BeckerN07}, structural features based matching \cite{LiuI05, LiuS07, Stamosliuchen08, wangN09}, to Mutual Information based registration \cite{MastinFisher09}. The range data include terrestrial or aerial LiDAR. The images includes vertical or oblique aerial images, and ground-level images.
+%
+%Keypoint based matching \cite{Aguilera09, BeckerN07} is based on the similarity between laser reflectance images and corresponding camera images. First, each pixel of the laser reflectance image is encoded with its corresponding 3D coordinate. Then feature points are extracted by using either SIFT \cite{Lowe04} or F{\"o}rstner operators \cite{Foerstner87} from both images. A robust matching strategy based on RANSAC \cite{Fischler87} and/or epipolar geometry constraint is employed to determine the correspondence pairs for computing fundamental matrix. Sensor registration is then achieved based on a robust camera spatial resection. Ding et al. \cite{DingLZ08} registered oblique aerial images with a 3D model generated from aerial LiDAR data based on 2D and 3D corner features in the 2D images and 3D LiDAR model. The correspondence between extracted corners was based on the Hough transform and the generalized M-estimator sample consensus. The resultant corner matches are used in Lowe's algorithm \cite{Lowe3d87} to refine camera parameters estimated from a combination of vanishing point computation and GPS/IMU readings. In general, the feature point extraction and robust matching are the key to a successful registration for these types of methods. 
+%
+%Instead of matching points, structural feature based methods \cite{wangN09, LiuI05, LiuS07, Stamosliuchen08} match structural features in both 2D and 3D space to estimate the relative camera poses. Direct matching of single line features is error-prone due to the noise in both LiDAR and image data and the robustness of the detection algorithms. High-level structural features are helpful to increase the robustness of both detection and matching. Wang and Neumann \cite{wangN09} registered aerial images with aerial LiDAR based on matching so-called ``3 Connected Segments" in which each linear feature contains 3 segments connected into a chain. They used a two-level RANSAC algorithm to refine the putative feature matches, and estimated camera poses using \cite{ Hartley2004}. Liu et al. \cite{LiuI05, LiuS07, Stamosliuchen08} extracted so called ``rectangular parallelepiped" features, which are composed of vertical or horizontal 3D rectangular parallelepipeds in the LiDAR and 2D rectangles in the images, to estimate camera translation with a hypothesis-and-test scheme. Camera rotation was estimated based on at least two vanishing points. Since the vanishing points are required,
+%their methods work well for ground-level data which are not efficient to handle aerial data with a week perspective effect.  
+%
+%All the above methods are dependent on either the strong presence of parallel lines to infer vanishing points, or availability of feature pair correspondences, which limits their applicability and robustness. Recent methods \cite{MastinFisher09} using statistical metrics, such as mutual information \cite{ViolaWell97}, as a similarity measure for registering oblique aerial images and aerial LiDAR do not require any feature extraction process. This method searches for optimal camera poses through maximizing the mutual information between camera images and different attributes of LiDAR such as the LiDAR reflectance image, depth map, or a combination of both. Instead of using features, the mutual information method evaluates histograms and joint histograms using all the pixels in both images, which avoids the problems of feature extraction and correspondence. We adopted the mutual information metric for our automatic registration of mobile LiDAR and spherical panoramas. The difference from \cite{MastinFisher09} is that we maximize the mutual information instead of minimizing the joint entropy with a different implementation. Our algorithm is fully automatic and has been designed to run efficiently on a metropolitan scale LiDAR/spherical image database. The detailed
+%explanation is presented in Chapter 5.
+%
+%Another method \cite{Zhao04} registered videos onto 3D point clouds through aligning a point cloud computed from the video with the one obtained from a range sensor. Although this method avoids the problems of feature extraction, it requires structure from motion techniques which are computationally expensive and limited in accuracy and robustness. 
+%
+%\subsection{Upsampling Range Data Using Images}
+%
+%There appears to be relatively little work in using co-registered intensity images to upsample range data, at least in comparison to pure image-based super-resolution, $e.g.,$ \cite{Farsiu04fastand, Borman98, Irani91}. One of the first attempts reported was based on Markov Random Fields (MRFs) \cite{Torres-Mendez02, Diebel05anapplication}. A common assumption here is that depth discontinuities correspond to intensity change in the images, which is not always true. The problem occurs when the image region with similar color corresponds to objects with depth discontinuities. Yang et al. \cite{yang07} proposed an iterative bilateral filtering method for enhancing the resolution of range images. The authors also compared their approach with MRF, showing that this method allows for sub-pixel accuracy. Andreasson et al.\cite{Andreasson06} compared five different interpolation schemes with the MRF method \cite{Diebel05anapplication} and summarized four different metrics for confidence measures of interpolated range data. The assumption in their approach is similar to that of the MRF method which uses color similarity as an indication of depth similarity. In \cite{Garro09} points are projected onto segmented color images, and bilinear interpolation is used to compute the depth value of the grid samples that belong to the same region. \cite{Dolson10} addresses the problem of upsampling range data in dynamic environments based on a Gaussian framework.
+%We propose a new upsampling method which takes point visibility information into account, which current methods do not consider. To the best of our knowledge, our method is the first example that considers point
+%visibility and interpolates points using the Ray Casting method. This method is presented in Chapter 6.
+%
+%There is some work that does superresolution from depth data only. Basically the goal is to enhance the resolution by using multiple low resolution depth maps that were obtained from close viewpoints \cite{schuon_lidarboost09, Kil06}.    
+%
+%\subsection{Image-guided Range segmentation}
+%
+%Camera images normally provide texture information for the generated 3D models ($e.g.,$ \cite{Frueh2003, Stamos02, Chen07, Stamosliuchen08, El-hakimdetailed3d07}). The work \cite{Deveau05, BarneaFilin08} employed images for improving accuracy of range segmentation, especially on object boundaries where accurate normal estimation is problematic. According to Deveau, most current work combines laser data with images independently, and normally includes image-to-range registration and association two steps \cite{Deveau05}. The association step involves integrating results from each of the data sources by performing parallel segmentations of both data ($e.g.,$ \cite{Deveau05, BarneaFilin08}), combining both segmentations to generate a grammar representation for a facade \cite{Hohmann09}, and triangulating two camera images to generate 3D points for occluded parts filling in the point clouds \cite{Dias03}. Since this research is not the focus in this thesis, we do not discuss it further.
+%
+%\subsection{Summary}
+%
+%The registration between images and range data is a prerequisite for 3D modeling using both data sources. Most methods ($e.g.,$ \cite{DingLZ08, wangN09, MastinFisher09} start with an initial registration, and achieve optimal solutions through feature based or mutual information registration. The major challenges are how to extract reliable features from 2D and 3D data, and how to automatically
+%match them. Vanishing points are employed to aid registration, but also limit the applicability of the methods. In many cases, vanishing points are not available or hard to detect accurately. Mutual information registration does not require feature extraction, and holds potential for building a robust registration system. 
+%
+%Methods of upsampling range data using images include deterministic \cite{Andreasson06, yang07, Garro09} and probabilistic \cite{Torres-Mendez02, Diebel05anapplication}approaches. The probabilistic formulation of this problem is based on Markov Random Fields (MRFs) under the assumption that depth discontinuities often correspond to color or brightness changes in the images. 
+%
+%\section{Concluding summary}
+%  
+%In this chapter, I give a general review in the areas of 3D reconstruction from images, LiDAR, and combinations of both. 3D reconstruction from single images is an ill-posed problem, and needs prior knowledge about the scene to ensure a unique reconstruction. Existing model-based approaches always require a model-to-image fitting and readjustment procedure which is a computationally intensive process. In Chapter 3, I present a method for rectilinear object reconstruction from single images without the model-to-image fitting and readjustment process. I demonstrate that accurate building dimension information can be obtained using single images taken from uncalibrated cameras. This makes it possible, for example, for survey companies to use off-the-shelf cameras instead of expensive calibrated cameras for their survey tasks. In the meantime, with the increasing popularity of smart phones such as the iPhone, this method has the potential to be used with camera phones, and can be made available as a free application so that ordinary people can use smart phones for accurate 3D measurement.
+  
+%3D urban modeling from aerial LiDAR focuses on crude building modeling
+%while work from mobile LiDAR emphasizes on detailed building facade modeling. This is because the availability of dense point clouds in mobile
+%LiDAR makes it possible to extract micro-structures of buildings such as windows. Existing methods on building facade modeling from mobile LiDAR either require human intervention \cite{NanSZCC10} or create
+%entire facade meshes \cite{Frueh2003, Frueh05}. Existing methods
+%for window detection from mobile LiDAR \cite{Ali08} or ground-based laser scanning data \cite{Pu07} are insufficient in our case as NAVTEQ TRUE data are much denser than theirs. The method in \cite{Pu07},  based on a triangular mesh, is not practical on our very dense
+%LiDAR data and the computation is very expensive. The method in
+%\cite{Ali08} generates 2D LiDAR intensity images for window detection which causes information loss during the 3D-to-2D projection. In Chapter 4, I present an automatic method for window extraction from very dense mobile LiDRA data. The results are competitive in comparison with the existing methods \cite{Ali08, Pu07}, but have the potential to work on a metropolitan scale.
+%
+%One of the key problems for ``NAVTEQ TRUE" technology is its accessibility as it is an expensive technology. Can we use more accessible sensors to produce dense LiDAR data, and make  this  technology more general? With this goal, I reviewed methods in LiDAR-to-Image registration and upsampling as the accurate registration between LiDAR and images is prerequisite for upsampling LiDAR with
+%images. Existing feature based registration methods require reliable feature extraction and matching, which limit their applicability in terms of robustness and automation. In Chapter 5, I develop a fully automatic registration solution without involving any feature extraction process. Transforming a sparse LiDAR dataset into a dense one is a problem of upsampling. Most of existing upsampling methods formulate the problem in a probabilistic way such as the use of a MRF model. To the best of our knowledge, none of existing methods takes point visibility information into account for the upsampling problem, largely because the data they deal with are sparser than ours. Our data sets are problematic for all the existing methods \cite{Torres-Mendez02, Diebel05anapplication, yang07, Dolson10}. Without addressing this issue,
+%the upsampling results will be very erroneous. In Chapter 6, I deal with
+%this problem by using all the visible point clouds for the upsampling. The results demonstrate that it is possible to build rich building models using
+%cost-effective sensing through judicious upsampling. 
+%
+%
+
+ 
+
+  
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

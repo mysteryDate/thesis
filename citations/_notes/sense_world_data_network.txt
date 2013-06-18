@@ -1,0 +1,5 @@
+read november 4
+
+  Abstract: sounds a lot like libmapper
+  ?Minibees?
+  Joe Malloch did the max implementation!

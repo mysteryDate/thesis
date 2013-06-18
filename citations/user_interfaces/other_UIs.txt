@@ -1,0 +1,18 @@
+J. Bullock, “Braun.” http://lists.create.ucsb.edu/pipermail/osc dev/2008-March/001327.html
+
+David Robillard, “Patchage.” http://drobilla.net/software/patchage/
+
+Wildora, “Osculator.” http://www.osculator.net/
+
+http://www.hakenaudio.com/Continuum/eaganmatrixoverv.html
+
+Bullock, J., Beattie, D., & Turner, J. (2011). Integra Live: a new graphical user interface for live electronic music. In Proc. of International Conference on New Interfaces for Musical Expression (p. 387 - 392).
+
+Booth, G. (2010). Inclusive Interconnections: Towards open-ended parameter-sharing for laptop ensemble. Unpublished master’s thesis, University of Huddersfield, Huddersfield, England.
+
+Rudraraju, V. (2011). A tool for configuring mappings for musical systems using wireless sensor networks. Unpublished master’s thesis, McGill University, Montreal, Canada.
+
+STEIM. (2004, Summer). Products of interest. Computer Music Journal, 28(2), 105-107.
+  WHAT THE HELL AM I?
+
+Wolek, N. (2010). The MPG carepackage: coordinating collective improvisation in Max/MSP. In Proc. of the Society for Electro-Acoustic Music in the United States (SEAMUS 2010).

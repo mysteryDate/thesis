@@ -1,0 +1,30 @@
+11/10
+
+	We create a tool for many to one mappings, though it is not yet possible through the mapper.
+
+	Networks are distributed
+
+	Show:
+	Devices
+	Connections
+	Flow of information
+	Type of mapping (linear, exponential, bypass, etc.)
+
+Possible interfaces:
+	Matrix (eagenMatrix)
+	circular (vizmapper)
+	list
+	Cladogram (beautiful evidence page 74)
+	
+Good ideas:
+	sparklines
+
+Crazy ideas:
+	chiense characters
+	feynman diagrams
+
+Variables:
+	line weight
+	color
+	position
+	motion

@@ -1,0 +1,432 @@
+\chapter{Image Based Reconstruction}
+
+Compared with laser scanners, cameras are relatively low-cost data acquisition devices, but provide abundant visual content with high resolution images. 3D object reconstruction from images has been intensively researched in computer vision, photogrammetry, and computer graphics communities.
+
+In this Chapter, we present a model-based method for reconstructing rectilinear buildings from single images. This is an interactive method which a user needs to
+specify at least three pairs of correspondences between model and image edges.
+With a small amount of human intervention, one can reconstruct accuracy dimensions of rectilinear objects. The recovery algorithm is formulated in terms of two objective functions which are based on the
+geometry of perspective projection. These objective functions are minimized with respect to the camera pose, building dimensions, locations and orientations to obtain estimates for the structure of the scene. The comparison with the vanishing point based method indicates that our method is significantly superior over the former. The effectiveness of this approach is also demonstrated quantitatively through simulations and real images. 
+
+Although we use a rectilinear building model as an example to describe the method. Our approach can also apply to more generalized building models such as polyhedra where the coordinates of the vertices can be linearly expressed as a function of a vector composed of the object dimensional parameters. 
+
+\section{Introduction}
+
+To reconstruct 3D models from images, camera poses have to be known. The problem of camera pose determination has been referred to by various names including, ``exterior orientation'', ``space or spatial resection'', and ``pose estimation or refinement''. 
+
+In photogrammetry, the main purpose of space resection is to determine a camera’s position and orientation for use in topographic mapping. To this end, the images that a photogrammetrist must deal with are mainly vertical aerial photograph sequences with approximately 60\% overlap in spite of the recent appearance of oblique aerial images ~\cite{pictometry-url}. Because of the use of calibrated cameras and high precision ground control points (GCPs) at centimeter level, the recovered camera pose, using robust estimation, can satisfy the accuracy requirements for qualified topographic maps in various civilian and even military applications. 
+
+In computer vision and robotics, many tasks such as structure from motion (SfM) and simultaneous localization and mapping (SLAM), require determination of the camera pose with respect to its surrounding objects. The problem is actually similar to that of the exterior orientation or space resection in photogrammetry. The relationship between photogrammetry and computer vision has been discussed in \cite {Mundy93therelationship, Forstner02photogram}. A survey of bundle adjustment for the computer vision community is presented in \cite{Bill00}. Tsai reviewed relevant photogrammetric techniques which can be used in robotic vision \cite{Tsai92}.
+
+For topographical mapping applications, GCPs are essential for producing accurate geo-referenced maps using images from calibrated cameras. However, it is not always possible to obtain sufficient GCPs easily or in timely fashion. The collection of GCPs normally involves Global Positioning System (GPS) survey or aerial-triangulation, which is a labor intensive process. In some applications (i.e. 3D visualization), the accuracy requirement may not be as high as topographic mapping, and an uncalibrated camera may also be employed. Recovering relative camera pose and scene geometry without the use of GCPs is useful for a fast 3D reconstruction, which most of structure from motion methods do \cite{Pollefeys04, Snavely2006, Agarwal2009}. 
+ 
+3D reconstruction from one single view is an ill-posed problem. A single projective image cannot provide 3D information without further assumptions. We reconstruct rectilinear buildings up to a scale factor from single images under the assumption of flat terrain. By choosing an object-centered coordinate system $O_{xyz}$ shown in Figure \ref{fig:C3:imagegeometry}, we demonstrate that it is  possible to reliably recover relative camera pose and building dimensions without the use of any GCPs or vanishing points. In our method, the user needs to specify the edge correspondences between a predefined 3D model and its corresponding 2D image. Unlike existing methods \cite{Liu90, Kumar94, Taylor95}, our method does not require a good initial guess for the rotation. Instead, the  initial estimate for the rotation is computed directly by using coplanarity constraints. A non-linear least squares minimization procedure is then applied to determine camera orientation accurately. The camera translation and predefined model dimensions are computed based on the determined orientation. Unlike existing methods  \cite{Lowe91, Debevec96}, this method does not require a model-to-image fitting process, and is much simpler and faster than previous approaches. 
+
+\section{Related Work}  
+
+Space resection in the photogrammetry literature \cite{DeWitt00, Mikhail01} is formulated as a non-linear minimization problem by solving camera rotation and translation simultaneously through at least three 2D-to-3D point correspondences. The initial estimates of camera rotation and translation are relatively easy to obtain because of vertical flight patterns and available GCPs in most photogrammetric applications. There also exist numerous structure from motion methods in computer vision \cite{Longuet-Higgins87, Weng89, Liu90, Kumar94, Taylor95, Pollefeys04, Snavely2006, Agarwal2009}. Some algorithms are based on point features \cite{Longuet-Higgins87, Weng89, Pollefeys04, Snavely2006, Agarwal2009}. Some are based on straight line features \cite{Liu90, Kumar94, Taylor95} as these are rich and prominent in most man-made environments, and easier to localize than point features because of larger image support. 
+
+Liu et al. \cite{Liu90} solved for camera rotation first and then  camera translation. They considered three camera rotation angles as obtained from a nominal orientation by small perturbations, $e.g.,$ 0 degrees. Based on this assumption, their algorithm only works if the three camera Euler rotation angles are less than 30 degrees. Kumar and Hanson \cite{Kumar94} solved for the rotation and translation simultaneously by adapting an iterative technique formulated by Horn \cite{bb88}. The initial estimates for translation and rotation are required to make the nonlinear algorithm converge. They also reported that the initial rotation estimates for some data sets must be within 40 degrees for all the three Euler angles representing the rotation. When initial estimates for rotation and translation are not available, they sample rotation space, and each of the samples is used as an initial estimate for the rotation estimation by a method akin to \cite{Liu90}. The estimated rotation and translation based on the rotation samples are then used as initial estimates for solving the camera rotation and translation simultaneously.
+Taylor and Kriegman \cite{Taylor95} estimated both the camera positions and the structure of the scene from multiple images. Based on a random initial estimate of rotation, the translation and model parameters are computed as initial inputs for the subsequent model-to-image fitting procedure. If the disparity between predicted edges and the observed edges is smaller than some preset threshold, the minimum is accepted as a feasible estimate. Debevec et al. \cite{Debevec96} argued that if the algorithm begins at a random location in the parameter space, it stands little chance of converging to correct solution. They developed a method to directly compute a good initial estimate for the camera positions and model parameters, and then use those estimates as initial inputs for the subsequent model-to-image fitting process. A combination of vanishing points and model-to-image fitting approach can be found in  \cite{Jelinek01}. Multiple piecewise planar object reconstruction from single images is addressed through the constraints of connectivity and perspective symmetry in \cite{LiZG07}.
+
+Vanishing points are defined as points where the extensions of parallel lines converge in the perspective image. The existing vanishing point detection methods include manual detection, using the Hough Transform \cite{Tuytelaars98}, searching over the Gaussian sphere \cite{HeuvelFrank98}, and using projective geometry \cite{Birchfield98}. The limitations of vanishing point based methods are obvious. As vanishing points are points in the image at infinity, slight inaccuracy in the measurements of lines will result in large errors in the positions of calculated vanishing points. Automatic methods can improve the accuracy of vanishing point detection but often require a sufficient number of straight lines to be detectable in the images. Problems occur when images contain very few straight lines. Also, few if any existing edge detection algorithms can provide only useful edges reliably from images of a common scene; human intervention is always needed. In general, most of automatic vanishing point detection methods are not only computationally intensive, but also require human interaction, which is hard to reach at the operational level. 
+
+\section{The Method}
+
+Our method is a two-step iterative scheme for recovering camera orientation first, then camera translation and model parameters. The 3D reconstruction of other buildings is based on the recovered camera pose and the assumption of flat terrain. The method is particularly suitable for oblique images with large shooting angles in urban environments. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.7\textwidth]{figures/C3/imggeometry.jpg} \\
+\caption{Projection of an edge in a rectilinear building model onto a camera’s image plane and spatial relationship of buildings} 
+\label{fig:C3:imagegeometry}
+\end{figure}
+
+\subsection{Notation}
+
+Figure \ref{fig:C3:imagegeometry} shows how a straight line segment, model edge 67, in a cube model (building 1) projects onto the image plane of a camera. The coordinates of two endpoints of the projected image edge 67 in the camera coordinate system can be represented as ${(x_1, y_1, -f), (x_2, y_2, -f)}$. The camera position relative to the object coordinate system is represented in terms of a rotation matrix $R$ and a translation vector $t$. The straight line 67 can be defined by a pair of vectors $(v, u)$ in the object coordinate system where $v$ represents the direction of the line and $u$ represents a point on the line. $m$ is the normal vector of the projection plane defined by the two lines $(C6, C7)$, and camera center $C$ in the camera coordinate system. The coplanar constraints derived in \cite{Taylor95} are outlined in the following. The fundamental relation of the imaging geometry can be represented by Equation \ref {eq:C3:imggeometry}
+
+\begin{equation}
+    m = R (v \times (u-t)).
+\label{eq:C3:imggeometry}
+\end{equation} 
+
+Equation \ref{eq:C3:imggeometry} is based on the fact that the 3D model lines ($e.g.,$ line 67) in the camera coordinate system must lie on the projection plane formed by lines $(C6, C7)$ and camera center $C$: 
+
+\begin{equation}
+    m^T Rv = 0,
+\label{eq:C3:imgorientation}
+\end{equation} 
+
+\begin{equation}
+    m^T R(u-t) = 0.
+\label{eq:C3:imgtranslation}
+\end{equation} 
+
+Equation \ref{eq:C3:imgorientation} and \ref{eq:C3:imgtranslation} are deduced from Equation \ref{eq:C3:imggeometry}, which shows that the determination of camera rotation $R$ can be independent from the estimation of camera position $t$ and model parameters. Note $v$ becomes a known vector in the object-centered coordinate system which is parallel to the $Y$ axis, while $u$ can be represented by the model parameters.
+
+The normal vector $m$ can be defined by the intersection of the projection plane $C67$ with the image plane as shown in Figure \ref{fig:C3:imagegeometry} and represented in Equation \ref{eq:C3:normal},
+
+\begin{equation}
+    m_xx + m_yy - m_zf = 0,
+\label{eq:C3:normal}
+\end{equation} 
+
+where ${m_x, m_y, m_z}$ are the coordinates of the normal vector in the camera coordinate system and $f$ is the focal length of the camera; $x$ and $y$ are points on the image edge. Given an observed image of edge 67, the observed normal vector $m^{'}$ can be obtained by Equation \ref{eq:C3:normalT}
+
+\begin{equation}
+   m^{'} = (x_1, y_1, -f)^T \times (x_2, y_2, -f)^T.
+\label{eq:C3:normalT}
+\end{equation} 
+
+The location and orientation of the building 2 can be represented by a building vertex (e.g. vertex 3 $(X_3, Y_3)$ in  Figure \ref{fig:C3:imagegeometry}), a building orientation along the $X$ axis (i.e. the $\alpha$ in Figure \ref{fig:C3:imagegeometry}), and the building’s dimension of length, width, and height ($i.e.,$ $L$, $W$, $H$ in Figure \ref{fig:C3:imagegeometry}). These unknown parameters are solved after the camera pose is determined. 
+
+\subsection{Recovery Algorithm}
+
+The recovery algorithm takes as input, a set of correspondences between edges in the models and edges in the image (at least three
+correspondences) specified by the user. The algorithm then automatically recovers camera pose and model dimensions, consisting of self-calibration and metric reconstruction in two stages. In the first stage, the focal length is first obtained from image EXIF tags. The camera pose and the model parameters are recovered with respect to an object-centred coordinate system. In the second stage, the spatial relationship of buildings is represented by three intrinsic parameters (building length, width, and height) and three extrinsic parameters (a building vertex location and building orientation). These parameters can be determined by using model-to-image correspondences and the recovered camera pose. The details are described in the following sections.
+
+\subsubsection{Self-Calibration}
+
+The self-calibration requires more than three line correspondences between the pre-defined model edges and the image edges, which consists of determination of the focal length, initial estimate of camera rotation, refinement of camera rotation, and determination of camera translation and model dimensions. The division of unknown parameters into two groups which are solved separately is the key for the 3D reconstruction using single images only. 
+
+{\it Determination of the focal length} Focal length information can be obtained from image EXIF tags. In the absence of EXIF tags, the focal length can be estimated as long as two finite vanishing points associated with two perpendicular directions in 3D space can be located in the image. For most man-made planar objects, it is not difficult to find two sets of lines in the images where the lines from each set in 3D space are parallel and two lines from different sets are perpendicular. Let’s denote $x_{\infty}$, $y_{\infty}$, as the vanishing points in two orthogonal directions. The focal length $f$ \cite{Caprile90} can be determined using Equation \ref{eq:C3:focallength}
+
+\begin{equation}
+   f = \sqrt{-(x_{\infty}*x_{\infty} + y_{\infty}*y_{\infty})}.
+\label{eq:C3:focallength}
+\end{equation} 
+
+{\it Initial Estimate of Camera Rotation} The objective function for obtaining initial estimates of camera rotation is formulated according to Equation \ref{eq:C3:imgorientation} as shown in  Equation \ref{eq:C3:O1} 
+
+\begin{equation}
+   O_1 = \sum_i^n(m_i^TRv_i),
+\label{eq:C3:O1}
+\end{equation}      
+
+where $i$ is the number of the model edges, $n$ is the total number of the employed model edges, $m_i$ and $v_i$ are the corresponding normal vector and direction of the model edge, and $R$ is a 3x3 camera rotation matrix. To minimize the objective function Equation \ref{eq:C3:O1} that is formed from Equation \ref{eq:C3:imgorientation}, we employ a three-loop computation for initial estimates of the camera rotation. The accuracy of initial estimates relies on the step size of the loops. In this thesis the step size of the loops is set as 1, and the output can reach an accurate initial rotation estimate on the order of 1 degree. Choosing a large step size may increase the search speed, but also decrease the accuracy of the initial rotation estimate. Actually, even if the initial estimates differ considerably from the correct solution, the algorithm can still converge. Our implementation on a Pentium IV 1.6 Ghz computer with 1.5 Gb of memory takes 3-4 seconds to run the algorithm with a loop step size of 1.  
+
+{\it Refinement of Camera Rotation} Once initial camera rotation is obtained, a non-linear technique based on the Gauss-Newton method is applied to the minimization problem. The direct calculation of Jacobian matrix of the objective function $O_1$ is complex. To simplify the linearization of $O_1$, we rewrite the rotation matrix $R$ as a multiplication of three sequential rotations, and compute the first derivative for each rotation angle. The Jacobian matrix of $O_1$ can then be formed as,
+
+\begin{equation}
+   J_{\substack{
+       \varpi \phi \kappa \\
+        n \times 3     
+   }} =
+   \begin{bmatrix}
+m_1^TR_{\varpi}^{'}v_1 &   m_1^TR_{\phi}^{'}v_1 & m_1^TR_{\kappa}^{'}v_1 \\
+\vdots  & \vdots & \vdots \\
+m_n^TR_{\varpi}^{'}v_n &   m_n^TR_{\phi}^{'}v_n & m_n^TR_{\kappa}^{'}v_n \\  
+     \end{bmatrix}, 
+\label{eq:C3:Jmatrix}
+\end{equation}      
+
+where $R_{\varpi}^{'} = R
+\begin{bmatrix}
+0 & 0 & 0  \\
+0 & 0 & 1 \\
+0 & -1 & 0 \\
+ \end{bmatrix}  
+$, 
+$R_{\phi}^{'} = R
+\begin{bmatrix}
+0 & 0 & -\cos(\kappa)  \\
+0 & 0 & \sin(\kappa) \\
+\cos(\kappa) & -\sin(\kappa) & 0 \\
+ \end{bmatrix}  
+$, and 
+$R_{\kappa}^{'} = R
+\begin{bmatrix}
+0 & 1 & 0  \\
+-1 & 0 & 0 \\
+0 & 0 & 0 \\
+ \end{bmatrix}  
+$. 
+
+Given the three initial camera rotations obtained from the previous step, the Gauss-Newton algorithm computes accurate estimates of the camera rotations within 2-3 iterations.
+
+{\it Determination of Camera Translation and Model Dimensions} The objective function for determining camera translation and model dimensions is formulated according to Equation \ref{eq:C3:imgtranslation} as shown in Equation \ref{eq:C3:O2}
+
+\begin{equation}
+   O_2 = \sum_i^n(m_i^TR(u_i- t))^2,
+\label{eq:C3:O2}
+\end{equation}      
+
+where $i$ is the number of the model edges, $n$ is the total number of the employed model edges, $m_i$, and $u_i$ are the corresponding normal vector and point on the model edge. In the case of rectilinear buildings, the minimization of the objective function $O_2$ is a constrained quadratic form minimization problem, and can be solved through a set of linear equations. It is also important to keep in mind that the resulting dimensions of the scene and camera translations are up to a scale factor. 
+
+\subsubsection{Metric Reconstruction}
+
+Metric-reconstruction also requires more than three line correspondences between the pre-defined model edges and the image edges.  The algorithm consists of initial estimate of building orientation, refinement of building orientation, and determination of building dimensions and location.  
+
+{\it Initial Estimate of Building Orientation} The three directions of model edges, $v_1$ ($i.e.,$ model edge 67 of building 2 in Figure \ref{fig:C3:imagegeometry}), $v_2$ ($i.e.,$ model edge 78), and $v_3$ (i.e. model edge 26), can be represented as shown in Equation \ref{eq:C3:buildingorientation}
+
+\begin{equation}
+v_1 =
+\begin{bmatrix}
+-w\sin(\alpha)  \\
+w\cos(\alpha)  \\
+0 \\
+\end{bmatrix},
+v_2 =
+\begin{bmatrix}
+0 & -1 & 0  \\
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix} v_1,
+v_3 =
+\begin{bmatrix}
+0 \\
+0 \\
+H \\
+\end{bmatrix}.
+\label{eq:C3:buildingorientation}
+\end{equation}   
+
+Since the value of building dimensions $(W, H)$ does not affect the building orientation, the only unknown parameter of building orientation is $\alpha$. At this stage, the camera orientation is known. The objective function of Equation \ref {eq:C3:O1} is employed to obtain an initial estimate for $\alpha$. The minimization of the objective function Equation \ref {eq:C3:O1} sums the extents to which the model orientation $v$ violates the constraints arising from Equation \ref{eq:C3:imgorientation}.
+
+{\it Refinement of Building Orientation} Once the initial building orientation is obtained, a non-linear technique based on the Gauss-Newton method is applied to the minimization problem. Based on Equation \ref{eq:C3:RBO}, the minimization is straightforward since there is only one unknown parameter $\alpha$,
+
+\begin{equation}
+  -\alpha_{i1}^TW\sin(\alpha) + \alpha_{i2}^TW\cos(\alpha) = 0,
+\label{eq:C3:RBO}
+\end{equation} 
+where $\alpha_i^T = m_i^TR$.
+
+Given the initial building orientation obtained from the previous step, the Gauss-Newton algorithm computes the accurate building orientation within 2-3 iterations.
+
+{\it Determination of Building Dimensions and Location} The building dimensions and location are determined by minimizing objective function $O_2$ as shown in Equation \ref{eq:C3:O2}. In this stage, image norm vectors $m$, camera rotation $R$ and translation $t$ are known. The unknowns are points $u_i$ on the model edges which are expressed as linear functions of building dimension and location, and can be solved through a set of linear equations. The same method can be employed to reconstruct more buildings.
+
+\section{Vanishing Point Based Algorithm}
+
+Without loss of generality, we also considered the method in \cite{ZhangZ01} that uses an adjustment model for computing vanishing points, and determines camera focal length as well as camera orientation using calculated vanishing points. Given a dimension of the cubic building, the camera translation and other two dimensions of the building can be determined. We also extended this approach to deal with multiple buildings using the topological representation as shown in Figure \ref{fig:C3:imagegeometry}. Then we evaluated effectiveness of our method with this extended vanishing points based method. 
+
+\section{Experimental Results}
+
+This section describes a series of experiments that were carried out in order to evaluate the effectiveness of proposed algorithm and the vanishing point based algorithm \cite{ZhangZ01}. Simulation is first used to systematically vary key parameters such as the camera parameters and measurement of the image segments; thereby enabling us to characterize the degradation of the algorithms in
+extreme situations. Real examples are shown to gauge practical results.
+
+\subsection{Simulation Experiments}
+
+The synthetic image data was generated with a virtual camera and two 3D cubic building models as shown in Figure \ref{fig:C3:imagegeometry}. The camera parameters are listed in Table \ref {table:C3:VirtualCameraPs}, assuming that the image center lies at the center of the image frame. Table \ref{table:C3:VirtualBuildingPs} shows information about the two building dimensions, locations, and orientations. 
+
+\begin{table}
+\centering
+\Tcaption{Virtual camera parameters}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Focal Length (m) & 0.0798 & Pixel Size ($\mu m$) & 12 \\
+\hline
+$X_0 (m)$ & -500.672  &  $\varpi$ ($\circ$)  &  50.346      \\
+\hline
+$Y_0 (m)$  &  100.317 &  $\varphi$ ($\circ$) & 3.582 \\
+\hline
+$Z_0 (m)$  &  650.783 &  $\kappa$ ($\circ$) & 2.787 \\
+\hline
+
+\end{tabular}
+\label{table:C3:VirtualCameraPs}
+\end{table}
+
+\begin{table}
+\centering
+\Tcaption{Virtual building parameters}
+\begin{tabular}{|c|c|c|}
+\hline
+& Building 1 & Building 2 \\
+\hline
+Length (m) & 40  &  26.41   \\
+\hline
+Width (m)  & 20 &  20.92 \\
+\hline
+Height (m) &  30 & 22.31 \\
+\hline
+Orientation along $X$ axis ($\circ$) & 0 & $\alpha = 30.865$ \\
+\hline
+Location of a building model vertex (m)   & &    $X_3 = 100.512$ \\ \cline{3-3}
+&   & $Y_3 = -200.217$ \\
+\hline
+
+\end{tabular}
+\label{table:C3:VirtualBuildingPs}
+\end{table}
+
+We evaluated how errors in measurements of image segments as well as camera parameters influence the accuracy of the recovered camera pose and building model dimensions for both methods.  In the following tables, entries in rows with $V$ correspond to experiments from the vanishing point based method, with $M$ correspond to experiments from our model based method. Entries in column with 0 correspond to experiments with correct image measurements or camera parameters.  
+
+{\it Errors from Image Noise} A uniformly distributed random image error is added to the endpoints of the image segments. Entries in columns with 0 random errors correspond to the experiments with the image segments without errors. Table \ref{table:C3:NoiseEndpoints} shows that the reconstruction errors (we use absolute error here) increase as the random image errors are increased for both methods. However, the vanishing point based method is extremely unstable to those random errors in the endpoints of the image segments. The results from the vanishing point based method shows  very bad reconstruction error. The reason is small errors in endpoints of the image segments cause huge errors in the determination of vanishing points. Thereby, large errors in vanishing points cause huge errors in the resulted camera pose and buildings. The model based approach is relatively stable to those random errors. The errors in the endpoints have much less effect on the accuracy of the reconstruction compared to the vanishing point based method. 
+
+
+{\it Errors from image center offsets } The influence of the incorrect image center on both methods was analyzed introducing an error of 5, 10, 15 pixels on x and y coordinates of the image center. In Table \ref{table:C3:NoiseCenter}, entries in column with 0 pixel offsets correspond to the experiments with correct image center. The experimental results show that both methods are insensitive to errors in the image center offsets, which validates the feasibility of the approximation that the principle points lie at the image center. However, without considering the noise in the endpoints of image segments, the accuracy of the vanishing point based method is slightly better than model based one with the same amount of image center errors. This can be partially explained by the fact that the rotation and translation constraints are weak constraints when used separately. Small errors in the rotation are amplified into large errors in the translation, and subsequently affect the resulted building parameters.  
+
+%\begin{table}
+%\centering
+%\Tcaption{Comparison of the vanishing point based method with the model based method using the same noises in endpoints}
+%\begin{tabular}{|c|c|m{2cm}|m{2cm}|m{2cm}|m{2cm}|}
+%\hline
+%Camera Pose & Method &  \multicolumn{4}{|c|}{Noise in endpoints of image segments (pixels)} \\  \cline{3-6}
+% &  & 0 & 5 & 10 & 15 \\
+%\hline
+% $\varpi$ ($\circ$)  &  V & 50.346 & 2.163 & 9.537 & 20.077\\ \cline{2-6}
+% & M & 50.346 & 0.161 & 0.329 &0.716\\
+%\hline
+%$\varphi$ ($\circ$) & V & 3.582 & 0.745 & 4.735 & 9.522 \\ \cline{2-6}
+%& M & 3.582 & 0.276 & 0.721 & 2.246\\
+%\hline
+% $\kappa$ ($\circ$)  & V & 2.787 & 2.005 & 21.293 & 29.546 \\ \cline{2-6}
+%& M & 2.787 & 0.506 & 0.713 & 4.098 \\
+%\hline
+%$X_0 (m)$  & V &-500.672 &14.673 &	56.517	&79.591 \\ \cline{2-6}
+%& M & -500.672&	 7.532 &	12.315 &	26.664 \\
+%\hline
+%$Y_0 (m)$  & V &100.317&	35.396 &	114.784 &221.976 \\ \cline{2-6}
+%& M & 100.317&	2.676 &4.956 &7.526\\
+%\hline
+%$Z_0 (m)$  & V &650.783 &	7.231 &	196.901	&199.359 \\ \cline{2-6}
+%& M & 650.783&	22.632 &	7.901 &	48.878\\
+%\hline
+%Building 1 & & & & & \\
+%\hline
+%$W(m)$  & V &20.000& 2.023 &3.698&5.059 \\ \cline{2-6}
+%& M & 20.000& 0.672&0.147&1.005\\
+%\hline
+%$H(m)$ & V &30.000 &1.710&	8.945 &	8.153 \\ \cline{2-6}
+%& M & 30.000 &0.829&	2.836&	1.093\\
+%\hline
+%Building 2 & & & & & \\
+%\hline
+%$\alpha (\circ)$  & V &30.856 &16.888 &	37.722&	35.887 \\ \cline{2-6}
+%& M & 30.856 &	0.358 &	0.155 &	1.521\\
+%\hline
+%$X_3(m)$  & V &100.512&192.867 &396.036&82.072 \\ \cline{2-6}
+%& M & 100.512&	0.801 &2.468&0.001\\
+%\hline
+%$Y_3(m)$  & V &-200.217&97.076&71.546&	88.314 \\ \cline{2-6}
+%& M & -200.217&	1.155&4.963&8.519\\
+%\hline
+%$L(m)$  & V &26.413&7.569&28.458&	3.488 \\ \cline{2-6}
+%& M & 26.413&0.02&0.452&1.153\\
+%\hline
+%$W(m)$  & V &20.927&25.83&43.257&0.773 \\ \cline{2-6}
+%& M &20.927	&0.132&0.277&0.838\\
+%\hline
+%$H(m)$  & V &22.315&2.16&5.352&6.78 \\ \cline{2-6}
+%& M &22.315	&0.155&0.494&2.07\\
+%\hline
+%
+%\end{tabular}
+%\label{table:C3:NoiseEndpoints}
+%\end{table}
+
+
+%\begin{table}
+%\centering
+%\Tcaption{Comparison of the vanishing point based method with the model based method using the same image center errors}
+%\begin{tabular}{|c|c|m{2cm}|m{2cm}|m{2cm}|m{2cm}|}
+%\hline
+%Camera Pose & Method &  \multicolumn{4}{|c|}{Noise in endpoints of image segments (pixels)} \\  \cline{3-6}
+% &  & 0 & 5 & 10 & 15 \\
+%\hline
+% $\varpi$ ($\circ$)  &  V & 50.346&	0.022&	0.004&	0.006\\ \cline{2-6}
+% & M & 50.346&	0.05&	0.099&	0.148\\
+%\hline
+%$\varphi$ ($\circ$) & V & 3.582&	0&	0&	0\\ \cline{2-6}
+%& M &3.582&0.044&	0.087&	0.13\\
+%\hline
+% $\kappa$ ($\circ$)  & V & 2.787&	0.003&	0.006&	0.008 \\ \cline{2-6}
+%& M & 2.787&	0.078&	0.155&	0.231 \\
+%\hline
+%$X_0 (m)$  & V &-500.672&0.262&	0.525&	0.787\\ \cline{2-6}
+%& M &-500.672&	0.669&	1.33&	1.982 \\
+%\hline
+%$Y_0 (m)$  & V &100.317&0.075&0.151&0.226\\ \cline{2-6}
+%& M & 100.317&	0.087&0.173&0.257\\
+%\hline
+%$Z_0 (m)$  & V &650.783&0.204&0.407&0.611 \\ \cline{2-6}
+%& M & 650.783&1.751&	3.5076&5.251\\
+%\hline
+%Building 1 & & & & & \\
+%\hline
+%$W(m)$  & V &20.000&0.009&0.018&0..027 \\ \cline{2-6}
+%& M & 20.000&0.011&0.022&0.033\\
+%\hline
+%$H(m)$  & V &30.000&0.027&0.055&0.082\\ \cline{2-6}
+%& M & 30.000&0.121&0.241&0.36\\
+%\hline
+%Building 2 & & & & & \\
+%\hline
+%$\alpha (\circ)$  & V &30.856&	0.035&	0.07&	0.105\\ \cline{2-6}
+%& M & 30.856&	0.037&	0.074&	0.111\\
+%\hline
+%$X_3(m)$  & V &100.512&0.109&0.218&0.327\\ \cline{2-6}
+%& M & 100.512&	0.017&0.034&0.052\\
+%\hline
+%$Y_3(m)$  & V &-200.217&0.081&0.162&0.244\\ \cline{2-6}
+%& M &-200.217&	0.061&0.121&	0.182\\
+%\hline
+%$L(m)$  & V &26.413&0.009&0.018&	0.028\\ \cline{2-6}
+%& M &26.413	&0.006&0.011&0.017\\
+%\hline
+%$W(m)$  & V &20.927&0.001&0.002&0.003\\ \cline{2-6}
+%& M &20.927	&0.006&0.011&0.017\\
+%\hline
+%$H(m)$  & V &22.315	&0.019	&0.037&0.057 \\ \cline{2-6}
+%& M &22.315	&0.073&0.144&0.216\\
+%\hline
+%
+%\end{tabular}
+%\label{table:C3:NoiseCenter}
+%\end{table}
+
+\subsection{Real Data Experiments}
+
+We took pictures using a Canon PowerShot SD750 digital camera. Figure \ref{fig:C3:2boxes} (3072X2304 pixels) shows two boxes, and Figure \ref{fig:C3:burnside} (3072X2304 pixels) an image of the Burnside Hall at the downtown campus of McGill University, Montreal. The measured image edge features are those black lines digitized using a mouse. Table \ref {table:C3:RealComparison} shows that accuracy of 3D reconstruction from Figure \ref{fig:C3:2boxes}  using the model-based method is much higher than those from the vanishing point based methods, especially in the dimension of the height.
+
+\begin{figure}[H]
+\centering
+\subfloat[Two boxes]{\label{fig:C3:2boxes}\includegraphics[width= 0.4\textwidth]{figures/C3/2boxes.jpg}} 
+\hspace{.1in}
+\subfloat[Burnside Hall building] {\label{fig:C3:burnside}\includegraphics[width= 0.4\textwidth]{figures/C3/Burnside.jpg}}
+\caption{Real data experiments}
+\label{fig:C3:RealData}
+\end{figure}
+
+%\begin{table}
+%\centering
+%\Tcaption{Comparison of the vanishing point based method with the model based method using real image Figure \ref{fig:C3:2boxes}}
+%\begin{tabular}{|c|c|m{4cm}|m{4cm}|c|}
+%\hline
+%\multicolumn{2}{|c|} {Unit (mm)}& Dimensions measured using a ruler&  Dimensions computed from the image  & Absolute errors \\ 
+%\hline
+%Left Box & Width  & 71.1& 73.1 (V) & 2 \\ \cline{4-5}
+%& & & 70.9 (M) & 0.2 \\ \cline{2-5}
+%& Height & 123.1 & 97.9(V) & 25.2 \\ \cline{4-5}
+%& & & 122.6 (M) & 0.5\\
+%\hline
+%Right Box & Length  & 72.1& 68.8 (V) & 3.3 \\ \cline{4-5}
+%& & & 71.7 (M) & 0.4 \\ \cline{2-5}
+%& Width& 50.6 & 47.6(V) & 3.0 \\ \cline{4-5}
+%& & & 49.6 (M) & 1.0 \\ \cline{2-5}
+%& Height& 15.3 & 6.3(V) & 9.0 \\ \cline{4-5}
+%& & & 14.8 (M) & 0.5 \\
+%\hline
+%
+%\end{tabular}
+%\label{table:C3:RealComparison}
+%\end{table}
+
+The building in Figure \ref{fig:C3:burnside} is an irregular cube as shown in Figure \ref{fig:C3:burnsidemodel} but we use a rectilinear building model to approximate it, which induces measurement errors, especially in the corners of the building. Besides, the occlusions caused by snow make the accurate measurement of the building top and bottom difficult. Under all of this noise, however, we still achieve reasonable results using model based approach. The computed dimensions of Burnside Hall are 35.44, 34.92, and 53.33 meters respectively, as compared to the model dimensions obtained from DWG file of 35.44, 32.42, 50.00 meters. The vanishing point based method does not work properly in this situation. Figure \ref{fig:C3:camerapose} shows the recovered camera pose and wire frame of the Burnside Hall using MatLab.  
+
+\begin{figure}[H]
+\centering
+\subfloat[Recovered camera pose]{\label{fig:C3:camerapose}\includegraphics[width= 0.4\textwidth]{figures/C3/camerapose.jpg}} 
+\hspace{.1in}
+\subfloat[3D model of Burnside Hall displayed in Google Earth] {\label{fig:C3:burnsidemodel}\includegraphics[width= 0.4\textwidth]{figures/C3/burnsidemodel.jpg}}
+\caption{Visualization}
+\label{fig:C3:RealDataVisualization}
+\end{figure}
+
+\subsection{Conclusions}
+
+This chapter presented a method to recover 3D rectilinear building models from single monocular images. The method uses at least three correspondences between predefined 3D models and their corresponding 2D images to obtain camera pose as well as parameters of 3D building models. The camera orientation is first recovered followed by solving translation and the first building model dimensions. The direct computation of camera rotation effectively addressed problems in the previous approaches \cite{Taylor95}, and results in the determination of camera translation as well as the first building model dimensions. Most existing model-based approaches \cite{Lowe91, Taylor95, Debevec96} use a model-to-image projection and readjustment procedure to estimate camera pose and object dimensions by iteratively minimizing the projection errors. Our method does not need this process, and results in a simple and efficient algorithm. Under the assumption of flat terrain, more 3D building models can be reconstructed based on the recovered camera pose through model-to-image correspondence.  
+
+Simulation experiments were carried out in order to investigate how the accuracy of the algorithm would be affected as different parameters were varied. The comparison using identical synthetic and real data shows that our method is significantly superior over the vanishing point based method. The experiments also show that our method robustly and accurately estimates camera pose and building dimensions provided that accurate image measurements are available. 
+
+

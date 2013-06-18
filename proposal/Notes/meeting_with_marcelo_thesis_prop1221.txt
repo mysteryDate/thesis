@@ -1,0 +1,19 @@
+no math in the intro (how many parameters)
+  don't quantify
+  "Not scalable if many"
+
+{
+cite vijay's thesis, make it central, limitations
+  ONE place, integreble
+
+main goal is to integrate, specific TIMELINE (order)
+
+"provide to longterm users and get feedback"
+"user centered design" (find reference)
+
+Proposed Research/Methodology should grow, other shrink
+}
+
+simulink, wendy mackay (guy who works with her)
+
+iOs/Android

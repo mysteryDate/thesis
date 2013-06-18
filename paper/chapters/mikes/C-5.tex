@@ -1,0 +1,494 @@
+\chapter{LiDAR-to-Image Registration}
+
+LiDAR data and spherical images must be accurately registered for the further processing. An automatic and reliable solution is desired
+, especially in the context of large-scale applications. This chapter describes an automatic solution that improves the registration of the LiDAR and spherical camera images. 
+
+\section{Problem Analysis}
+
+Unlike airborne laser scanning which normally has fairly uniform satellite visibility,  mobile mapping sensors operate on the street level where the  visibility varies. For instance, the GPS signal is often lost in areas of urban canyons, tunnels, and overpasses etc. IMU and other instruments like DMI (Distance Measuring Indicator) are used to help position the sensors in the case of GPS signal loss. The ``NAVTEQ TRUE" is equipped with this type of GPS/IMU/DMI integrated positioning system, in which an autonomous GPS solution is employed instead of a differential GPS (DGPS) normally employed in airborne laser scanning. The accurate and reliable sensor geo-referencing in mobile platforms is a very challenging problem. Even in the aerial mapping case, according to El-Sheimy and Mostafa, the error of direct geo-referencing achieved by a DGPS  and IMU solution is reported to be as large as 10 cm RMSE (root mean square error) \cite{IPNaser07}, which does not satisfy the accuracy requirement for some large scale mapping applications. The so-called Integrated Sensor Orientation (ISO) in photogrammetry is a technique that combines the sensor parameters from the DGPS and IMU solution with a traditional block adjustment (aka aerial triangulation in photogrammetry) to remove the errors in the solution. In the mobile mapping ``NAVTEQ TRUE" system, both absolute and relative accuracy are lower than aerial mapping solution's. The registration between LiDAR and spherical images needs to be improved through an image-based solution, similar to the ISO in photogrammetry. 
+
+% For the Next Gen, relative accuracy should be +/-20cm.  absolute accuracy should be 2m for XY, 3m for Z. The relative accuracy in heading is +/- 2deg from true heading.
+
+Another error source comes from system calibration.  Figure \ref{fig:C5:Configuration} shows the configuration of the sensors in ``NAVTEQ TRUE". The IMU pose specifies position and orientation in a 3D world coordinate system. Based on the IMU pose, $M_3$, the Velodyne and Ladybug camera poses can be estimated through the transformation matrices $M_1$ and $M_2$, respectively, such that $M_{velodyn} = M_3M_1$ and $M_{pano} = M_3M_2$. The system calibration refers to the accuracy of these sensor configurations. 
+%\[
+%M_{velodyn} = M_{3}M_{1},  M_{pano}=M_{3}M_{2}.
+%\]
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.8\textwidth]{figures/C5/Vehicleconfiguration.jpg} \\
+\caption{Velodyne and Ladybug camera configuration}
+\label{fig:C5:Configuration}
+\end{figure}
+
+All above errors cause the problem of misalignment between the LiDAR data and corresponding images as shown in Figure \ref{fig:C5:misalignment}, which shows colorized LiDAR point clouds. The color in the Figure is obtained by projecting LiDAR points onto the images and then assigning the LiDAR points the color from the corresponding image pixels. Due to the misalignment, the upper left corners of the buildings in Figure \ref{fig:C5:misalignment} have the wrong color which is taken from the sky in the images. 
+
+The drawing in Figure \ref{fig:C5:errors} illustrates the misalignment errors. The misalignment between the LiDAR data and the image at the same time $t_0$ indicates the system calibration error, which is independent of IMU pose. Errors from IMU pose also affect the data collection, as shown in Figure \ref{fig:C5:errors}. Assuming that the heading error is the major IMU pose error, the collected LiDAR data will not be consistent with the collected image data since the two datasets are not collected in the same timespan. For instance, the image collected at $t_0$ will not be consistent with the LiDAR data collected at $t_n$. The image data are less sensitive to time while they are more sensitive to orientation. The LiDAR data are mainly dependent on the time varying position, while they are fairly insensitive to small angular orientation errors (the heading errors in  Figure \ref{fig:C5:errors}). In reality the IMU error can be from roll, pitch, yaw or even position. All these errors cause the misalignment between LiDAR data and images. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.6\textwidth]{figures/C5/misalignment2.jpg} \\
+\caption{Misalignment between LiDAR points and camera images (This figure is provided from my colleague Jim Lynch, and reproduced here with permission)} 
+\label{fig:C5:misalignment}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.8\textwidth]{figures/C5/LidarImageHeading.jpg} \\
+\caption{Illustration of errors in the data collected from ``NAVTEQ TRUE" (This figure is provided from my colleague Jim Lynch, and reproduced here with permission)}
+\label{fig:C5:errors}
+\end{figure}
+
+\section{The Method}
+
+The problem here is to estimate the correction of the relative camera pose between the LiDAR sensor and Ladybug camera. 
+We start with the work \cite{MastinFisher09} that registers aerial LiDAR with aerial oblique images based on mutual information (MI).
+LiDAR intensity images normally look very similar to gray-scale camera images with, of course, a much lower resolution. This
+correlation makes MI a suitable measure to evaluate their similarity.
+The suitability of MI for LiDAR-to-Image registration has been demonstrated in \cite{MastinFisher09}. In their paper, they define $p(x,y)$ and $l(x,y)$ as the intensity camera image and projected LiDAR features respectively on the $xy$ image plane. For a specific camera matrix $T$, the projected LiDAR features is given by $l_T$. MI based registration methods find the optimal camera matrix that maximizes the MI between camera images and projected LiDAR features: 
+\begin{equation}
+T_{MI} =  \operatorname*{arg\,max}_T  I(p; l_T).
+\label{eq:C5:entropy7}
+\end{equation}  
+
+Mutual information is expressed in terms of entropy. 
+\begin{equation}
+I(p; l_T) = H(p) + H(l_T) - H(p, l_T).
+\label{eq:C5:entropy_joint}
+\end{equation} 
+
+where $H(p)$ is the entropy of the optical features, $H(l_T)$ is the entropy of the LiDAR features, and $H(p, l_T)$ is their entropy. Mastin et al. \cite{MastinFisher09} assumed that the entropy of the LiDAR features is approximately constant for small perturbations. Under this assumption, the minimization of the joint entropy (JE) is an approximation of the maximization of the mutual information according to Equation \ref{eq:C5:entropy_joint}. They minimize Equation \ref{eq:C5:entropy_je}
+instead of maximizing MI over $T$ for the registration.
+
+\begin{equation}
+H(p, l_T) \approx  \sum_{i=1}^{N_u} \sum_{j=1}^{N_v} \hat{d}(p_i, l_i; T) \log (\hat{d}(p_i, l_i; T)),
+\label{eq:C5:entropy_je}
+\end{equation} 
+
+where $\hat{d}(\bullet)$ denotes a joint histogram estimated of a density and $N_u$ and $N_v$ denote the number of distinct bins for each
+modality. In their case, $N_u$, $N_v$ = 256.
+
+They use a generic camera model, the finite projective camera as described in \cite{Hartley2004}. Under this camera model, a point in space is mapped to the point on the image plane by
+\begin{equation}
+P = KR[I \; | -\!C].
+\label{eq:C5:cameramodel}
+\end{equation}  
+Where $C=[C_x,C_y,C_z]^T$ is the camera center, $I$ is the identity matrix, and $R$ is the camera rotation matrix. $R = R_x(\gamma)R_y(\beta)R_z(\alpha)$ is given by the three rotation matrices 
+\[
+ R_x(\gamma) = 
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & cos(\gamma) & -sin(\gamma)    \\
+0 & sin(\gamma) & cos(\gamma)
+\end{bmatrix},
+\]
+
+\[
+ R_y(\beta) = 
+\begin{bmatrix}
+cos(\beta) & 0 & sin(\beta) \\
+0 & 1 & 0    \\
+-sin(\beta) & 0 & cos(\beta)
+\end{bmatrix},
+\]
+and
+\[
+ R_z(\alpha) = 
+\begin{bmatrix}
+cos(\alpha) & -sin(\alpha) & 0 \\
+sin(\alpha) & cos(\alpha) & 0    \\
+0 & 0 & 1
+\end{bmatrix},
+\]
+
+where $\alpha, \beta, and  \gamma$ are the Euler angles representing yaw, pitch, and roll. The matrix $K$ is the camera calibration matrix given by
+\begin{equation}
+K = 
+\begin{bmatrix}
+\alpha_x &  s &  x_0 \\
+& \alpha_y & y_0    \\
+ &  & 1
+\end{bmatrix}
+\label{eq:C5:Kmatrix}.
+\end{equation}  
+where $\alpha_x = fm_x$ and $\alpha_y = fm_y$ represent the focal length of the camera in terms of pixel dimensions in the $x$ and $y$ direction respectively, $(x_0,y_0)$ are the coordinates of the principle point, and $s$ is the skew. The principle point represents the location of the image center, and the skew determines the angle between the image plane $x$ and $y$ axes. For most normal cameras, the skew parameter and principal point parameters are zero. $\alpha_x$ is equal to $\alpha_y$ under the assumption of square pixels. The camera center position and orientation are the parameters to be determined. 
+
+Based on the assumption that the entropy of the LiDAR images remains approximately constant for small perturbations, Mastin et al. \cite{MastinFisher09} claimed that the minimization of the JE is equivalent to the maximization of the MI. 
+This may be the case for the airborne data, but is not suitable for our ground based applications. The small perturbations may have larger effect on the LiDAR rendering in comparison with airborne case. The entropy of a LiDAR image can not be regarded as approximately constant for small perturbations. This is demonstrated by a perturbation analysis shown in Figure \ref{fig:normalizedMIJE_T} and \ref{fig:normalizedMIJE_O}, which 
+shows how the normalized MI and normalized JE vary around the initial registration in terms of camera translation (Figure \ref{fig:normalizedMIJE_T}), and orientation
+parameters (Figure \ref{fig:normalizedMIJE_O}). The left columns
+show the results for the normalized MI; The right
+columns show the results for the normalized JE. The camera image for the ground level data acquired in this test is shown in Figure \ref{fig:C5:img2}. Since the correct registration value should be near the initial registration, we set all parameters at their initial values and vary each parameter to view the shape of the cost functions. The range of camera parameter perturbations are $\pm 2$ units, meters for translation and degrees for orientation. The step size for the perturbation analysis is 0.1 units. So we have 40 measurements for each camera parameter perturbation analysis, and the the number 20 in X axis  corresponds to the initial registration, where camera pose corrections are set to zero.  
+
+
+\begin{figure}[H]
+\centering
+\subfloat[X displacements MI] {\label{fig:ProbnxMI}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbMIx.jpg}} 
+\subfloat[X displacements JE] {\label{fig:fig:ProbnxJE}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbJEx.jpg}} \\
+\subfloat[Y displacements MI] {\label{fig:ProbnyMI}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbMIy.jpg}} 
+\subfloat[Y displacements JE] {\label{fig:fig:ProbnyJE}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbJEy.jpg}} \\
+\subfloat[Z displacements MI] {\label{fig:ProbnzMI}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbMIz.jpg}} 
+\subfloat[Z displacements JE] {\label{fig:fig:ProbnzJE}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbJEz.jpg}} \\
+\caption{Probe analysis on camera translation parameters for evaluation of normalized MI and JE} 
+\label{fig:normalizedMIJE_T}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat[Roll displacements MI] {\label{fig:ProbnrMI}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbMIr.jpg}} 
+\subfloat[Roll displacements JE] {\label{fig:fig:ProbnrJE}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbJEr.jpg}} \\
+\subfloat[Pitch displacements MI] {\label{fig:ProbnpMI}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbMIp.jpg}} 
+\subfloat[Pitch displacements JE] {\label{fig:fig:ProbnpJE}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbJEp.jpg}} \\
+\subfloat[Yaw displacements MI] {\label{fig:ProbnyawMI}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbMIyaw.jpg}} 
+\subfloat[Yaw displacements JE] {\label{fig:fig:ProbnyawJE}\includegraphics[width= 0.5\textwidth]{figures/C5/ProbJEyaw.jpg}} \\
+\caption{Probe analysis on camera orientation parameters 
+for evaluation of normalized MI and JE} 
+\label{fig:normalizedMIJE_O}
+\end{figure}
+
+For all the probe experiments, a global maximum within the tested camera parameter range in terms of normalized MI can be always found around the initial registration. However, this is not the case for normalized JE, which a global minima can not be found around the initial registration. The minimization of the JE does not work on our ground level mobile LiDAR data. Instead, we maximize the MI to obtain correct camera solutions. 
+
+\subsection{Coordinate Framework}
+
+Our optical images are panoramic images, which are originally taken from a Ladybug III consisting of 6 Fisheye cameras. The 6 individual images are  stitched via $\alpha$ blending. For storage purposes, the stitched 
+images are transformed to panoramic images via a Cylindrical Equidistant Projection as shown in the left image of Figure \ref{fig:PSView}, which corresponds to the original panoramic images. We map each panoramic image onto a sphere and view it from the sphere center (the center of the camera), to generate spherical panoramas (linear perspective images) as shown in the right image of Figure \ref{fig:PSView}. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.5\textwidth]{figures/C5/panorama.jpg}\\ 
+\includegraphics[width= 0.5\textwidth]{figures/C5/perspectiveView.jpg} \\
+\caption{Panoramic and spherical view} {(Above) A panoramic view; (Lower) A spherical view}
+\label{fig:PSView}
+\end{figure}
+
+Both LiDAR and image data are geo-referenced. We first convert the geographic coordinates into Earth-Centered, Earth-Fixed (ECEF) coordinates, and then transform into local tangent plane (LTP) coordinates. All computations are based on local tangent plane coordinates. Each LiDAR point $ p = (x,y,z)^T $ in LTP coordinates is converted to spherical coordinates $(\theta, \varphi)$ by 
+Equation \ref{eq:C5:LTP2Spher},
+
+\begin{equation}
+   \theta = arccos(\frac{z}{\sqrt{x^2+y^2+z^2}}), \varphi = atan2(y,x),
+\label{eq:C5:LTP2Spher}
+\end{equation} 
+where $\theta$ is the inclination $ (\theta \in [0, \pi])  $ , and $ \varphi$ is the azimuth $ (\varphi \in (-\pi, \pi]) $. Each point's corresponding location in the panoramic image $ (r, c)$ is computed by Equation \ref{eq:C5:pt2pano},
+
+\begin{equation}
+ r = int[\frac{\theta}{\pi}H], c = int [(\frac{\varphi}{2\pi}+0.5)W ],  
+ \label{eq:C5:pt2pano}
+\end{equation} 
+where $H$ and $W$ are the height and width of the panoramic images respectively.
+
+\subsection{Mutual Information Registration}
+
+Mutual Information methods have been widely used for the multi-modal registration problem in the medical imaging domain ($e.g.,$  registration of $CT$ and $MRI$). Recently they also have been applied to the problem of registering airborne LiDAR data with oblique aerial images \cite{MastinFisher09}. The mutual information of two random variables $X$ and $Y$ can be defined as
+
+\begin{equation}
+I(X; Y) = \int_Y \int_X p(x, y) \log(\frac{p(x, y)}{p_1(x)p_2(y)})dx dy,
+\label{eq:C5:MI_definition}
+\end{equation}    
+
+where $p(x, y)$ is the joint probability density function of $X$ and $Y$, and $p_1(x)$ and $p_2(y)$ are the marginal probability density functions of $X$ and $Y$ respectively. We assume that an approximate camera pose is provided from the imperfect GPS/IMU solution. The problem here is to estimate the correction of the relative camera pose between the LiDAR sensor and the Ladybug camera.  The spherical panorama is chosen as a fixed image because the camera view point has to stay in the center of the sphere to generate perspective images. Once the camera moves out of the sphere center, the spherical image will be distorted.
+The LiDAR image is selected as a moving image, where new LiDAR images are generated at each iteration during the optimization process. Both LiDAR and spherical images are rendered onto a plane from the camera center using OpenGL for the MI evaluation under a pinhole camera model. The perspective camera image is generated by  rendering the spherical panorama with a view port of 940 by 452 pixels. The LiDAR data set is normally very large. In our experiments, each scene contains 8 million LiDAR points. To make 3D rendering efficient, we also integrate the OpenGL rendering of the LiDAR features into the registration pipeline to speed up the optimization process.  
+
+We use three different representations of the LiDAR data with spherical panoramas for evaluating mutual information. The first representation of LiDAR is the projected LiDAR points with intensity information (see Figure \ref{fig:C5:Intensity}). We call it a LiDAR intensity image which looks similar to a gray-scale camera image. The second representation is the projected LiDAR points without intensity information (see Figure \ref{fig:C5:NonIntensity}). The third is the depth map of the LiDAR point cloud (see Figure \ref{fig:C5:Depth}). The point cloud is rendered with depth intensities, where brighter points indicate a further distance to the camera center. We use gray scale camera images instead of color images (see  Figure \ref{fig:C5:Camera}) for the mutual information computation. The Nelder-Mead downhill simplex method \cite{NelderMead65} is used to optimize the cost function as it does not require derivatives of the function.  
+
+\begin{figure}[H]
+\centering
+\subfloat[Camera gray-scale  image] {\label{fig:C5:Camera}\includegraphics[width= 0.6\textwidth]{figures/C5/LadybugImage_grayscale.jpg}} \\
+\subfloat[LiDAR intensity image] {\label{fig:C5:Intensity} \includegraphics[width= 0.6\textwidth]{figures/C5/LiDARIntensity.jpg} }\\
+\subfloat[LiDAR points] {\label{fig:C5:NonIntensity} \includegraphics[width= 0.6\textwidth]{figures/C5/LiDARNonIntensity.jpg}} \\
+\subfloat[LiDAR depth map] {\label{fig:C5:Depth} \includegraphics[width= 0.6\textwidth]{figures/C5/LiDARDepthMap.jpg}} \\
+\caption{Camera image and three representations of LiDAR point clouds in a same scene } 
+\label{fig:C5:LiDARFeatures}
+\end{figure}
+
+\section{Experiments}
+
+For the experiments, we made the algorithm automatically run through an approximate 4 kilometer drive. The driving routine is  shown with light blue line in Figure \ref{fig:C5:test1}. An illustration of the collected data is shown in Figure \ref{fig:C5:test2}. The test data were collected in the northwestern suburban of Chicago, Illinois, which includes residential, urban streets, and highway scenes. The data is in binary format containing around 4 GB LiDAR data (about 226 million points) and 1 GB panoramic images (814 spherical images). We use the camera views perpendicular to or parallel to the vehicle driving direction to generate  perspective images. Figure \ref{fig:C5:EC} illustrates the camera views vertical to the vehicle driving direction. The distance between each camera ($e.g.,$ $C_1$, $C_2$) is around 4 meters. The camera views parallel to the driving direction are similar to Figure \ref{fig:C5:EC} except the camera view points to the front. For qualitative analysis, we selected 10 representative urban scenes shown in Figure \ref{fig:C5:Test_Images} for evaluation. We evaluate the algorithm using the three different representations of the LiDAR data described earlier. 
+
+\begin{figure}[H]
+\centering
+\subfloat[Test data overview ] {\label{fig:C5:test1}\includegraphics[width= 0.45\textwidth]{figures/C5/test_data_closeup.jpg}} 
+\hspace{.1in}
+\subfloat[An illustration of the data] {\label{fig:C5:test2}\includegraphics[width= 0.45\textwidth]{figures/C5/test_data_closeup1.jpg}} \\
+\caption{Test data.} 
+\label{fig:C5:testdata}
+\end{figure}
+
+We start with an approximate initial registration that is available from the GPS/IMU system. The initial camera pose corrections are set to zero. The optimization will compute the final camera corrections. The experiments for the qualitative analysis were performed on a laptop PC with a dual core 2.60GHz processor and 2 GB of RAM. The NVIDIA Quadro NVS 135M video card was used. The registration algorithms were implemented in C++,  and the implementations of Mutual Information and Amoeba optimization were from ITK ~\cite{itk-url}. We adjust the tolerances on the optimizer to define convergence. The tolerance on the 6 parameters is 0.1 (the unit for translation parameters is meters and degrees for orientation parameters). We also set the tolerance on the cost function value to define convergence. The metric returns the value of mutual information, which we set the tolerance to be 0.001 bits (bits are the appropriate units for measuring information). The initial size of the simplex is set to 1, and the maximum iteration number is set to 200. In our experiments, almost all registrations converged in less than 150 iterations. 
+
+\begin{figure}[H]
+\centering
+\subfloat[Image 1 ] {\label{fig:C5:img1}\includegraphics[width= 0.45\textwidth]{figures/C5/img1.jpg}} 
+\hspace{.1in}
+\subfloat[Image 2] {\label{fig:C5:img2}\includegraphics[width= 0.45\textwidth]{figures/C5/img2.jpg}} \\
+\subfloat[Image 3 ] {\label{fig:C5:img3f}\includegraphics[width= 0.45\textwidth]{figures/C5/img3f.jpg}} 
+\hspace{.1in}
+\subfloat[Image 4] {\label{fig:C5:img4f}\includegraphics[width= 0.45\textwidth]{figures/C5/img4f.jpg}} \\
+\subfloat[Image 5 ] {\label{fig:C5:img5}\includegraphics[width= 0.45\textwidth]{figures/C5/img5.jpg}} 
+\hspace{.1in}
+\subfloat[Image 6] {\label{fig:C5:img8}\includegraphics[width= 0.45\textwidth]{figures/C5/img8.jpg}} \\
+\subfloat[Image 7 ] {\label{fig:C5:img7f}\includegraphics[width= 0.45\textwidth]{figures/C5/img7f.jpg}} 
+\hspace{.1in}
+\subfloat[Image 8] {\label{fig:C5:img8f}\includegraphics[width= 0.45\textwidth]{figures/C5/img8f.jpg}} \\
+\subfloat[Image 9 ] {\label{fig:C5:img9}\includegraphics[width= 0.45\textwidth]{figures/C5/img9.jpg}} 
+\hspace{.1in}
+\subfloat[Image 10] {\label{fig:C5:img13}\includegraphics[width= 0.45\textwidth]{figures/C5/img13.jpg}} \\
+
+\caption{Images used for experiments} 
+\label{fig:C5:Test_Images}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.8\textwidth]{figures/C5/ExperimentConfiguration.jpg} \\
+\caption{Camera configuration}
+\label{fig:C5:EC}
+\end{figure}
+
+\subsection{Performance Evaluation}
+
+To quantitatively measure the registration results, we compare the registration accuracy in terms of pixel offset between LiDAR data and camera images before and after the registration.
+
+\begin{figure}[H]
+\centering
+\subfloat[Optical image with correspondence points shown in red] {\label{fig:C5:IntensityMarker}\includegraphics[width= 0.8\textwidth]{figures/C5/LadybugImage_marked.jpg}} \\
+\subfloat[LIDAR intensity image with correspondence points shown in red] {\label{fig:C5:LiDARMarker} \includegraphics[width= 0.8\textwidth]{figures/C5/LiDARIntensity_marked.jpg} }\\
+\caption{Optical image (a) and LIDAR image (b) with 15 manually selected correspondence points } 
+\label{fig:C5:CorrespondencePoints}
+\end{figure}
+
+We manually selected 15 correspondence points (recognizable feature points) in each optical image and LiDAR intensity image. Figure \ref{fig:C5:CorrespondencePoints} shows an example of an optical image and a LIDAR intensity image marked with 15 correspondence points. Figure \ref{fig:C5:Hist_Images} shows computed Euclidean Distance histogram of the correspondence points for each scene in Figure \ref{fig:C5:Test_Images}. In Figure \ref{fig:C5:Hist_Images}, for instance, Image 1B shows the histogram of pixel offsets \footnote{We compute the histograms in terms of the offset errors (pixels) among these correspondence points} for the scene indicated by Figure \ref{fig:C5:img1} (Image 1) before registration, and Image 1A shows corresponding pixel offsets after registration. The horizontal axis stands for the pixel offsets, and the vertical axis stands for the frequency. Image 1B shows most of pixel offsets are 2 pixels, and Image 1A shows most of pixel offsets are within 1 pixel after MI registration. The similar interpretation applies to the rest of the Figures. Figure \ref {fig:C5:hist_registration} shows registration errors using all the 10 images before and after registration. Before the MI registration, most correspondence points have 2-4 pixel errors. After the registration, most of the correspondence points are within 1 pixel. The pixel offset histograms using other LiDAR representations are similar. An example of initial and final alignment of Figure \ref{fig:C5:img8f} are shown in Figure \ref{fig:C5:Registration_example}. In the initial registration, the misalignment of the highway roadside lights and trees can be seen, and Figure \ref{fig:C5:img8bf} shows that the major pixel offset are within 3-6 pixels. After MI registration, the misalignment is not noticeable, and Figure \ref{fig:C5:img8af} shows that the major pixel offset is within 1 pixel. In terms of average MI before and after registrations, the latter MI values are normally slightly larger than the former ones. 
+
+Table  \ref{table:C5:iterations} and Table  \ref{table:C5:times} show the number of iterations and duration of the optimization, respectively. In our experiment,we found that using the LiDAR points without intensity normally run fast with less iterations. Using LiDAR points with intensity normally performs the most robustly followed by using LiDAR points without intensity and using the LiDAR depth map. We also study the convergence of the optimization using three different measures of mutual information. Without loss of generality, 
+we choose the data shown in Figure \ref{fig:C5:LiDARFeatures} as an example. Figure \ref{fig:C5:Registration_three_measures} shows the registration results using LiDAR intensity images (see  Figure \ref{fig:C5:RegIntensity}), LiDAR points without intensity (see Figure \ref{fig:C5:RegNonIntensity}), and LiDAR depth map ( Figure \ref{fig:C5:RegDepth}), which shows the similar result if the registrations are all successful. Notice that Figure \ref{fig:C5:MI_Convergence} shows the sequence of metric values computed as the optimizer searched the parameter space using these three different representations of the LIDAR data, depth map, LiDAR intensity, and LiDAR point without intensity, in descending order. The measure initially increases overall with the number of iterations. After about 50 iterations, the metric value reaches steady state without further noticeable convergence.
+
+\begin{figure}[H]
+\centering
+\subfloat[Image 1B] {\label{fig:C5:img1bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img1_hit_bf.jpg}} 
+\subfloat[Image 1A] {\label{fig:C5:img1af}\includegraphics[width= 0.22\textwidth]{figures/C5/img1_hit_af.jpg}} 
+\subfloat[Image 2B] {\label{fig:C5:img2bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img2_hit_bf.jpg}} 
+\subfloat[Image 2A] {\label{fig:C5:img2af}\includegraphics[width= 0.22\textwidth]{figures/C5/img2_hit_af.jpg}} \\
+
+\subfloat[Image 3B] {\label{fig:C5:img3bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img3_hit_bf.jpg}} 
+\subfloat[Image 3A] {\label{fig:C5:img3af}\includegraphics[width= 0.22\textwidth]{figures/C5/img3_hit_af.jpg}} 
+\subfloat[Image 4B] {\label{fig:C5:img4bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img4_hit_bf.jpg}} 
+\subfloat[Image 4A] {\label{fig:C5:img4af}\includegraphics[width= 0.22\textwidth]{figures/C5/img4_hit_af.jpg}} \\
+
+\subfloat[Image 5B] {\label{fig:C5:img5bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img5_hit_bf.jpg}} 
+\subfloat[Image 5A] {\label{fig:C5:img5af}\includegraphics[width= 0.22\textwidth]{figures/C5/img5_hit_af.jpg}} 
+\subfloat[Image 6B] {\label{fig:C5:img6bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img6_hit_bf.jpg}} 
+\subfloat[Image 6A] {\label{fig:C5:img6af}\includegraphics[width= 0.22\textwidth]{figures/C5/img6_hit_af.jpg}} \\
+
+\subfloat[Image 7B] {\label{fig:C5:img7bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img7_hit_bf.jpg}} 
+\subfloat[Image 7A] {\label{fig:C5:img7af}\includegraphics[width= 0.22\textwidth]{figures/C5/img7_hit_af.jpg}} 
+\subfloat[Image 8B] {\label{fig:C5:img8bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img8f_hit_bf.jpg}} 
+\subfloat[Image 8A] {\label{fig:C5:img8af}\includegraphics[width= 0.22\textwidth]{figures/C5/img8f_hit_af.jpg}} \\
+
+\subfloat[Image 9B] {\label{fig:C5:img9bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img9_hit_bf.jpg}} 
+\subfloat[Image 9A] {\label{fig:C5:img9af}\includegraphics[width= 0.22\textwidth]{figures/C5/img9_hit_af.jpg}} 
+\subfloat[Image 10B] {\label{fig:C5:img10bf}\includegraphics[width= 0.22\textwidth]{figures/C5/img13_hit_bf.jpg}} 
+\subfloat[Image 10A] {\label{fig:C5:img10af}\includegraphics[width= 0.22\textwidth]{figures/C5/img13_hit_af.jpg}} \\
+\caption{Registration error analysis, X-axis stands for pixels, and Y-axis stands for the frequency} 
+\label{fig:C5:Hist_Images}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat[Pixel offset histogram before MI registration] {\label{fig:C5:hist_bf}\includegraphics[width= 0.45\textwidth]{figures/C5/imgtotal_hit_bf.jpg}} 
+\hspace{.1in}
+\subfloat[Pixel offset histogram after MI registration] {\label{fig:C5:hist_af}\includegraphics[width= 0.45\textwidth]{figures/C5/imgtotal_hit_af.jpg}} 
+\caption{Histogram of Euclidean distance of pixel offset for before registration (a) and after registration (b). The histograms were generated with samples for all ten test images } 
+\label{fig:C5:hist_registration}
+\end{figure}
+
+\begin{table}
+\centering
+\Tcaption{Number of iterations for correctly registered images}
+\begin{tabular}{c| c| c| c }
+ MI Measure & LiDAR intensity & LiDAR without intensity & LiDAR depth map \\
+\hline
+Image 1 &  66 & 68 & 75 \\
+Image 2 &  72 & 68 & 83 \\
+Image 3 &  64 & 64 & 57 \\
+Image 4 &  55 & 52 & 53 \\
+Image 5 &  67 & 50 & 82 \\
+Image 6 &  53 & 50 & 67 \\
+Image 7 &  68 & 40 & 51 \\
+Image 8 &  58 & 48 & 67 \\
+Image 9 &  59 & 60 & 70 \\
+Image 10 & 66 & 57 & 59 \\
+\hline
+Mean       &  62.8  &  55.7   &  66.4     \\
+\end{tabular}
+\label{table:C5:iterations}
+\end{table}
+
+\begin{table}
+\centering
+\Tcaption{Registration times in minutes for correctly registered images}
+\begin{tabular}{c| c| c| c }
+ MI Measure & LiDAR intensity & LiDAR without intensity & LiDAR depth map \\
+\hline
+Image 1 &  0.86 & 0.51 & 0.93 \\
+Image 2 &  0.93 & 0.50 & 1.08 \\
+Image 3 &  1.05 & 0.63 & 0.97 \\
+Image 4 &  0.87 & 0.55 & 0.88 \\
+Image 5 &  0.70 & 0.4 & 1.06 \\
+Image 6 &  0.83 & 0.38 & 0.85 \\
+Image 7 &  0.85 & 0.38 & 0.65 \\
+Image 8 &  0.73 & 0.38 & 0.87 \\
+Image 9 &  0.97 & 0.50 & 0.71 \\
+Image 10 & 1.03 & 0.50 & 0.75 \\
+\hline
+Mean       &  0.88  &  0.47   &  0.87    \\
+\end{tabular}
+\label{table:C5:times}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\subfloat[The initial approximate registration] {\label{fig:C5:Regbf}\includegraphics[width= 0.7\textwidth]{figures/C5/img7f_bf.jpg}} \\
+\subfloat[After MI registration] {\label{fig:C5:Regaf} \includegraphics[width= 0.7\textwidth]{figures/C5/img7f_af.jpg} }
+\caption{Example of registration results with image superimposed on projected LiDAR intensity image} 
+\label{fig:C5:Registration_example}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat[Registration using LiDAR intensity image] {\label{fig:C5:RegIntensity}\includegraphics[width= 0.7\textwidth]{figures/C5/registration_intensity.jpg}} \\
+\subfloat[Registration using LiDAR without intensity] {\label{fig:C5:RegNonIntensity} \includegraphics[width= 0.7\textwidth]{figures/C5/registration_non_intensity.jpg} }\\
+\subfloat[Registration using LiDAR depth map] {\label{fig:C5:RegDepth} \includegraphics[width= 0.7\textwidth]{figures/C5/registration_depth.jpg}} \\
+\caption{LiDAR-to-Image registration using three different representations of LiDAR data } 
+\label{fig:C5:Registration_three_measures}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 1.0\textwidth]{figures/C5/MI_all.jpg} \\
+\caption{Mutual information values  produced during the registration process} 
+\label{fig:C5:MI_Convergence}
+\end{figure}
+
+\subsection{Perturbation Analysis}
+
+Similar to the perturbation analysis in the previous section, we plot the normalized MI of Figure \ref{fig:C5:img2} in Figure \ref{fig:normalizedMI} using the three LiDAR attributes. Figure \ref{fig:normalizedMI} demonstrates that each curve has a single peak over a subset of the displacement parameters around the initial registration, which demonstrates the effectiveness of maximization of MI for computing optimal camera corrections. 
+
+\begin{figure}[H]
+\centering
+\subfloat[X displacements] {\label{fig:Xdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nMI_all_2_x.jpg}} 
+\hspace{.1in}
+\subfloat[Y displacements] {\label{fig:Ydisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nMI_all_2_y.jpg}} \\
+\subfloat[Z displacements] {\label{fig:Zdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nMI_all_2_z.jpg}} 
+\hspace{.1in}
+\subfloat[Roll displacements ] {\label{fig:Rolldisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nMI_all_2_roll.jpg}} \\
+\subfloat[Pitch displacements] {\label{fig:Pitchdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nMI_all_2_pitch.jpg}} 
+\hspace{.1in}
+\subfloat[Yaw displacements] {\label{fig:Yawdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nMI_all_2_yaw.jpg}} 
+\caption{Plots of normalized mutual information } 
+\label{fig:normalizedMI}
+\end{figure}
+
+%\begin{figure}[H]
+%\centering
+%\subfloat[X displacements] {\label{fig:XJEdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nJE_all_2_x.jpg}} 
+%\hspace{.1in}
+%\subfloat[Y displacements] {\label{fig:YJEdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nJE_all_2_y.jpg}} \\
+%\subfloat[Z displacements] {\label{fig:ZJEdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nJE_all_2_z.jpg}} 
+%\hspace{.1in}
+%\subfloat[Roll displacements ] {\label{fig:RollJEdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nJE_all_2_roll.jpg}} \\
+%\subfloat[Pitch displacements] {\label{fig:PitchJEdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nJE_all_2_pitch.jpg}} 
+%\hspace{.1in}
+%\subfloat[Yaw displacements] {\label{fig:YawJEdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/nJE_all_2_yaw.jpg}} 
+%\caption{Plots of normalized joint entropy} 
+%\label{fig:normalizedJE}
+%\end{figure}
+
+We also investigate the failure cases. In our experiments, the algorithm works well in feature-rich environments such as residential areas, but often fails in scenes with sparse features or containing moving objects like cars, particularly in highway scenes. In our case, the highway scenes mostly fail. The partial overlap between LiDAR point clouds and camera images is another reason. The LiDAR scanner can only reach up to 120 meters, while the camera can always have a larger field of view than the LiDAR scanner. Figure \ref{fig:LB_HW} and Figure \ref{fig:Lidar_HW} shows one typical failure case in a high way scene. The cars in the camera image (Figure \ref{fig:LB_HW}) don't appear in the LiDAR image (Figure \ref{fig:Lidar_HW}). The LiDAR image only partially covers the camera image, for instance, the trees and buildings in the far distance in the camera image don't appear in the LiDAR image. The paper \cite{MastinFisher09} claims that they only use the image pixels with corresponding projected LiDAR points for mutual information calculation and others are considered background points and discarded. We tried to discard the background points and only use overlapping regions for mutual information computation, but the results were worse than using entire images for MI computation. When using entire images for MI
+computation, the background such as sky appears similar in both LiDAR and camera images, which largely contributes the MI score. 
+When using overlapping regions for MI computation, the LiDAR images contain no sky. Therefore the background is not used in the MI computation, which affects the MI evaluation. Figure \ref{fig:normalizedMI_failure} shows perturbation analysis for the failure case in the high-way scene (Figure \ref{fig:LB_HW} and Figure \ref{fig:Lidar_HW}). In Figure \ref{fig:normalizedMI_failure}, in particular  \ref{fig:Xdisplacements} and \ref{fig:Ydisplacements}, the local maximal values are far away the initial registration which results in a wrong registration.
+Another reason for failure is because of overposed images (Figure \ref{fig:LB_HW1} and Figure \ref{fig:LB_HW2}, particularly in the case that the vehicle drives through/out of a tunnel.
+
+\begin{figure}[H]
+\centering
+\subfloat[Ladybug image] {\label{fig:LB_HW}\includegraphics[width= 0.40\textwidth]{figures/C5/failure_ladybug.jpg}} 
+\hspace{.1in}
+\subfloat[LiDAR image] {\label{fig:Lidar_HW}\includegraphics[width= 0.40\textwidth]{figures/C5/failure_lidar.jpg}} \\ 
+\subfloat[Overexposed Ladybug image I] {\label{fig:LB_HW1}\includegraphics[width= 0.40\textwidth]{figures/C5/failure_washedout.jpg}} 
+\hspace{.1in}
+\subfloat[Overexposed Ladybug image II] {\label{fig:LB_HW2}\includegraphics[width= 0.40\textwidth]{figures/C5/failure_washedout1.jpg}} 
+\caption{Failure cases} 
+\label{fig:Fcases}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat[X displacements] {\label{fig:Xdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/failure_nMI_all_x.jpg}} 
+\hspace{.1in}
+\subfloat[Y displacements] {\label{fig:Ydisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/failure_nMI_all_y.jpg}} \\
+\subfloat[Z displacements] {\label{fig:Zdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/failure_nMI_all_z.jpg}} 
+\hspace{.1in}
+\subfloat[Roll displacements ] {\label{fig:Rolldisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/failure_nMI_all_roll.jpg}} \\
+\subfloat[Pitch displacements] {\label{fig:Pitchdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/failure_nMI_all_pitch.jpg}} 
+\hspace{.1in}
+\subfloat[Yaw displacements] {\label{fig:Yawdisplacements}\includegraphics[width= 0.45\textwidth]{figures/C5/failure_nMI_all_yaw.jpg}} 
+\caption{Plots of normalized mutual information (a failure case)} 
+\label{fig:normalizedMI_failure}
+\end{figure}
+
+\subsection{Camera Pose Corrections}
+
+\begin{figure}[H]
+\centering
+\subfloat[Camera translation corrections] {\label{fig:TCorrections}\includegraphics[width= 0.45\textwidth]{figures/C5/translation_corrections100.jpg}} 
+\hspace{.1in}
+\subfloat[Camera orientation corrections] {\label{fig:OCorrections}\includegraphics[width= 0.45\textwidth]{figures/C5/orientation_corrections100.jpg}} \\
+\caption{Plots of camera pose corrections using 100 successful registrations} 
+\label{fig:CameraPoseCorrections100}
+\end{figure}
+
+One of our interests is to investigate how camera pose errors change during the data collection. To do so, we manually selected 100 successful registrations (using the registrations from camera views vertical to the vehicle driving direction) by carefully examining the alignment of major features in the registered images, and plot the camera pose corrections shown in Figure \ref{fig:CameraPoseCorrections100}.  Figure \ref{fig:TCorrections} shows the camera translation corrections, and Figure \ref{fig:OCorrections} shows the camera orientation corrections. Our observation is that almost all the camera translation corrections are within 0.1 meter, while orientation corrections are within 1 degree. 
+
+% 64 bit machine Intel(R) Xeon(R) CPU 3.00GHZ, 16.0GB of RAM , eight core, but our algorithm is not paralleled only using 1 %core,  graphics card NVIDIA Quadro FX 5600
+%
+
+%the entropy of the camera images remains constant, and the entropy of the LIDAR images remains approximately constant for small %perturbations. Accordingly, minimizing the joint entropy is equivalent to maximizing the mutual information (see  
+%Equation \ref{eq:C5:entropy6}). The analysis in this section will use joint entropy as a similarity measure instead of the mutual information
+%evaluation. As mentioned in the previous section, one crucial requirement for the registration cost function is that it is relatively smooth and %quasiconvex near the correct registration value. This is important for finding the true optima and is used to define the basin of attraction.
+%To examine the quasiconvexity of the cost function, it is desirable to have a full view of the multivariate cost function around the correct %registration value. But it is infeasible to view a 6-dimensional diagram(the down hill simplex algorithm optimizes 6 parameters). Instead, 
+
+\section{Conclusions}
+
+In this chapter, we have investigated MI registration for ground level LiDAR and images. The existing method \cite{MastinFisher09} for registering airborne LiDAR with aerial oblique images does not
+work on the LiDAR and images collected from the mobile mapping system because the assumption used in \cite{MastinFisher09} is violated in the case of mobile LiDAR data. Instead of the minimization of the joint entropy, we use maximization of mutual
+information for computing optimal camera corrections. The algorithms work with unstructured LiDAR data and perspective rectified panoramic images generated by rendering panorama into an image plane using spheric views. We tested the algorithm on various urban scenes using three different representations of LiDAR data with camera images for the mutual information calculation. Our mutual registration algorithm automatically runs through a large-scale mobile LiDAR and panoramic images collected over a metropolitan scale.  It is the first example we are aware of that tests mutual information registration in large-scale context. 
+
+%future work  MI only can ensure a statistically correct result, but 
+% multi-resolution to speed up the computation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

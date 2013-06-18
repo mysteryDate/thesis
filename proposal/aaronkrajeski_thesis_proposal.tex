@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+\usepackage[colorlinks=true,citecolor=blue]{hyperref}
+\usepackage[latin1]{inputenc}
+\usepackage[margin=2cm,nofoot]{geometry}
+\usepackage{comment}
+\usepackage{apacite}
+
+\newcommand{\thetitle}{A Flexible Tool for the Visualization of  Musical Mapping Networks}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\thepage}
+\rhead{\thetitle}
+\cfoot{}
+
+\begin{document}
+
+
+\begin{center}
+{\scshape\large \thetitle}\\[0.75\baselineskip]
+Master's Thesis Proposal; Music Technology\\
+Aaron Krajeski
+\end{center}
+
+\thispagestyle{empty}
+
+\section*{Introduction}
+
+In a digital musical instrument (DMI) the physical control surface is often separate from the sound synthesizer \cite{wanderley}, greatly differentiating it from its acoustical counterparts. Thus the mapping of control surface outputs to synthesizer inputs becomes a critical factor in the implementation of DMIs. It is often necessary for performers and composers with little programming expertise to quickly customize mappings for specific performances and pieces.  Libmapper \cite{malloch}, an Open Sound Control (OSC) \cite{osc} based application programming interface (API), has been developed at the Input Devices for Music Interaction Laboratory (IDMIL) to help accomplish this task.
+
+  In the current graphical user interface (GUI) for libmapper, mappings are created by patching\footnote{Clicking and dragging between parameters, creating a visual connection analogous to patch bays in synthesizers.} together control and synthesis parameters from two lists. These lists are searchable and filterable to aid performances with many instruments. However, this approach is not scalable if many devices exist, as it gives no impression of the higher-order structure of this network of interconnected instruments.
+
+  The goal of this research is to design and develop a flexible GUI for libmapper, with special emphasis on visualizing the large amount of hierarchical information inherent in a musical mapping network. The final interface will be capable of demonstrating the network's overall structure while also providing information about individual connections. %The parameters of devices and signals can be freely customized to the visual display's attributes. %In many ways this project is designed to be a visual mapper for the mapping interface. 
+  The tool will allow the user to select which features of the network shall be associated with which dimensions of the visual interface in order to best communicate the state of the system and allow for greatest ease of manipulation.
+
+\section*{Previous Work}
+
+  The tremendous expansion of data set sizes in our information era \cite{tufte1} has begotten a similar theoretical expansion for displaying said information. Grounded in Tukey's \cite{tuckey} assertion that we must be ``approximately right, rather than exactly wrong," the works of Tufte \cite{tufte1, tufte2} expound upon the best practices for line diagrams, data labels, colors and layouts in graphical representations of data. 
+  
+  For pure visualization, Braun\footnote{J. Bullock, ``Braun." \url{http://lists.create.ucsb.edu/pipermail/osc_dev/2008-March/001327.html}} gives users basic displays of OSC data flows. 
+  %The Allosphere \cite{allosphere} at the University of California is a building-sized, spherical display built for the navigation of large sets of data using auditory and visual cues. 
+  On the interface side, many prior connection-type interfaces rely on a patching metaphor \cite{integra}\footnote{David Robillard, ``Patchage." \url{http://drobilla.net/software/patchage/}}, while \cite{HEB} describes mathematical ways of ``bundling" connections to reveal a network's higher order structure. Simple list interfaces are also common \cite{junxion}\footnote{Wildora, ``Osculator." \url{http://www.osculator.net/}}, wherein users select control surface outputs and associated synthesizer inputs from drop down menus. Building upon the patching metaphor, \cite{inclusiveInterconnections} locates the network's inputs and outputs in space, and nests parameters within certain structures, such as instruments. The EaganMatrix\footnote{\url{http://www.hakenaudio.com/Continuum/eaganmatrixoverv.html}} uses a distinctive connection metaphor built around a matrix of input and output parameters. Users make connections between parameters by placing a ``pin" at their intersection on the matrix. \cite{vizmapper} describes an alternative GUI for libmapper, specifically designed for networks with complex hierarchical structure wherein instruments contain many nested layers of sub-devices and signals.
+  
+  Working towards a standard for networked gestural communication in music, \cite{GDIF} details a standardized vocabulary and syntax for describing signals. Standards of OSC networking, both lexical and visual, are presented in \cite{jamoma, senseStage}.  \cite{MPGcarepackage} describes a system for visualizing information sent over a musical network. 
+  
+\section*{Proposed Research/Methodology}
+
+ This project will be structured in three major parts: (i) a review of prior visualized mapping interfaces, (ii) the updating and integration of presently available GUIs for libmapper and (iii) extension of interface features. %All portions of the project will utilize a user centered design \cite{usd} approach, providing the in progress GUI to long-term users of the libmapper library for feedback.
+  %and (iv) collection of feedback from longterm users of libmapper. 
+
+I will begin part one by reviewing previous work in visualized mapping interfaces including \cite{vizmapper, inclusiveInterconnections, junxion}, with special attention paid to visual features displaying the state of the system. Other connection-based interfaces \cite{integra, jamoma}$^3$ will also be reviewed for effective visual features.
+
+Presently, three GUIs exist for libmapper: mapperGUI, webmapper and Vizmapper \cite{vizmapper}. MapperGUI is built using the MaxMSP language. It is currently the most up-to-date and feature-rich of the GUIs, but has the disadvantage of not being cross-compatible and relies heavily on third party software.
+% The interface is will be built upon libmapper's Webmapper GUI. 
+ Webmapper is an Internet browser-based extension for the libmapper library, using a list-and-connection metaphor similar to mapperGUI. The user-interface side of the application operates upon JavaScript and HTML5, while it communicates with libmapper using a custom Python monitor. Though it is not presently as visually refined as the mapperGUI, the portable, cross-platform nature of webmapper is a more natural fit for a standard GUI for libmapper. In part two webmapper will be updated to include features currently present in mapperGUI. The main functionalities of Vizmapper will also be integrated %, such as zooming and physically locating devices in a two-dimensional space,
+  as one of the possible view modes. Vizmapper excels at displaying networks with multilayered hierarchies, yet is less than ideal for networks with many instances of the same device, or devices with numerous signals. 
+   %In the second part, Vizmapper will be updated so that it functions with current libmapper API, and integrated as an option alongside the current webmapper GUI. Webmapper will then be updated to include visual features from mapper GUI. 
+   The end result will be a single, integrated user interface, containing the most effective features of the previous three based on feedback from long-term users.
+  
+  During the third portion, extensions to the overall interface will be designed in JavaScript. 
+  %using the d3 visualization library\footnote{A JavaScript library for manipulating documents based on data. \url{http://d3js.org/}}. 
+  They will include options for patching matrices, devices grouped by location on screen and hierarchical edge bundling\footnote{A visualization technique in which connections are re-routed so that they are grouped according to the system's structure.} \cite{HEB}. Connected block diagrams as in \cite{integra} and force diagrams %\footnote{A visualization method where elements (here control and synthesis devices) are locate in space based on the amount of connections they share with other devices. Devices that share many connections are pulled towards one another.} 
+   will be explored. The current input/output list model will also be maintained. No single overall structure is to be forced upon users, as flexibility is key. What may be a good arrangement for certain networks may be overcomplicated, obscure or confusing for others. The power of configuration will be given to the user.
+  
+  Within these visualization schemes, signal and device attributes, such as spatial position, update rate and device type, can be user-correlated to visual parameters like size, color, line-weight and position of objects. The goal is to create a sort of ``meta-mapper," where users are free to connect the devices and signal features with visual properties that are best suited to their network and creative style.
+  
+  %Part four will provide the GUI to long-term users of the libmapper library and will receive feedback. Though this is concentrated at the end of the project, a user-centered design \cite{usd} approach will be utilized throughout parts one through three. Users feedback will be a constant part of the iterative design process. 
+  %The final objective is to provide users with a statistical snapshot of signals and the overall state of the system if desired. Techniques from \cite{tufte1}, most notably sparklines, can quickly communicate basic signal information. Lessons from \cite{tufte2} will guide decisions on how to orient, size, typeset and display this data.
+ \begin{comment} 
+
+Expanded Notes:
+
+cite vijay's thesis, make it central, limitations
+
+  ONE place, integreble
+
+  main goal is to integrate, specific TIMELINE (order)
+  \newline
+  
+   \begin{tabular}{lll}
+
+   Schedule: && \\
+    Number & Step & Time\\
+   1.& Integrate vizmapper functionality into webmapper & 1 month?\\
+    2. & Include all MapGUI into webmapper & ?\\
+    3. & New features (bundling, new mappings) & 3 months \\
+    4. & Feedback & 1 month? \\
+   
+   \newline
+   
+  \end{tabular}
+  
+  Let's look at Gabriel's for this!
+  
+  "provide to longterm users and get feedback"
+"user centered design" (find reference)
+\end{comment}
+  
+\section*{Contributions}
+
+Mapping is an essential feature of DMIs, and libmapper is an already widely-used open-source solution for performers and composers who wish to experiment with their mappings. The development of an intuitive, flexible interface for libmapper is an outstanding need for the library, due to the shortcomings of the user interfaces listed above. Not only will a visual tool help expert operators, it will also make libmapper more accessible for novice users of computer instruments. 
+
+	Furthermore, this research will provide a review of data visualization literature with an emphasis on musical and mapping application displays. Such information will be useful to the designers of musical software as these tools continue to progress into a multisensory domain.  
+	% As mentioned above, several different models for visualizing mapping software already exist in present applications. Because it is a flexible interface, this thesis may be insightful as to which metaphors are more useful in specific contexts.
+	
+	%Though it is created as a musical application, libmapper is, at its heart, simply a library for connecting things. The visualization of and interaction with vast network topologies is a rapidly growing field of information design itself \cite{tufte1}.  A tool for visualizing networks in a dynamic and artistic environment will allow for a greater understanding of network visualizations in general.
+
+\clearpage
+
+\bibliographystyle{apacite}
+\nocite{*}
+\bibliography{proposal_refs}
+
+
+\end{document}

@@ -1,0 +1,13 @@
+Read November 10:
+
+	"plug and play" 
+	End of introduction - "We have tried to create a GUI that is intuitive and trans- parent: relationships between parameters are visible at a glance, and changing mappings and scaling requires only a few mouse clicks. We have used all of these tools in a real collaborative context, allowing us to present not only implementations, but also observations of their effect on our group dynamic and workflow. We have tried to create an interface that is useful not only for technical users, but also as a creative tool for composers and performers."
+	"Semantic Layer" [4]
+
+	"We have often found during sessions that a par- ticular gesture might be more interesting if we could map its energy or its rate of change instead of the value directly" [3] A. Hunt. Radical User Interfaces for Real-time Mu- sical Control. PhD thesis, University of York, UK, 1999.
+
+	"It has been found in previous research that for expert inter- action, complex mappings are more satisfying than simple mappings. In other words, connecting a single sensor or gestural parameter to a single sound parameter will result in a less interesting feel for the performer [11, 6]"
+
+	Section 6 looks important
+
+	

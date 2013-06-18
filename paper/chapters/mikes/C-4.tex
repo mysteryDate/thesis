@@ -1,0 +1,359 @@
+\chapter{LiDAR based Reconstruction}
+
+In this chapter, we present an automatic approach to window and facade detection from mobile LiDAR data collected from ``NAVTEQ TRUE" in urban environments. The advantages of LiDAR data, compared with images, are illumination invariance, less sensitivity to occlusions, no shadows, and recovery of metric 3D information. The disadvantages of LiDAR data are that they are sparse and noisy. To deal with noisy LiDAR data, we propose a method that combines bottom-up and top-down strategies to extract building facades first. Window detection is then achieved through a two-step approach: potential window point detection and window localization. Experimental results demonstrate the effectiveness of the proposed solution. 
+ 
+\section{Introduction}
+
+Windows are important features of facades and play an important role in generating photorealistic building models. Windows often form repeated structures in buildings. In other words, facades exhibit rich redundancy. One efficient way to represent a building is to describe a facade with a few parametric symbols such as window templates in a semantic way. Window detection is an important step in this regard. Building facades are often occluded by trees or other objects such as cars or pedestrians in an urban environment. To generate occlusion-free facade textures, one way is to use the detected representative windows to replace occluded windows. 
+
+In both situations, window detection is an important step to recover facade structures, to produce occlusion-free facade textures, and finally to generate photorealistic building models. Automatically inferring these structures and encoding them into grammar rules are desired.
+
+\section{Related Work}
+
+To generate detailed geometry of facades, common methods rely on the similarity and repetitive patterns of windows to discover facade structures with the assumption that windows are key elements of facade interpretation \cite{Muller07, MayerReznik05, Ali07, LeeRam04, Hohmann09cityfit, Wu10}. Methods can use either an explicit window model \cite{LeeRam04} and horizontal and vertical profiling of images to discover the repetitive pattern, or use an implicit window model and learning approach to recognize windows \cite{MayerReznik05, Ali07}. Grammar-based methods were first proposed in the field of architecture \cite{Stiny71shapegrammars}, and have been successfully used in \cite{Wonka03}. By image similarity detection, shape grammar generation from facade images can be automated \cite{Muller07}. Typical intensity-based similarity measures include cross-correlation \cite{LeeRam04} and mutual information \cite{Muller07, Pluim00, Russakoff04imagesimilarity, StudholmeHH99}. The common assumption in these methods is that windows are of a rectangular structure which is fair for most modern box-like buildings except some landmarks. However, in the image of a building, there often exist too many edges, luminance, color and texture variations, occlusions from trees, traffic lights etc., which makes image-based window detection a challenging task.
+
+   On the LiDAR data side, there is much work on range data segmentation \cite{Hoover1996, Jiang96} from the vision and robotics communities. Normal computation at each LiDAR point is the first step in most range segmentation algorithms \cite{Stamos02, Besl88}, which is also a crucial step for precise region extraction. However, surface normals are often estimated inaccurately for points near boundaries. A good example in \cite{Chen07} shows cases where inaccurate normal estimation occurs. Without normal computation, planar surfaces can also be estimated directly by using RANSAC plane fitting \cite{schnabel07}. Because of the complexity of the scene in the real world, this method suffers from slow detection correctness rate and convergence of the RANSAC algorithm.
+
+Less work has been done on detecting windows from LiDAR data. This is probably because of the nature of LiDAR data: noisy and sparse. Micro-structures like windows are hard to differentiate. In addition, windows without curtains often return signals from the interior of the buildings and the returned signal does not always contain enough valid data representing these surfaces \cite{Pu07}. For those windows with curtains, laser points are available but often not on the same plane as facade \cite{Pu07}. To the best of our knowledge, papers \cite{Pu07, Ali08} are the only two research works on window detection from LiDAR so far. A hole-based extraction method is presented in \cite{Pu07}. Basically this method searches long edges along a Triangular Irregular Network (TIN) of the facade to identify holes, groups points belonging to the same hole, filters out non-window holes heuristically, and finally fits to rectangles. However, this bottom-up triangular meshing based method suffers from noisy LiDAR data. The method in \cite{Ali08} converts LiDAR data into distance images, and then employs image processing techniques like morphological operations and contour analysis to segment windows. This 3D-to-2D conversion causes information loss. Directly processing 3D LiDAR points is desired. The method in \cite{Frueh05} creates meshes for the whole facade but without addressing the window detection issue.
+
+\section{The Method} 
+
+Our approach consists of multiple stages of processing as illustrated in Figure \ref {fig:C4:flowchart}. We first separate ground points from the LiDAR data, and then compute surface normals for the remaining points using Principal Component Analysis (PCA). Based on a rectilinear structure assumption for both buildings and windows, we first identify potential facades. A RANSAC plane fitting algorithm is applied to these regions to extract facades. After a facade is found, we extract window point candidates from the facade, and then use a plane-sweep principle to generate horizontal and vertical window profile histograms. Windows are detected through the analysis of these histograms. The facade pattern is automatically inferred to form a constraint to enhance the robustness of the window detection. Each of these steps is explained in greater detail in the following subsections. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.8\textwidth]{figures/C4/flowchart.jpg} \\
+\caption{Flowchart of the main steps in our approach} 
+\label{fig:C4:flowchart}
+\end{figure}
+
+\subsection{Ground Point Separation}
+
+The volume of LiDAR data is huge. A sub-sampling process\footnote{This is to establish a 3D grid in the LiDAR data, and selects only one point from each voxel to discard the remaining points within this voxel. Thus the size of the voxel determines the rate of the sub-sampling.}is applied through establishing a volumetric representation of LiDAR data. The dimensions of the grid are determined by the desired resolution or the maximum allowed error tolerance between the samples (in this thesis. the relative accuracy of the Velodyne LiDAR is reported up to 20 cm). This volumetric representation also facilitates efficient search within the data. The LiDAR points from the ground can be separated to benefit further processing. In this work, we assume that the elevations of ground points are normally the minimum. We compute a histogram using elevation values of all the points in a Local Tangent Plane (LCP) coordinate system, and select the elevation value corresponding to the first peak of the histogram as the ground height. The points with elevation around this value ($i.e.,$  0.2 meter) are regarded as ground points and then eliminated from further processing. The yellow points in Figure \ref{fig:C4:clustering}, \ref{fig:C4:seg}, and \ref{fig:C4:potentialWindows} indicate the ground.
+
+\begin{figure}[H]
+\centering
+\subfloat[LiDAR point clustering using PCA] {\label{fig:C4:clustering}\includegraphics[width= 0.45\textwidth]{figures/C4/LiDARClustering.jpg}} 
+\hspace{.1in}
+\subfloat[Segmented LiDAR points] {\label{fig:C4:seg}\includegraphics[width= 0.45\textwidth]{figures/C4/LiDARDetection.jpg}} \\
+\subfloat[Detected facade and potential window points] {\label{fig:C4:potentialWindows}\includegraphics[width= 0.8\textwidth]{figures/C4/LiDARWindows.jpg}}  
+
+\caption{The LiDAR data process} 
+\label{fig:C4:LiDAR_Process}
+\end{figure}
+
+\subsection{LiDAR Point Clustering}
+
+{\it Surface Normal Computation} We assume that buildings have rectilinear structure and facades have two major directions, vertical and horizontal, which is true for most buildings except some special landmarks. We compute a normal of a point $p$ using PCA.  
+
+Let $\{p_i\}_{i=1:N}$ be a set of neighboring points of $p$. We form a three by three positive semi-definite matrix \cite{Hoppe92}.
+
+\begin{equation}
+W = \frac{1}{N}\sum_{i=1}^{N} (p_i - \bar{p})\otimes(p_i - \bar{p}),
+\label{eq:C4:PCA}
+\end{equation} 
+
+where $\bar{p} = \frac{1}{N}\sum_{i=1}^{N} p_i$ is the centroid of all the points. If $\lambda_1 < \lambda_2 < \lambda_3$ denote the corresponding eigenvalues of $W$, the eigenvector $v_1$ corresponding to the smallest eigenvalue $\lambda_1$ has the same direction as the normal of the plane to be fitted. The smaller $\lambda_1$ is relative to $\lambda_2$ and $\lambda_3$, the flatter the distribution of $\{p_i\}$ is. The neighborhood is defined as $3\times3\times3$  voxel region centered at $p$ in the point clouds as there are normally sufficient points within such neighborhood for the normal computation. If the number of the points within the neighborhood is smaller than 3, we do not compute the normal. 
+
+{\it Definition of Normal Orientation} The normal is often used to determine a surface's orientation toward a light source. The normal orientations computed from PCA are supporting lines whose directions are not defined. For instance, the normal from facade points can be either pointing outward from or inward towards the facade. To achieve consistent normal orientations, we incorporate line-of-sight information from the laser scanner to define normal orientations. For each point $p$, we compute a vector $q$ from this point to the laser origin. We choose the normal orientation which always results in a positive value from a dot product of the normal of $p$ and $q$.  Figure \ref{fig:C4:normalwrong} shows incorrect normal orientations indicated by green circles.  The red dots show the starting point of the normal. Figure \ref{fig:C4:normalright} shows correct consistent normal orientations.
+
+\begin{figure}[H]
+\centering
+\subfloat[] {\label{fig:C4:normalwrong}\includegraphics[width= 0.45\textwidth]{figures/C4/NormalWrong.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:normalright}\includegraphics[width= 0.45\textwidth]{figures/C4/NormalRight.jpg}} \\
+\label{fig:C4:normals}
+
+\caption{Normal orientations} {(a) Wrong normal orientations indicated by green circles; (b) Correct normal orientations}
+
+\end{figure}
+
+Because of the noisy LiDAR data and the problem of inaccurate normal estimation around the boundaries, we cannot totally rely on the accuracy of the computed normals. Instead, we roughly classify the points into three categories according to the normal direction ranges: potential facade, potential facade side face, and unknowns, as shown in Figure \ref{fig:C4:clustering}. The red points are potential facade, and the pink points are potential side face. The unknown points are white points, in this case mostly from trees and building/window edges.
+
+\subsection{Facade Detection}
+
+We convert the Universal Transverse Mercator (UTM) coordinates to a local vehicle heading coordinate system $O_{XYZ}$ as shown in Figure \ref{fig:C4:clustering}. The X axis is the vehicle heading direction, the Y axis is perpendicular to the heading direction, and the Z axis is vertically up from the ground. Under this coordinate frame, the point normal is manageable. Basically the potential facade regions are those surfaces where the point normal is roughly perpendicular to the X-Z plane. Potential facade side faces are those regions where the point normal is approximately perpendicular to the Y-Z plane. RANSAC plane fitting is applied to the potential facade regions to extract the major plane which is the facade as shown in Figure \ref{fig:C4:seg}. The side face can be also extracted in road intersections where the side face is visible to the laser scanner. There are existing plane detection methods from sparse point clouds generated from structure from motion algorithm ($e.g.,$ \cite{SinhaSzeliski09}), and there are also some variants of RANSAC \cite{Raguram08}, but we use traditional RANSAC in this thesis. Figure \ref{fig:C4:seg} shows the segmented LiDAR points in which blue points represent facade, and green ones represent facade side faces. Note that the red points in the areas of windows from the facade are separated from the blue facade points. 
+
+\subsection{Potential Window Points Detection}
+
+Some windows leave holes in the facade, but others do not. There are also points available from the crossbars of the low level windows, but no points available from the crossbars of the upper level windows. We first separate the ground floor from the facade because the pattern of the ground floor is often different from the window pattern, $e.g.,$ doors and special windows. We simply exclude the first 10-30\% of data starting from the bottom to the top of the facade depending on the type of the building data. In the future, this process will be automated through facade pattern analysis.
+  
+To detect potential window points, we distinguish four different types of window borders: horizontal structures at the top and bottom of the window, and two vertical structures on the left and right sides of the window. The window crossbars are not used to detect potential window points, but in general could provide valuable information about existence of windows. The detected facade is actually a 3D cube whose thickness is determined by the distance threshold from RANSAC. We first create a volumetric representation of the facade so that the point neighborhood relation can be manipulated. An operator is designed according to the window pattern of the facade to find potential window points excluding those points from window crossbars. Basically, for each point, we examine its neighbors along horizontal and vertical directions respectively. The upper horizontal window edge points are identified if upper neighbor points are found while lower neighbor points are not. A similar rationale is applied to find lower, left, and right window edge points. The window crossbar points are identified if both upper and lower neighbor points are not found, or both left and right neighbor points are not found. For each voxel $(i, j, k)$ in the 3D facade cube, we denote, $f (i, j, k) = 1$, if there is a LiDAR point in this voxel, otherwise, $f (i, j, k) = 0$. Then the operator to find window edge points excluding window crossbars can be described by Equation \ref{eq:C4:operator}. The constant variable {\it inter} is related to the interval between windows, and $d$ is related to the width of window crossbars. These two values are experimentally selected according to the pattern of the facade and the knowledge of the architectural design . In the future, the $d$ value will be estimated from the data. The sigma $f$ term equal to zero means no points are found in the local neighborhood. The sigma $f$ term equal to $d$ means points are found at very voxel in the local neighborhood. This is a strong condition which effectively identifies potential window points while excluding points from window crossbars. The red points in Figure \ref{fig:C4:potentialWindows} show the detected potential window points while window crossbars are eliminated from the potential window points. 
+
+\begin{equation}
+\left \{ 
+\begin{array}{l l}
+\text{HWEPs,} & \text{if} \sum_{k'=k}^{k'=k+inter} \sum_i \sum_j f(i,j,k')=0 \, \text{and} \, \sum_{k'=k}^{k'=k-d} \sum_i \sum_j f(i,j,k')=d\\
+& \text{OR if} \sum_{k'=k}^{k'=k-inter} \sum_i \sum_j f(i,j,k')=0 \, \text{and} \, \sum_{k'=k}^{k'=k+d} \sum_i \sum_j f(i,j,k')=d\\
+\\
+\text{VWEPs,} & \text{if} \sum_{i'=i}^{i'=i+inter} \sum_j \sum_k f(i',j,k)=0 \, \text{and} \, \sum_{i'=i}^{i'=i-d} \sum_j \sum_k f(i',j,k)=d\\
+& \text{OR if} \sum_{i'=i}^{i'=i-inter} \sum_j \sum_k f(i',j,k)=0 \, \text{and} \, \sum_{i'=i}^{i'=i+d} \sum_j \sum_k f(i',j,k)=d\\
+\\
+\text{NWEPs,} & otherwise
+\end{array}\right.
+\label{eq:C4:operator}
+\end{equation} 
+
+where HWEPs means horizontal window edge points, VWEPs means vertical window edge points, and NWEPs means non-window edge points.
+
+\subsection{Window Localization}
+
+{\it Determination of Window Locations} To localize the windows, we project horizontal (parallel to the ground) and vertical (perpendicular to the ground) potential window points in horizontal and vertical directions to give a total of two projection profiles: a horizontal projection profile of the horizontal window edge points and a vertical projection profile of the vertical window edge points. To do so, we use the plane-sweep principle to sweep the facade along horizontal and vertical directions individually to count the total number of points in each of these sweeping planes. The profile histograms are generated and the small peaks are suppressed. To accurately localize windows, we developed an algorithm to find the histogram peaks, and the indices of rows or columns corresponding to the peaks are the window locations. Through these indices, we can compute the 3D coordinates of windows in the vehicle heading coordinate system $O_{XYZ}$. Algorithm \ref {tab:c4:A1} below gives an outline of this method.
+
+\begin{algorithm}
+\caption{Determination of window locations}
+\label{tab:c4:A1}
+\begin{algorithmic}
+\STATE Input:  One dimensional histogram $h_i$
+\STATE Output:  Indices corresponding to histogram peaks 
+\FORALL {$i$ such that $0 \leq i < end$}
+
+\IF {$h_i \neq 0$} 
+\STATE $ idx_{max} \gets index \; of \; h_i$
+\STATE $ value_{max} \gets value \; of \; h_i$
+
+\FORALL {$i$ such that $ i < end$}
+\IF{value of $h_i$ = 0} 
+\STATE {\bf break} 
+\ENDIF
+
+\IF{$value \; of \; h_i \geq value_{max}$} 
+\STATE $value_{max} \gets value \; of \; h_i$
+\STATE $idx_{max} \gets index \; of \; h_i$
+\ENDIF
+\ENDFOR
+
+\STATE $push \; back \; indices \; into \; a \; vector$
+\STATE $ i = idx_{max}$
+\ENDIF
+\ENDFOR
+
+\end{algorithmic}
+\end{algorithm}
+
+{\it Pattern Constraints}  Simple architecture rules are automatically inferred from the locations of well detected windows. In this thesis, windows from upper levels are always well extracted because data from upper levels of buildings are often cleaner than those from lower levels. This can be partially explained by either less occlusions or longer distance to the laser scanners in the data from upper levels of buildings. Architecture rules like window size and spacing are automatically computed, and form a constraint to help identify the window boundary more robustly. 
+
+\section{Experiments and Discussions}  
+
+We tested the algorithm on six LiDAR datasets. The first column in Figure \ref{fig:C4:detectedWindows} shows the six colorized LiDAR point clouds in which windows are either holes or planar surfaces. The detected windows and facades are shown in the third column of Figure \ref{fig:C4:detectedWindows}. Although the LiDAR data are very noisy, these windows are well extracted from LiDAR data excluding some from ground floors (i.e. Figure \ref{fig:C4:bwindows1} and \ref {fig:C4:bwindows2}). We also show corresponding intensity images in the middle column of Figure \ref{fig:C4:detectedWindows}, in which facades are occluded by trees, traffic lights or other objects. The glass windows often strongly reflect sunlight which is problematic for data consistency (i.e.  Figure \ref {fig:C4:bladybug2} and \ref{fig:C4:bladybug4}). Detecting windows from these types of optical images is very challenging. This is yet another motivation to detect windows from LiDAR data. Figure \ref{fig:C4:closeup} shows a close up of Figure \ref{fig:C4:bwindows5}. In Figure \ref{fig:C4:closeup}, the blue dots are facade, red and green dots are potential vertical and horizontal window points respectively. The white lines outline the detected windows. 
+
+\subsection{Implementation and Performance}  
+
+The implementation is in C++ code. We use the library from the Mobile Robot Programming Toolkit ~\cite{mrpt-url} for RANSAC implementation, and the GNU scientific library for eigenvector and other linear algebra calculations. The test results are obtained on an Intel Core 2 CPU laptop with 2GB of RAM.
+
+\begin{figure}[H]
+\centering
+\subfloat[Data 1] {\label{fig:C4:blidar1}\includegraphics[width= 0.20\textwidth]{figures/C4/building1_lidar.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bladybug1}\includegraphics[width= 0.20\textwidth]{figures/C4/building1_ladybug.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bwindows1}\includegraphics[width= 0.20\textwidth]{figures/C4/building1_detectedWindows.jpg}} \\
+
+\subfloat[Data 2] {\label{fig:C4:blidar2}\includegraphics[width= 0.20\textwidth]{figures/C4/building2_lidar.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bladybug2}\includegraphics[width= 0.20\textwidth]{figures/C4/building2_ladybug.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bwindows2}\includegraphics[width= 0.20\textwidth]{figures/C4/building2_detectedWindows.jpg}} \\
+
+\subfloat[Data 3] {\label{fig:C4:blidar3}\includegraphics[width= 0.20\textwidth]{figures/C4/building3_lidar.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bladybug3}\includegraphics[width= 0.20\textwidth]{figures/C4/building3_ladybug.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bwindows3}\includegraphics[width= 0.20\textwidth]{figures/C4/building3_detectedWindows.jpg}} \\
+
+\subfloat[Data 4] {\label{fig:C4:blidar4}\includegraphics[width= 0.20\textwidth]{figures/C4/building4_lidar.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bladybug4}\includegraphics[width= 0.20\textwidth]{figures/C4/building4_ladybug.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bwindows4}\includegraphics[width= 0.20\textwidth]{figures/C4/building4_detectedWindows.jpg}} \\
+
+\subfloat[Data 5] {\label{fig:C4:blidar5}\includegraphics[width= 0.20\textwidth]{figures/C4/building5_lidar.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bladybug5}\includegraphics[width= 0.20\textwidth]{figures/C4/building5_ladybug.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bwindows5}\includegraphics[width= 0.20\textwidth]{figures/C4/building5_detectedWindows.jpg}} \\
+
+\subfloat[Data 6] {\label{fig:C4:blidar6}\includegraphics[width= 0.20\textwidth]{figures/C4/building6_lidar.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bladybug6}\includegraphics[width= 0.20\textwidth]{figures/C4/building6_ladybug.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:bwindows6}\includegraphics[width= 0.20\textwidth]{figures/C4/building6_detectedWindows.jpg}} \\
+
+\caption{Experimental Results} 
+\label{fig:C4:detectedWindows} {Left column: Colorized LiDAR point clouds; Middle column: Corresponding spherical images; Right column: Detected windows and facades}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=4.2in]{figures/C4/closeup_building5.jpg} 
+
+\caption{A blow up of Figure \ref{fig:C4:bwindows5}} 
+\label{fig:C4:closeup}
+\end{figure}
+
+\begin{table}
+\centering
+\Tcaption{Performance evaluation I}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Scene & Data Size & Loading Data   & Algorithm Run \\
+& (million) & Time (sec.) & Time  (sec.)\\
+\hline
+Data 1 &  1.8/7.0 & 7 & 11 \\
+\hline
+Data  2 &  3.2/11 & 12 & 13 \\
+\hline
+Data  3 &  1.7/6.5 & 7 & 10 \\
+\hline
+Data  4 &  0.9/3.0 & 3 & 13 \\
+\hline
+Data 5 &  3.0/10.0 & 12 & 14 \\
+\hline
+Data  6 &  1.9/6.0 & 6 & 12 \\
+\hline
+
+\end{tabular}
+\label{table:C4:PE1}
+\end{table}
+
+\begin{table}
+\centering
+\Tcaption{Performance evaluation II}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Scene & Reference & Extracted   & Completeness & Correctness \\
+& Windows & Windows & (percentage) &(percentage) \\
+\hline
+Data 1 &  59 & 42 & 71.2\% & 100\%\\
+\hline
+Data  2 &  54 & 48 & 88.0\% & 100\%\\
+\hline
+Data  3 &  20 & 20 & 100\% & 100\%\\
+\hline
+Data  4 &  28 & 28 & 100\% & 100\%\\
+\hline
+Data 5 &  55 & 55 & 100\% & 100\%\\
+\hline
+Data  6 &  45 & 45 & 100\% & 100\%\\
+\hline
+
+\end{tabular}
+\label{table:C4:PE2}
+\end{table}
+
+Table \ref{table:C4:PE1} shows the performance evaluation. All the LiDAR data and intensity images are in binary format, and window extraction was done completely automatically. In the data size column of Table \ref{table:C4:PE1}, the numerator in the fraction means the size of the data that was processed to extract windows. The denominator means the size of the data that was manipulated in order to be loaded. We only loaded relevant LiDAR points filtered by laser scanning angle and distance. For instance, for the Data 2 as shown in Figure \ref{fig:C4:blidar2}, we indexed 11 million LiDAR points to load 3.2 million points and filter out irrelevant LiDAR points for the processing. The loading process takes 12 seconds, and the algorithm run time is 13 seconds. 
+
+To evaluate the performance of the proposed window extraction method, we used two measures to assess the results described in the previous sections. The number of extracted windows was used to compute the completeness and correctness measures \cite{Heipke97evaluationof}. The completeness denotes the percentage of the reference windows that are extracted by our algorithm, and is defined by
+
+\[
+ \text{completeness} = \frac{\text{number of matched reference windows}}{\text{number of all reference windows}}.
+\]
+
+The correctness represents the percentage of correctly extracted windows with respect to all extracted ones, and is calculated by 
+
+\[
+ \text{correctness} = \frac{\text{number of matched extracted windows}}{\text{number of all extracted windows}}.
+\]
+
+In Table \ref{table:C4:PE2}, the total number of reference windows is counted from LiDAR and images. The number of extracted windows is counted from the results. Completeness and correctness are given in the last two columns. For instance, in the first row of Table  \ref{table:C4:PE2}, the completeness and correctness measures are 71.2\% and 100\%, which means that 71.2 percent of windows are successfully extracted and 100 percent of extracted windows are correct. 
+
+One difficulty comparing with existing window detection methods is lack of a common test data set. It is also very difficult to obtain the data set used in other people's methods due to some reasons. The method in \cite{Ali08} uses a mobile LiDAR data set which is the closest to ours. We attempted to use the same measure as \cite{Ali08} to evaluate our results. According to the definition of 
+Type I and type II errors, a false positive means if a window was detected where there is no window present; a true positive means if a window was detected where there is a window; a false negative means an existing window was not detected; a true negative means a non-existing window was not detected, namely, correctly rejecting a
+non-window.
+
+%Positive = identified and negative = rejected.
+%Therefore:
+%True positive = correctly identified
+%False positive = incorrectly identified
+%True negative = correctly rejected
+%False negative = incorrectly rejected 
+
+%According to \cite{Ali08}, one counted a true positive if a window was correctly detected, false negative if an existing window was not detected, true negative if the window is present but not detected as a window, and false positive if a window was detected where there is no window present.
+
+Table 2 indicates that our results appear to be consistent
+with the results obtained in \cite{Ali08}. There are total 261 windows in our datasets while a total number of 196 windows in the paper \cite{Ali08}. The values in Table \ref{table:C4:PE3} are all percentages computed over the total number of each respectively.  
+
+\begin{table}
+\centering
+\Tcaption{Comparison with the existing method}
+\begin{tabular}{|c|c|}
+\hline
+ & Our method   \\
+& (percentage)  \\
+\hline
+True Positive &  91.2\% \\
+\hline
+False Negative  &  8.8\% \\
+\hline
+True Negative  &  100\% \\
+\hline
+False Positive  &  0\% \\
+\hline
+
+\end{tabular}
+\label{table:C4:PE3}
+\end{table}
+
+%The method \cite{Pu07},  doesn't provide such statistics, and only reported that more than 90\% of the windows can be accurately recognized, which is similar to the true positive rate in our paper. But we have much lower false positive and true negative rate than the method \cite{Pu07}. 
+
+\subsection{Determining Resolution Limits}  
+
+To increase the computational efficiency and establish a topological relationship between each LiDAR point, we  established a 3D volumetric representation for the LiDAR data as described previously. This representation  facilitates a fast and efficient search mechanism for the facade and window detection algorithms. The size of each voxel in this 3D grid structure is $0.2\times0.2\times 0.2$ meters, which is determined by the specification of the relative accuracy (up to $\pm 20 cm$) of the LiDAR data collected from NAVTEQ True. A smaller size such as $0.1\times0.1\times 0.1$ meters will dramatically increase the computation burden, which is also not meaningful due to the LiDAR's relative accuracy.
+
+The LiDAR data collected from NAVTEQ True is very dense due to the use of an Velodyne laser. Here we perform an experiment by sub-sampling Navteq True LiDAR data to simulate the characteristics of typical low-cost lasers such as the SICK LiDAR ~\cite {sick-url}. This is achieved by reducing the data volume during the process of loading LiDAR point clouds by 1/2, 1/3, 1/4, and 1/5 of the original one. We implement an algorithm that allows loading partial point sets, for instance, loading every other point for a 1/2 sub-sampling rate. 
+
+\begin{figure}[H]
+\centering
+\subfloat[1/2 of the original LiDAR] {\label{fig:C4:1_2}\includegraphics[width= 0.22\textwidth]{figures/C4/1_2_Original.jpg}} 
+\hspace{.1in}
+\subfloat[1/3 of the original LiDAR] {\label{fig:C4:1_3}\includegraphics[width= 0.22\textwidth]{figures/C4/1_3_Original.jpg}} 
+\hspace{.1in}
+\subfloat[1/4 of the original LiDAR] {\label{fig:C4:1_4}\includegraphics[width= 0.22\textwidth]{figures/C4/1_4_Original.jpg}} 
+\hspace{.1in}
+\subfloat[1/5 of the original LiDAR] {\label{fig:C4:1_5}\includegraphics[width= 0.22\textwidth]{figures/C4/1_5_Original.jpg}} \\
+
+\subfloat[] {\label{fig:C4:1_2_F}\includegraphics[width= 0.22\textwidth]{figures/C4/1_2_failure.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:1_3_F}\includegraphics[width= 0.22\textwidth]{figures/C4/1_3_failure.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:1_4_F}\includegraphics[width= 0.22\textwidth]{figures/C4/1_4_failure.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C4:1_5_F}\includegraphics[width= 0.22\textwidth]{figures/C4/1_5_failure.jpg}} \\
+
+\caption{Simulated experiment} 
+\label{fig:C4:Simulated_Experiments}
+\end{figure} 
+
+A sub-sampling example using the data indicated in
+Figure \ref{fig:C4:blidar1} is shown in Figure \ref{fig:C4:Simulated_Experiments}. The first row of Figure \ref{fig:C4:Simulated_Experiments} shows the sub-sampled LiDAR point clouds by 1/2, 1/3, 1/4, and 1/5, respectively. We apply the window detection algorithm to the sub-sampled data. The detection fails as shown in the second row of Figure \ref{fig:C4:Simulated_Experiments}. In Chapter 6, we will revisit window detection on these sub-sampled LiDAR data with image based upsampling methods.
+
+\subsection{Limitations}  
+
+There are limitations in the current implementation of the approach. 
+
+{\it Rectilinear structure assumption} It is hard to have a general model for any type of buildings. Imposing reasonable priors on buildings and window regularity is a compromise for robustness and automation of the algorithm \cite{Xiao09}. The rectilinear structure  or Manhattan-word assumption \cite{Coughlan99}, is quite common for many buildings as well as windows. We found this assumption is sufficient for the type of buildings tested in the paper. The algorithm can not perform correctly on the buildings containing non-rectilinear windows such as the building in Figure \ref{fig:C4:failure1}. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.8\textwidth]{figures/C4/failure1.jpg} \\
+\caption{Buildings with non-rectilinear windows} 
+\label{fig:C4:failure1}
+\end{figure}
+
+{\it Incomplete Data} Due to the positioning constraint for any ground-level data acquisition system; it is difficult to always obtain complete and sufficient sampling of all the building surfaces. For instance, the rooftops and back of the buildings cannot be scanned by a mobile LiDAR scanning system. To obtain a complete model, other data sources such as aerial liDAR/image data or building footprints from GIS are needed. Also the LiDAR scanner used in this paper can only provide usable returns up to 120 meters. Very high buildings may not have sufficient LiDAR points on the upper level of the facade as shown in Figure \ref{fig:C4:failure2}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.8\textwidth]{figures/C4/failure2.jpg} \\
+\caption{Buildings with insufficient data} 
+\label{fig:C4:failure2}
+\end{figure}
+
+
+\section{Conclusions}  
+
+We have proposed an automatic approach to window detection from mobile LiDAR data. The input is a chunk of LiDAR data, and the output is a detected facade and windows. This information can be used to generate a simpler description of the scene or potential texture synthesis. The main contributions of this work are: a combination of bottom-up and top-down schemes to deal with noisy LiDAR data, and a robust window detection algorithm.
+
+
+
+

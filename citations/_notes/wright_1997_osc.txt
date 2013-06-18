@@ -1,0 +1,7 @@
+Read November 6:
+
+  - Protocol is "stateless as possible" does not assume a stream, instead blocks
+
+  Might be important to come back to section 3, "data representations"
+
+  ? ZIPI [5] (limited communication protocol like MIDI)

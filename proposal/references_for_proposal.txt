@@ -1,0 +1,25 @@
+1 vizmapper
+2 Jamoma
+3 Integra
+4 SenseWorldDataNetwork
+5 Hierarchal Edge Bundles
+6 malloch mapping paper (2)
+7 osc 1997
+8 beautiful evidence (thing about good for producer and consumer)
+9 braun osc
+
+OSC 2003?
+Envisioning Information?
+osculator? (no paper) (http://www.osculator.net/)
+osc bonjour? (no paper) (http://recherche.ircam.fr/equipes/temps-reel/movement/muller/?entry=entry060616-173626)
+disembodieds performance system? (found paper) (its generalizable!)
+allosphere? (found paper)
+mpg care package? (found paper)
+graphm booth (inclusive interconnection)? (found paper)
+ares mapper? (no luck)
+eagen/continuum matrix? (http://www.hakenaudio.com/Continuum/eaganmatrixoverv.html)
+2004 junxion (http://steim.org/product/junxion/)
+pachage? (http://drobilla.net/software/patchage/)
+GDIF
+
+Jown W. Tukey "the technical tools of statistics"

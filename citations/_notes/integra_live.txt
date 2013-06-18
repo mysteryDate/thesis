@@ -1,0 +1,24 @@
+Read november 5:
+
+  Looks pretty important
+  76 survey respondents!
+  Mentions Jamoma
+  
+  Point 7 on page 389: "The interface should favor standardization over configurability" Wow, that seems pretty contrary to what I am trying to do.
+
+  ? Agile Manifesto [1]
+
+  ? x-y scratchpad
+
+  Goddamn is his voice annoying
+
+  ? Platforms "human interface guidelines"
+    supported files
+    undo and redo
+
+  ? Lickert scale [6]
+
+  Wordle might be useful
+
+  Using the Software:
+   Modules should be better arranged.

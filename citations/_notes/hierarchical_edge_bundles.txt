@@ -1,0 +1,15 @@
+? B spline curve [1]
+
+should probably use this nomenclature:
+	inclusion relations (parent-child)
+	adjacency relations (other kinds)
+
+good for other tree visualization methods
+
+? BŽzier curves [1]
+
+Used "piecewise cubic B-spline representation"
+
+4.1 user test
+
+? Rigi Standar Format [25] in conclusions

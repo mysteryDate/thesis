@@ -1,0 +1,14 @@
+Read on November 4
+
+  - a rackmount max, module wrapper thingy
+  - kinda like libmapper
+
+  - should I do it in max
+  - is it maintained?
+  ?jmod?
+
+  Last page, section 3.2: "The authors have found that modules ported to Jamoma tend to maintain more of the possible parameters available for patcher, resulting in richer expressive possibilities."
+  YAY! big unsupported statement at the end BUSATE
+
+Read:
+  OSC - wright and freed, 1997

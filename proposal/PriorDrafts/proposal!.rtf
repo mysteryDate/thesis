@@ -1,0 +1,133 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 \\section*\{Introduction\}\
+\\begin\{tabbing\}\
+\\hspace\{1 cm\}\\=\\hspace\{1 cm\}\\=\\hspace\{1 cm\}\\= \\\\\
+\{\\bf I. Brief summary of mapping\}\\\\\
+\\>	a. Define mapping, hunt's paper should be good\\\\\
+\\>	b. Acoustic surface no longer control surface, yadayada\\\\\
+\\>	c. Cite it!\\\\\
+\\>	d. Talk about control outputs, synthesizer inputs\\\\\
+\{\\bf II. libmapper\}\\\\\
+\\>	a. Cite the malloch paper\\\\\
+\\>	b. A tool for helping musicians and technicians map alike\\\\\
+\{\\bf III. Define Problem\}\\\\\
+\\>	a. Gotta see everything\\\\\
+\\>\\>		i. output/input\\\\\
+\\>\\>\\>		A. name\\\\\
+\\>\\>\\>		B. parameter\\\\\
+\\>\\>\\>		C. range, physical location (x,y,z), update rate, owner, etc.\\\\\
+\\>\\>		ii. connections\\\\	\
+\\>\\>\\>		A. flow, direction, expression\\\\\
+\\>\\>		iii. how are things grouped?\\\\\
+\{\\bf IV. What Is Proposed\}\\\\\
+\\>	a. A visual tool for the MAPPING of information within LibMapper\\\\\
+\\>	b. Flexible\\\\\
+\\>\\>		i. Examples\\\\\
+\\>	c. Parameters\\\\\
+\\>\\>		i. Color, shape, motion, position, etc.\\\\\
+\\>	d. Easy to use and reflect the "plug and play" nature of LibMapper\\\\\
+\
+\
+\\end\{tabbing\}
+\b \
+\
+Introduction:
+\b0 \
+\
+In a digital musical instrument (DMIs) the physical control surface is separated from sound synthesizer [hunt,wanderly, Towards\'85], greatly differentiating from their acoustic counterparts. Thus the 
+\i mapping
+\i0  of control surface outputs to synthesizer inputs becomes a critical factor in the implementation of DMIs. 
+\i Libmapper
+\i0  [cite malloch] is an Open SoundControl [citeosc] library developed for facilitating quickly customizable mappings between multiple input devices and sound generators.\
+\
+  A single input device has potentially hundreds of output parameters, and software synthesizers often have hundreds of inputs. Thus, even a small ensemble of musicians performing on DMIs have thousands of parameters to organize in the mapping layer, with billions of possible connections. A simple list of connections can be confusing and difficult to deal with, giving no impression of the higher order structure of the network.\
+\
+  The goal of this research is to design and develop a flexible visual display for libmapper. The final interface will be capable of demonstrating overall structure of the network while also providing information about individual connections. Parameters of devices and signals can be freely customized to attributes of the visual display. In many ways it is to be a visual mapper for the mapping interface, allowing the user to select which features of the network shall be associated with which dimensions of the visual display in order to most descriptively show the state of the system.\
+\
+  Though the end product is to be an interactive interface, the primary goal \
+  [explicitly mention STATE OF the system]\
+\
+
+\b Previous work:
+\b0 \
+\
+  The tremendous expansion of the sizes of data sets in our "information era" [citation?] has begotten a similar expansion of theories for displaying said information. Grounded in Tukey's [ ] assertion that we must be "\'85approximately right, rather than exactly wrong," the works of Tufte [] [] expound upon best practices for line diagrams, labeling, color and layout in evidence displays. \
+  For pure visualization, Braun^1 gives users basic display of OSC data flows. The Allosphere [] at The University of California is a building-sized, spherical display, built for the navigation of large sets of data using auditory and visual cues. \
+  On the interface side, many prior connection-type interfaces rely a 
+\i patching 
+\i0 metaphor [integra] and patchage^1, with [HEB] describing mathematical ways of "bundling" connections to reveal higher order structure of networks. Also common are simple list interfaces [Osculator] [Junxion], wherein users select control surfaces outputs and associated synthesizer inputs from drop down menus. Building upon the patching metaphor [vizmapper] [inclusive interconnections] locate inputs and outputs of the network in space, and also nest parameters within certain structures (such as instruments). The EaganMatrix^3 uses a distinctive connection metaphor built around a matrix of input and output parameters. Users make connections between parameters by placing a "pin" at their intersection on the matrix.\
+  Working towards a standard for networked gestural communication in music [GDIF] details vocabulary and syntax for describing signals. Standards of OSC networking, both lexical and visual are presented in [Jamoma] and [Swdn].  [MPG] describes a system of visualizing information sent over a musical network. \
+  \
+  \
+  \
+\
+1. Evidence Displays\
+  Techincal tools of statistics, Beautiful Evidence, envisioning information,\
+\
+2. Visualizers\
+  Allosphere, braun osc\
+\
+3. Visual Networks\
+  a. patching metaphor\
+    HEB, patchage\
+  b. lists\
+   Osculator, Junxion\
+  c. blocks\
+   Integra\
+  d. matrix\
+   EagenMatrix (based on Arp Synth)\
+\
+4. Visualization of Mapping networks\
+  Vzmapper, MPG care package, Inclusive interconnections\
+\
+X. Networkds\
+  a. Modularity, standards\
+    Jamoma, Hunt\
+  \
+  OSC bonjour, senseworld data network\
+\
+cited elsewhere\
+  Malloch, OSC, hunt\
+\
+else,\
+  disembodied performance xxx, mpg care pachage, gdif\
+\
+\
+
+\b Methodology
+\b0 \
+\
+  The project will begin by reviewing previous work in visualized mapping interfaces [vizmapper] [inclusive] [libmapper] [MPG] [Junxion] [osculator], with special attention paid to visual features displaying the state of the system. Other connection based interfaces [patchage] [integra] [jamoma] are to also be reviewed for effective visual features.\
+  The interface is to be built upon libmapper's 
+\i Webmapper
+\i0  GUI. Webmapper is an internet browser based extension for the libmapper library created at iDMIL by Stephen Sinclair. The user interaction (front-end) of the application operates upon javascript and HTML5 while the back end communicates with the libmapper protocol using python.\
+  Currently the interface is parameter list and connection system as in [junxion]. Extensions to the overall interface are to be designed in javascript using the d3(car) visualization library. They will include options for patching matrices, grouped devices, and edge bundling [HEB], always keeping in mind flexibility. What may be a good arrangement for certain networks may be overcomplicated, obscure or confusing for others. The power of configuration will be given to the user.\
+  Within these visualization schemes, signal and device attributes such as spacial position, update rate and device type can be correlated to visual parameters like size, color, line-weight and position of objects. The goal is to create a sort of "meta-mapper," wherein users are free to connect device and signal features with visual properties as best suited to their network and creative style.\
+  A final goal is to provide users with a statistical snapshot of signals if desired. Techniques from [tufte], most notably sparklines, can quickly communicate basic signal information.\
+\
+Better Enumerate! List, space (force, other mapping), Circle, Matrix\
+Javascript, webmapper, html5, d3\
+\
+Mouse over, statistics of signal, sparklines, \
+\
+sparklines [beautiful evidence]\
+\
+patching metaphor\
+\
+\
+
+\b Contributions\
+\
+  \
+  
+\b0 \
+  \
+\
+\
+\
+  }

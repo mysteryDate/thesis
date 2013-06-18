@@ -1,0 +1,395 @@
+\chapter{Upsampling Mobile LiDAR Data}
+
+With the registration of LiDAR and camera images established, we now can use both data more efficiently. The images provide abundant visual information with high resolution while LiDAR data provide 3D information with low resolution. Accurate registration makes a sensor fusion approach possible, which takes strength from each data source to overcome their limitations.
+
+``NAVTEQ TRUE" mobile mapping system employs an expensive laser (Velodyne HDL-64E~\cite {velodyne-url}) at the price of \$75k, which produces 1.3 million points per second. However, average lasers such as SICK~\cite {sick-url} produces around 6000 points per second, but costs only \$6k. From a geometric point of view, sparse LiDAR point clouds are not sufficient to represent the scene. We seek dense point clouds that contain the detailed geometric information, and can better represent the structure of the scene, which is valuable for 3D modeling. Meanwhile, high resolution depth maps are useful in many computer vision applications \cite{Dolson10}, $e.g.,$ a depth map at the resolution of a camera image simplifies image segmentation. The question now is can we use more accessible sensors such as low-cost lasers to produce dense point clouds in place of expensive lasers? 
+
+In this Chapter, we explore a {\it virtual sensor} concept: taking readings from a low-cost sensor (sparse LiDAR points) to interpolate dense LiDAR points in place of an expensive sensor. We address the problem of upsampling mobile LiDAR data using panoramic images collected from ``NAVTEQ TRUE". We use the original LiDAR data as ground truth, and then subsample them into sparse points which are used as input for the interpolation. The proposed approach differs from existing methods \cite{Torres-Mendez02, Diebel05anapplication, Andreasson06, yang07, Garro09, Dolson10} in the following aspects: First, we consider point visibility with respect to a given viewpoint, and use only visible points for interpolation; second, we present a depth map based visibility computation method; third, we present ray casting methods for upsampling mobile LiDAR data incorporating constraints from color information of spherical images. The experiments show the effectiveness of the proposed approach.
+
+\section{Introduction}
+
+There are various ways to measure depth. For instance, stereo vision aims at creating depth maps at the resolution of a camera image from two or more images. This method is known to be quite fragile in practice due to the difficulty of establishing correct correspondence in cases of sparse texture or occlusion in the images. Laser range cameras can generate accurate and dense 3D points reliably but the resolution of a range image is normally much lower than that of a camera image. Due to the nature of scanning the scene line by line, laser range cameras are not suited for the acquisition of dynamic scenes. Recent new sensors such as time of flight (TOF) cameras can capture a full frame depth at video frame rates. However, the image resolution of such sensors is low and the level of noise is very high \cite{yang07}. 
+
+For high-resolution range data acquisition in outdoor environment, the laser range finder is currently the only viable solution \cite{Dolson10}, such as the Velodyne laser scanner ~\cite {velodyne-url} used in the ``NAVTEQ TRUE". Other sensors such as flash LiDARs do not work in bright sunlight or at long distances \cite{Dolson10}.
+
+Outdoor environments are more challenging than well-controlled laboratory environments. Figure \ref{fig:C6:problems} shows a typical scene in an urban environment and its related problems.  
+
+\begin{figure}[H]
+\centering
+\includegraphics[width= 0.8\textwidth]{figures/C6/problems.jpg} \\
+\caption{See-through problem and invalid LiDAR points returned from building interior} 
+\label{fig:C6:problems}
+\end{figure}
+
+In Figure \ref{fig:C6:problems}, the Figures $a$ and $b$ show the image and LiDAR data viewed from the same viewpoint respectively. One can clearly see the side face of the building from the LiDAR data in Figure b which are not visible in the corresponding intensity image in Figure a \footnote{Recall that LiDAR data are acquired from multiple viewpoints and integrated into a single point cloud via geo-referencing}. The reason is that LiDAR data are sparse and one can see occluded objects through the gaps in the LiDAR points. Upsampling this type of LiDAR data is problematic for any of the existing upsampling methods. The second problem arises from the extraneous LiDAR points returned from the building interior. In urban settings, windows without curtains often return signals from the interior. Figure c shows a top-down view of the same building of Figure b. One can clearly see the LiDAR points as indicated by the red arrows. 
+
+We thus propose a new upsampling method which effectively deals with these problems by considering point visibility information, and introduce a new interpolation scheme that computes interpolated points using a ray-casting method. 
+
+\section{The Method} 
+ 
+We focus on man-made large-scale outdoor environments. The first step is to generate a depth map using a Quadrilateralized Spherical Cube mapping \cite{ChanNeill75}. Based on this, point visibility with respect to a given viewpoint can be computed. All visible points are then projected onto the images. For interpolation using a ray-casting scheme, we present two methods. The first one is to compute the interpolated points using ray-plane intersections incorporating constraints from color information of spherical images. The second is to compute interpolated points using ray-triangle intersections without the use of color information. Each of these methods is explained in greater detail in the following sections. 
+
+\subsection{Quadrilateralized Spherical Cube}
+
+The data collected by ``NAVTEQ TRUE" is from outdoor real world environments, and the LiDAR data are registered with the spherical panoramas. To generate depth maps for the data collected from the
+rotating 360$^\circ$ Velodyne laser, we need a projection which can  preserve photometric integrity, and provide equal “attention” to every direction of view. The desired projection also does not produce singularities at the poles or elsewhere, a problem with alternative mappings ($e.g.,$  cylindrical equal area projection and plate carrée projection). The Quadrilateralized Spherical Cube (QSC), developed in \cite{ChanNeill75}, is an ideal projection that satisfy these requirements. It is an equal-area projection for mapping data collected on a spherical surface using a curvilinear projection ~\cite {qsc-url}. 
+
+\subsection{Depth Map Generation}
+
+According to ~\cite{qsc-url}, we start by dividing the sphere (representing directions of view) into $6$ equal areas which correspond to the faces of an inscribed cube with vertices $|x| = |y| = |z|$. Then each face of the cube is further divided into roughly squared bins, where the number of bins along each slightly curved edge is a power of 2. If the level of hierarchical subdivision is $N$, the number of bins on each face is $2^{2N}$ and the total number of bins is $6*2^{2N}$. To generate depth maps with different resolutions, one can simply choose an appropriate value of $N$ to increase or decrease the size of each bin. In this thesis, we use $N=8$ for generating a high-resolution depth map and $N=5$ for a low resolution one. % An example of $N=3$ is shown in Figure \ref{fig:C6:QSCface}.
+Figure \ref{fig:C6:QSCdepth} shows an example of 6 depth maps generated by QSC mapping. The
+numbers in the lower-right corners are the corresponding face numbers, %indicated in Figure \ref{fig:C6:QSCface},
+ where the number of 5, 2, 3, 1, 4, 0 corresponds to the down, front, right, left, back, and up view, respectively. In the depth maps,
+brighter points indicate a further distance to the camera center and no LiDAR data areas such as sky are rendered as black. 
+For simplicity, we give the mapping equations for the case of $|z| > |x| > |y|$ (other cases are similar). A point on a cube face $(u, v)$ can be represented by
+
+\begin{equation}
+u = \sqrt{1- \frac{|z|}{\sqrt{x^2+y^2+z^2}} - \frac{1}{\sqrt{2+ \frac{y^2}{x^2}}}}, 
+\label{eq:C6:bmappingU}
+\end{equation} 
+
+\begin{equation}
+v =  \frac{12u}{\pi}(\arctan(\frac{y}{x}) - \arcsin(\frac{y}{x\sqrt{2(1+\frac{y^2}{x^2})}}).
+\label{eq:C6:bmappingV}
+\end{equation} 
+
+\begin{figure}[H]
+\centering
+%\subfloat[The 6 faces of the cube in QSC mapping] {\label{fig:C6:QSCface}\includegraphics[width= 0.8\textwidth]{figures/C6/QSCface.jpg}} \\
+\subfloat[An example of 6 depth maps generated by QSC mapping] {\label{fig:C6:QSCdepth}\includegraphics[width= 0.8\textwidth]{figures/C6/QSC_depth.jpg}} 
+\caption{QSC mapping} 
+\label{fig:C6:QSC1}
+\end{figure}
+
+Depth maps are generated at panoramic image locations. All LiDAR points are converted into local coordinates centered at the panoramic image locations and then mapped onto the bins in the six cube faces. If multiple points fall into the same bin, the point with minimum distance to the image location is chosen to represent the depth map. Since the QSC mapping is an equal area projection, the approximate width of each bin $W_i$ mapped by a unit sphere can be computed by Equation \ref{eq:C6:binwidth},
+
+\begin{equation}
+ W_i = \frac{2.0}{N}*\sqrt{\frac{\pi}{6}}.
+\label{eq:C6:binwidth}
+\end{equation} 
+This bin size will be used for adaptive thresholding in later steps. 
+
+Depth maps are assumed to be piecewise-smooth, hence outliers need to be removed before proceeding to visibility computation. LiDAR points falling in each bin are first transformed into depth values by computing their distance to the camera center, and then sorted in ascending order. Starting with the point associated with the minimum depth value, a distance difference histogram is computed with respect to all other points in the bin.  The latter is used to gauge the number of proximal points, based on an adaptive threshold that is the product of $W_i$ and current minimum depth. If the percentage of proximal points is greater than the prescribed threshold ($60\%$ for experiments reported here), then the current minimum depth value is taken as the depth of the current bin.  Otherwise the process is repeated with the next depth value on the list until a suitable candidate is found. This serves to filter spurious points arising from signal noise and bleed through ($e.g.,$ windows). 
+
+\subsection{Visibility Computation}
+
+One way to compute point visibility is to reconstruct a surface and then determine the visibility of each point based on the reconstructed surface (triangular mesh). There are many surface reconstruction algorithms in the computer graphics and computational geometry communities \cite{Hoppe92, Curless96, Bernardini99, Kazhdan06, Fleishman05, Carr01, Amenta04, Dey06}. However, surface reconstruction from noisy point clouds turns out to be a more difficult problem which often requires additional information, such as normals and sufficiently dense point input. Another alternative is to compute visibility of point clouds directly without explicitly reconstructing the underlying surface \cite{Katz07, MTSM10}. Our method belongs to this category. 
+
+The purpose of generating depth maps is to compute visibility information for each LiDAR point. As described in the previous section, the “see-through” points and LiDAR points returned from building interiors make upsampling methods problematic. We will refer to these as outliers. Our solution to this problem is to use only visible LiDAR points with respect to the viewpoint to do the upsampling. We use a smoothness assumption that objects are spatially coherent in any local region to remove outliers. This implies that at a coarse resolution, a majority of samples will correspond to the visible surface, facilitating a consensus estimate.
+In the first step we build a coarse resolution depth map with $N=5$ to divide cube faces. In our experiments, we found this resolution can effectively eliminate LiDAR points returned from the building interior so that a correct depth map can be generated. Then we build a high-resolution cubic map with $N=8$ to record all the points falling into each bin. The visibility assumption rests on the observation that points that are visible in the high resolution map will be within a particular threshold of the depth of the corresponding low resolution bin. Hence visibility is implicitly determined in the high resolution map by eliminating those points in each bin which exceed a prescribed distance threshold. For the experiments reported in this thesis, the latter threshold is proportional to the real size of each bin in 3D space.
+For example, $D_t$ is the distance from a 3D point $t$ to the camera 
+center, the threshold $H_t = D_tW_i$. 
+%However, this threshold is scene dependent ,failed in horizontal objects such as streets as well as building corner. 
+
+Figure \ref{fig:C6:VisibilityC} shows the results of visibility computation. Figure \ref{fig:C6:viewpoint} shows the viewing direction on a Ladybug image, and Figure \ref{fig:C6:visiblePt} the visible points in red without considering the outlier removal. The white circles indicate the locations of anomalies (holes) caused by the outliers. This is corrected in Figure \ref{fig:C6:visiblePtWithOutlierRemoval}, where all the visible facade points are in red color; notice that the side face of the building is invisible as it should be. Figure \ref{fig:C6:VisiblePtTopDownView} is a top-down view of Figure \ref{fig:C6:visiblePtWithOutlierRemoval} which shows that
+all the visible points are in red color and invisible points are in the original color. 
+
+\begin{figure}[H]
+\centering
+\subfloat[] {\label{fig:C6:viewpoint}\includegraphics[width= 0.45\textwidth]{figures/C6/viewpoint.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:visiblePt}\includegraphics[width= 0.45\textwidth]{figures/C6/visiblePt.jpg}} \\
+\subfloat[] {\label{fig:C6:visiblePtWithOutlierRemoval}\includegraphics[width= 0.45\textwidth]{figures/C6/visiblePtWithOutlierRemoval.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:VisiblePtTopDownView}\includegraphics[width= 0.45\textwidth]{figures/C6/VisiblePtTopDownView.jpg}} \\
+
+\caption{Visibility computations} {(a) The viewing direction. (b) Visible points (red color) without considering the outlier removal rendered from another viewpoint. (c) Visible points (red color) with the outlier removal rendered from another viewpoint. (d) A top-down view of (c). }
+
+\label{fig:C6:VisibilityC} 
+\end{figure}
+
+\subsection{Interpolation}
+
+We use all the visible points with respect to a given viewpoint for interpolating LiDAR points and present two methods: ray-plane and ray-triangle intersection. 
+
+{\it Ray-Plane Intersection} To incorporate color information from camera images, we first process the image with an efficient graph-based segmentation algorithm \cite{Felzenszwalb04} to identify the main surfaces of the scene. All the visible points with respect to the viewpoint are then projected onto the segmented image. We localize all the projected points in terms of each segmented region, and then trace all the projected points back to 3D space. A robust RANSAC plane fitting algorithm \cite{Fischler87} is then applied to obtain the plane equation. Here the underlying assumption is that each segmented region corresponds to a local planar region in 3D space which is reasonable for man-made objects such as buildings, signs, roads, or walls. For each pixel in the segmented region, we compute a 3D line vector in 3D space passing through the camera center. The corresponding 3D point must be located along this line and can be computed from the intersection of this 3D line with the corresponding 3D plane. In addition, the point density for each region (\#3D points / \#pixels) is computed and used to inhibit interpolation for small data samples.  
+
+{\it Ray-Triangle Intersection} Here we first project all the visible points onto the image and record the pairing relationship between every projected 2D point and its corresponding 3D point. Then a 2D Delaunay Triangulation (DT) is constructed by using all the projected points. Since the DT results in a convex full polygon, redundant triangles must be eliminated for further processing. For instance, some triangles are composed of points from different objects, $e.g.,$ points 
+from two separated buildings or one point from a building and other from a tree at a distance etc. Such triangles are normally large in perimeter and meaningless in terms of the interpolation because of no  objects within these triangles, which need to be eliminated. We use a statistical measure to automatically
+select a threshold to eliminate such large triangles. An average perimeter of all the triangles in 3D is selected as a criterion to eliminate redundant 2D triangles. This threshold can be also altered by multiplying a coefficient to the average parameter
+($e.g.,$ 1/2, 3) to adjust the interpolation. Due to the perspective distortion, the average perimeter of all the 2D triangles is not a good choice because a small 2D triangle may come from a large triangle in 3D space due to the perspective projection. We compute the average perimeter in 3D space using all the corresponding 3D triangles instead of the 2D's. Because of the recorded pairing relationship between 2D and 3D triangles, we can easily compute the average perimeter using the corresponding 3D triangles. Thus we avoid the perspective distortion and the average perimeter of the triangles is perspective invariant which represents the real geometry
+correctly. With this criterion, the triangles with perimeters larger than the average are eliminated. Our experiments show that this criterion is effective to eliminate many large triangles. Next step, for each of the remaining 2D triangles, a bounding box is created. In each bounding box, we find image pixels within the 2D triangle using a point in triangle test algorithm. A fast implementation of this algorithm in the 2D case is employed. Finally, for each pixel within the 2D triangle, we compute a 3D line vector in 3D space passing through the camera center. The intersection of the rays with the corresponding 3D triangles will be the interpolated LiDAR points. 
+
+\section{Experiments and Discussion}
+
+The implementation is in C++. All the LiDAR data and panoramic images are in binary format and loaded by using internal libraries. The perspective images are generated using the spherical panoramas, and the code for the graph-based segmentation is from \cite{Felzenszwalb04}. We use an efficient implementation of RANSAC from the Mobile Robot Programming Toolkit ~\cite{mrpt-url}, and the GNU scientific library ~\cite{gnu-url} for linear algebra calculations. We use the Computational Geometry Algorithms Library (CGAL) ~\cite{cgal-url} for the implementation of Delaunay Triangulation.  
+
+We evaluated our algorithm on four data sets as shown in Figure \ref{fig:C6:data}. The original LiDAR data is subsampled to 1.56\% of the original set by using the LiDAR points from a single laser instead of the 64 laser array, or 10\% depending on the fact that the sparse LiDAR points should be able to represent a certain level of detail of the objects. Another benefit of using the data from a single laser is that it avoids the intra-calibration errors of the Velodyne HDL-64E sensor. The original LiDAR data excluding the subsampled points are used as ground truth. The first row in Figure \ref{fig:C6:data} shows the original LiDAR data in which one can clearly see the “see-through” points. The second shows the corresponding spherical images. Note that since the data are collected from a ground based acquisition system, to render a complete facade image, the viewing directions have to be pointing from bottom to top.  
+
+The interpolated points may be a good estimate of the actual LiDAR data or they might deviate substantially from the true value. A confidence measure for the correctness of the interpolation is desired. To evaluate the results quantitatively, we build a KD tree using the original LiDAR data excluding the subsampled points. For each interpolated point, we query its nearest neighbor point from the KD tree and then compute its distance. We use proximity to the nearest LiDAR data as a confidence measure. If an interpolated point is close to a point where a real LiDAR measurement is available, we consider this interpolation more reliable.  
+
+\begin{figure}[H]
+\centering
+\subfloat[] {\label{fig:C6:data1_lidar}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_lidar.jpg}} 
+\subfloat[] {\label{fig:C6:data2_lidar}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_lidar.jpg}} 
+\subfloat[] {\label{fig:C6:data3_lidar}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_lidar.jpg}} 
+\subfloat[] {\label{fig:C6:data4_lidar}\includegraphics[width= 0.22\textwidth]{figures/C6/data4_lidar}} \\
+
+\subfloat[] {\label{fig:C6:data1_ladybug}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_ladybug}} 
+\subfloat[] {\label{fig:C6:data2_ladybug}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_ladybug.jpg}} 
+\subfloat[] {\label{fig:C6:data3_ladybug}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_ladybug.jpg}} 
+\subfloat[] {\label{fig:C6:data4_ladybug}\includegraphics[width= 0.22\textwidth]{figures/C6/data4_ladybug.jpg}} \\
+
+\caption{Test Data} {(top row) are original LiDAR data; (bottom row) are corresponding spherical images}
+\label{fig:C6:data}
+\end{figure}
+
+\subsection{Experimental Results}
+
+Figure \ref{fig:C6:ItrResults} and \ref{fig:C6:ItrResults1}
+show the experimental results. In Figure \ref{fig:C6:ItrResults},  Column 1 shows the subsampled LiDAR points and segmentation of the corresponding spherical images; Column 2 shows the interpolated results; Column 3 shows the visualization of the confidence measure; and Column 4 shows the synthesized views. Rows 1, 3, and 5 show the results from Ray-Plane Intersection (RP), and the rows 2, 4, and 6 show the results from Ray-Triangle Intersection (RT). The RP interpolation uses color information from the segmented spherical images, while the RT interpolation does not use color information. From the results in Figure \ref{fig:C6:ItrResults}, we can see that accurate geometric information is preserved in the interpolated points by using RP method. This is evident in the building corner in Figure \ref{fig:C6:lidar1Itr}, and the flag pole on the top of the building in Figure \ref{fig:C6:lidar3Itr}. Some windows leave holes in the interpolated points since the interpolation is constrained by the point density. The point density in window areas is tricky. Windows with curtains have LiDAR points while those without curtains often leave holes on the facade. The point density is also related to the segmentation results. Without the use of color information, the interpolation is constrained by the perimeter of the triangles. The areas of the building corner in Figure \ref{fig:C6:lidar1RT} and the flag pole in Figure \ref{fig:C6:lidar3RT} are erroneous.  Figure \ref{fig:C6:lidar1} shows the input LiDAR point clouds subsampled to 10\% of the original one, Figure \ref{fig:C6:lidar1Itr} shows the interpolated points, Figure \ref{fig:C6:lidar1CM} shows the confidence measure of the interpolated points, and Figure \ref{fig:C6:lidar1Textured} shows the synthesized view. 
+Figure \ref{fig:C6:ItrResults1} shows the interpolation on the data of a street scene using the RT method. In general, the RT method works well for general scene compared with the RP method, but is dependent on the density of the LiDAR data. Because the RT method does not use any color information, it works well when the original LiDAR data can approximate the geometry of the scene, namely the original LiDAR points can not be too sparse. This is the reason that we use a 10\% of the original data instead of  1.56\% in the experiment indicated by Figure \ref{fig:C6:ItrResults1}. The RT method is error-prone when the input LiDAR data is too sparse as shown in Figures \ref{fig:C6:lidar1RT} and \ref{fig:C6:lidar3RT}.    
+
+\begin{figure}[H]
+\centering
+\subfloat[] {\label{fig:C6:lidar1}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_subsampled.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar1Itr}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_subsampled_itr.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar1CM}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_subsampled_itr_CM.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar1Textured}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_subsampled_itr_textured.jpg}} \\
+
+\subfloat[] {\label{fig:C6:lidar1Seg}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_seg.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar1RT}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_seg_itr.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar1RTCM}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_seg_itr_CM.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar1RTTextured}\includegraphics[width= 0.22\textwidth]{figures/C6/data1_seg_itr_textured.jpg}} \\
+
+\subfloat[] {\label{fig:C6:lidar2}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_subsampled.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar2Itr}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_subsampled_itr.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar2CM}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_subsampled_itr_CM.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar2Textured}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_subsampled_itr_textured.jpg}} \\
+
+\subfloat[] {\label{fig:C6:lidar2Seg}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_seg.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar2RT}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_seg_itr.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar2RTCM}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_seg_itr_CM.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar2RTTextured}\includegraphics[width= 0.22\textwidth]{figures/C6/data2_seg_itr_textured.jpg}} \\
+
+\subfloat[] {\label{fig:C6:lidar3}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_subsampled.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar3Itr}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_subsampled_itr.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar3CM}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_subsampled_itr_CM.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar3Textured}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_subsampled_itr_textured.jpg}} \\
+
+\subfloat[] {\label{fig:C6:lidar3Seg}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_seg.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar3RT}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_seg_itr.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar3RTCM}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_seg_itr_CM.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar3RTTextured}\includegraphics[width= 0.22\textwidth]{figures/C6/data3_seg_itr_textured.jpg}} \\
+
+\caption{Experimental results} {Column 1, Subsampled LiDAR data followed by segmentation of the corresponding spherical images; Column 2,
+Interpolated LiDAR points and corresponding close up of the scene; Column 3, Visualization of the confidence measure; Column 4, Synthesized views.} 
+
+\label{fig:C6:ItrResults}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat[] {\label{fig:C6:lidar4}\includegraphics[width= 0.42\textwidth]{figures/C6/data4_subsampled.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar4Itr}\includegraphics[width= 0.42\textwidth]{figures/C6/data4_subsampled_itr.jpg}} 
+\hspace{.1in} \\
+\subfloat[] {\label{fig:C6:lidar4CM}\includegraphics[width= 0.42\textwidth]{figures/C6/data4_sub_itr_CM.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:lidar4Textured}\includegraphics[width= 0.42\textwidth]{figures/C6/data4_sub_itr_textured.jpg}} \\
+
+\subfloat[] {\label{fig:C6:data4closeup}\includegraphics[width= 0.45\textwidth]{figures/C6/data4_closeup.jpg}} 
+
+\caption{Experimental results} 
+\label{fig:C6:ItrResults1}
+\end{figure}
+
+For the confidence measure in Column 3 of Figure \ref{fig:C6:ItrResults} and Figure \ref{fig:C6:lidar4CM}, the dark points mean the interpolations are close to the real LiDAR data. The bright points mean the interpolations deviate from the actual data. The most deviations occur around window areas, where the interpolated points fill up the windows, most of which are holes in the real LiDAR data. For all the interpolated points, a mean $m$ and a standard deviation $\delta$ of the distances are computed to measure the quality of the interpolation. The ratio of outliers for different thresholds (0.2, 0.4, 0.6, 0.8 meters) are also computed as listed in Table  \ref{table:C5:tableMS} and \ref{table:C5:tableOutliers}. In general, the RP method performs better than the RT method in a scene containing many planar structures. The RP method has smaller mean and standard deviations.  
+
+\begin{table}
+\centering
+\Tcaption{Results from the experiments}
+\begin{tabular}{|c| c| c|c|}
+\hline
+Input Data & Methods & mean (m) & standard deviation (m) \\
+\hline
+1.56 \% of the Data 1 &  RP & 0.085 & 0.08\\
+                                &  RT & 0.089 & 0.71 \\  \cline{1-4}
+1.56 \% of the Data 2 &  RP & 0.085 & 0.09\\
+                                &  RT & 0.13 & 0.1 \\  \cline{1-4}
+10 \% of the Data 3    &  RP & 0.096 & 0.13\\
+                                &  RT & 0.101 & 0.25 \\  \cline{1-4}
+10 \% of the Data 4    & RT  & 0.035 & 0.067 \\  
+\hline
+\end{tabular}
+\label{table:C5:tableMS}
+\end{table}
+
+\begin{table}
+\centering
+\Tcaption{Statistics of outliers from the experiments}
+\begin{tabular}{|c|c| c| c|c|c|}
+\hline
+Input Data & Methods & 0.2 & 0.4 & 0.6 & 0.8 \\
+\hline
+1.56 \% of the Data 1 &  RP & 0.12 & 0.005 &0.0001 &0.0000 \\
+                                &  RT & 0.09 & 0.03 &0.02 &0.01 \\  \cline{1-6}
+1.56 \% of the Data 2 &  RP &0.1 & 0.01 &0.002 &0.001\\
+                                &  RT & 0.19 & 0.07 &0.02 &0.004 \\  \cline{1-6}
+10 \% of the Data 3    &  RP & 0.1 & 0.03 &0.01 &0.008\\
+                                &  RT & 0.12 & 0.03 &0.01 &0.008 \\  \cline{1-6}
+10 \% of the Data 4    &  RT &  0.013 & 0.004 &0.002 &0.0009 \\ 
+\hline
+\end{tabular}
+\label{table:C5:tableOutliers}
+\end{table}
+
+Clearly, with the use of color information from spherical images (RP method), the accuracy of the upsampled points for the building facades are greatly improved compared with the one without the use of color information (RT method).   
+
+\subsection{Limitations}
+
+There are limitations in the current implementation of the approach.  
+
+{\it Planar Structure Assumption} It is hard to have a flexible model with many degrees of freedom that is completely general. In the ray-plane intersection method, we employ a planar structure assumption that each segmented region corresponds to a planar structure in 3D space. Since most urban objects and indoor environments are locally planar, such as most of the buildings, roads, signs, and walls, this assumption is reasonable for urban or indoor environments. For buildings with complicated shapes, the planar structure assumption can still be a first-order approximation of an arbitrary surface. In the RT method, we do not use any assumption or color information. This method achieves better interpolation accuracy in the case where the input is comprised of relatively dense LiDAR points, and works better than RP method when the planar structure assumption is violated. 
+
+{\it Gaps in Depth Map} Depth maps are generated in this thesis using a Quadrilateralized Spherical Cube mapping which projects all LiDAR points onto six cube faces. This mapping will lead to gaps in horizontal objects such as roads in the depth map since the data are collected at street level. The camera, which is the projection center in the depth map generation, sits just above the ground at a couple of meters. The visibility computation is also based on this representation.  Figure \ref{fig:C6:data4closeup} shows the textured interpolated points using the RT method. Note that the dark gaps along the street are curved strips because of the curvilinear projection, and would be straight strips under perspective projection.
+Our method also requires an accurate registration between LiDAR and images. Misalignment will lead to artifacts and errors in the interpolated points. 
+
+\section{Window Detection Revisited}
+
+With the virtual sensor implemented in this chapter, we revisit the window detection problem. In Chapter 4, we simulated the characteristics of typical low-cost lasers by sub-sampling Navteq True LiDAR data, and our window detection algorithm could not extract correct windows from such sparse LiDAR data. In this section, we propose a methodology to validate the {\it virtual sensor} concept, and show the strengths and limitations of the approach in terms of the window detection. 
+
+\subsection{Methodology}
+
+First, we sub-sample Navteq True LiDAR data to simulate the performance of off-the-shelf sensors as described in Section 4.4.2. Then we detect facades in each subsampled data indicated by the first row of Figure \ref{fig:C4:Simulated_Experiments}, and upsample the detected facades using both RT and RP methods. Without the loss of generality, here we choose the 1/5 subsampled data as an example to explain the methodology. Both RT and RP methods result in a very dense point clouds with a resolution the same as the spherical image's. For the RT method, we first establish a volumetric representation for the interpolated point clouds from facades to evaluate window profile histograms.  We analyze the histograms experimentally by choosing different voxel sizes in this 3D grid structure: $0.1\times0.1\times0.1$ meters (see Figure \ref{fig:C6:itrH01} and \ref{fig:C6:itrV01}) and $0.05\times0.05\times0.05$ meters (see Figure \ref{fig:C6:itrH005} and \ref{fig:C6:itrV005}). The window profile histograms generated with a voxel size of $0.05\times0.05\times0.05$ are oversampled as indicated by Figure \ref{fig:C6:itrH005} and \ref{fig:C6:itrV005}, making it somewhat difficult to determine window locations. With a voxel size of $0.1\times0.1\times0.1$ to establish the 3D grid and window profile histograms, the results shown in Figure \ref{fig:C6:itrH01} and \ref{fig:C6:itrV01} are obtained and show strong signatures for window locations. With the algorithm of determining window locations described in Chapter 4, windows can be correctly extracted as shown in Figure \ref {fig:C6:Simulated_Experiments I}.
+
+The previous window detection algorithm fails on the subsampled data due to an insufficient number of available neighborhood points around window edges, $i.e.,$ the potential window point detection operator fails. Without this operator, we still can generate window profile histograms using all the LiDAR points as shown in Figure \ref{fig:C6:sparse1_5H} and \ref{fig:C6:sparse1_5V}. But Figure \ref{fig:C6:sparse1_5H} shows a weak signature for window locations as indicated by the red dashed line. A proper threshold can not be found to determine the window locations due to the noisy LiDAR data. This is also the reason that we employ a two-step approach to determine window locations in our previous method, and generate window profile histograms using all the potential window points. 
+
+The RT method requires a relatively dense point clouds. In our case, we successfully extracted windows from interpolated data
+from a up to 1/5 of the original Velodyne data. For a very sparse
+LiDAR data such as the 1.56\% of the original data shown in 
+Figure \ref{fig:C6:lidar1}, the interpolation seriously distorted the 
+geometry of the point clouds as shown in Figure \ref{fig:C6:lidar1RT} due to a linear interpolation without the use of color information from images. All the windows are not differentiable. As described previously, we also can adjust the interpolation by altering the threshold by multiplying a coefficient to the average perimeter. Figure \ref {fig:C6:Simulated_Experiments I_} shows the RT interpolation result by a smaller perimeter threshold than the one used in Figure \ref{fig:C6:lidar1RT}. Note without the viewpoint constraint of images, we can render the point clouds  from anther viewpoint. Figure \ref{fig:C6:sparse_ori} shows the sub-sampled sparse LiDAR data (1.56\%) rendered from another viewpoint, and Figure \ref{fig:C6:sparse_itr} shows the corresponding interpolation result. Note the shapes of some windows are distorted and others are filled by the interpolated points. It is impossible to detect windows correctly from such interpolated data. 
+
+For the RP method, we use the point density for each region (\#3D points / \#pixels) to inhibit interpolation for small data samples such as windows. Figure \ref{fig:C6:LB} shows the spherical image of the building facade. We use the state-of-the-art graph-based segmentation \cite{Felzenszwalb04} to segment 
+the image into different regions as shown in Figure \ref{fig:C6:3}. With the help of the image segmentation, we achieved better interpolations as shown in Figure \ref{fig:C6:33}.
+However, the appearance of the image is complex, especially windows. For instance, windows with or without curtains, illumination change, and strong reflection of sunlight make similar windows have different appearances. Although we use the state-of-the-art graph-based segmentation \cite{Felzenszwalb04}, the segmented results are still not as desired. There are three parameters in the graph-based segmentation: sigma which is used to smooth the input image before segmenting it, k which is a value for the threshold function, and min which is the minimum component size enforced by post-processing. Larger values for k cause larger components in the result (see the paper \cite{Felzenszwalb04} for details). Different parameters and thresholds of density cause different segmentations and interpolations. Due to the accuracy of the segmentation, the interpolation based on such segmented map produces the horizontal window profile histogram (see Figure \ref{fig:C6:sparse_RPH}) and vertical one (see Figure \ref{fig:C6:sparse_RPV}), which do not show strong signatures
+of windows. One problem is the window crossbars. The segmentation algorithm separates these window crossbars from
+windows. In the sparse LiDAR data, the potential window point
+detection algorithm fails. The points from window crossbars are treated as window points. Since the size of the window crossbars is small, the point density is relatively large. The interpolation takes place and causes the problem in the window profile histograms. Another problem is that the segmentation algorithm segments partial or entire windows into facade regions, which makes interpolation inaccurate. The different thresholds for the point density will result in different interpolations, and the differences mainly on window areas. 
+Namely, windows are either interpolated with the interpolated points filling up entire windows, or not interpolated with holes. Figure 
+\ref{fig:C6:33} and \ref{fig:C6:lidar1Itr} show the results with different thresholds for the interpolations.
+
+  
+\begin{figure}[H]
+\centering
+\subfloat[Horizontal window profile histogram from $1/5$ sub-sampled data] {\label{fig:C6:sparse1_5H}\includegraphics[width= 0.40\textwidth]{figures/C6/sparseH_1_5.jpg}} 
+\hspace{.1in}
+\subfloat[Vertical window profile histogram from $1/5$ sub-sampled data] {\label{fig:C6:sparse1_5V}\includegraphics[width= 0.40\textwidth]{figures/C6/sparseV_1_5.jpg}} \\
+\subfloat[Horizontal window profile histogram from interpolated data by a 0.1m sampling rate] {\label{fig:C6:itrH01}\includegraphics[width= 0.40\textwidth]{figures/C6/itr_H_01.jpg}} 
+\hspace{.1in}
+\subfloat[Vertical window profile histogram from interpolated data by a 0.1m sampling rate] {\label{fig:C6:itrV01}\includegraphics[width= 0.40\textwidth]{figures/C6/itr_V_01.jpg}} \\
+\subfloat[Horizontal window profile histogram from interpolated data by a 0.05m sampling rate] {\label{fig:C6:itrH005}\includegraphics[width= 0.40\textwidth]{figures/C6/itr_H_005.jpg}} 
+\hspace{.1in}
+\subfloat[Vertical window profile histogram from interpolated data by a 0.05m sampling rate] {\label{fig:C6:itrV005}\includegraphics[width= 0.40\textwidth]{figures/C6/itr_V_005.jpg}} 
+\caption{Window profile histogram analysis} 
+\label{fig:C6:ItrHist}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat[Horizontal window profile histogram] {\label{fig:C6:sparse_RPH}\includegraphics[width= 0.40\textwidth]{figures/C6/RP_H_hist.jpg}} 
+\hspace{.1in}
+\subfloat[Vertical window profile histogram ] {\label{fig:C6:sparse_RPV}\includegraphics[width= 0.40\textwidth]{figures/C6/RP_V_hist.jpg}} \\
+\caption{Window profile histogram analysis in the RP method} 
+\label{fig:C6:RPHist}
+\end{figure}
+
+\subsection{Experimental Results}
+
+Given the same input sub-sampled data indicated in the first row of Figure \ref{fig:C4:Simulated_Experiments}, the window detection on the interpolated LiDAR data by the RT method  succeeds as shown in the first raw in Figure \ref{fig:C6:Simulated_Experiments I}. In Figure \ref{fig:C6:Simulated_Experiments I}, the first row shows
+the detected windows from the interpolated LiDAR data, and the
+second raw shows the detected windows overlaid on the corresponding sub-sampled LiDAR data. However, the RT method requires a relatively dense point for the interpolation, $e.g.,$ up to a 1/5 of original LiDAR data as it does not use any color information. Given a sparse LiDAR data, the RT method produces
+very poor results. But the RP method achieves better interpolation
+because of the use of color information from camera images via
+a graph-based segmentation. 
+
+\begin{figure}[H]
+\centering
+\subfloat[Using the interpolated data from a 1/2 of the original] {\label{fig:C6:1_2_itr}\includegraphics[width= 0.22\textwidth]{figures/C6/1_2_success_itr.jpg}} 
+\hspace{.1in}
+\subfloat[Using the interpolated data from a 1/3 of the original] {\label{fig:C6:1_3_itr}\includegraphics[width= 0.22\textwidth]{figures/C6/1_3_success_itr.jpg}} 
+\hspace{.1in}
+\subfloat[Using the interpolated data from a 1/4 of the original] {\label{fig:C6:1_4_itr}\includegraphics[width= 0.22\textwidth]{figures/C6/1_4_success_itr.jpg}} 
+\hspace{.1in}
+\subfloat[Using the interpolated data from a 1/5 of the original] {\label{fig:C6:1_5_itr}\includegraphics[width= 0.22\textwidth]{figures/C6/1_5_success_itr.jpg}} \\
+
+\subfloat[] {\label{fig:C6:1_2_S}\includegraphics[width= 0.22\textwidth]{figures/C6/1_2_success.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:1_3_S}\includegraphics[width= 0.22\textwidth]{figures/C6/1_3_success.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:1_4_S}\includegraphics[width= 0.22\textwidth]{figures/C6/1_4_success.jpg}} 
+\hspace{.1in}
+\subfloat[] {\label{fig:C6:1_5_S}\includegraphics[width= 0.22\textwidth]{figures/C6/1_5_success.jpg}} \\
+
+\caption{Simulated experiment I} {(the first row) shows detected windows from the interpolated LiDAR data; (the second row) shows detected windows overlaid on the sub-sampled LiDAR data.
+}
+\label{fig:C6:Simulated_Experiments I}
+\end{figure} 
+
+
+\begin{figure}[H]
+\centering
+\subfloat[A 1.56\% sample of the original data rendered from another view] {\label{fig:C6:sparse_ori}\includegraphics[width= 0.3\textwidth]{figures/C6/sparseAnotherView.jpg}} 
+\hspace{.1in}
+\subfloat[The interpolation result] {\label{fig:C6:sparse_itr}\includegraphics[width= 0.3\textwidth]{figures/C6/sparseAnotherView_itr.jpg}} 
+\caption{Experiments on a very sparse LiDAR data using the RT method} 
+\label{fig:C6:Simulated_Experiments I_}
+\end{figure} 
+
+For the RP method, we sub-sampled the LiDAR into a very sparse point clouds (1.56\% of the original one) because we can use the image to inform on the location of continuous surface patches. However, the interpolation depends on the quality of segmentation and the criterion of the point density. Based on these two factors, some windows may be filled by the interpolated LiDAR points, and others may leave holes as shown in Figure \ref{fig:C6:SE_RP}, which shows much better results than the RT method. But in terms of window detection, the interpolated data from the RP method is still limited due to  imperfect segmentation results.
+
+\begin{figure}[H]
+\centering
+\subfloat[Spherical image] {\label{fig:C6:LB}\includegraphics[width= 0.3\textwidth]{figures/C6/LB.jpg}} 
+%\subfloat[] {\label{fig:C6:1}\includegraphics[width= 0.3\textwidth]{figures/C6/itr1_seg.jpg}} 
+\hspace{.1in}
+\subfloat[Segmentation] {\label{fig:C6:3}\includegraphics[width= 0.3\textwidth]{figures/C6/itr3_seg.jpg}} 
+\hspace{.1in}
+%\subfloat[] {\label{fig:C6:4}\includegraphics[width= 0.3\textwidth]{figures/C6/itr4_seg.jpg}} \\
+%\subfloat[] {\label{fig:C6:11}\includegraphics[width= 0.3\textwidth]{figures/C6/itr1.jpg}} 
+\subfloat[Interpolation] {\label{fig:C6:33}\includegraphics[width= 0.3\textwidth]{figures/C6/itr3.jpg}} \\
+%\hspace{.1in}
+%\subfloat[] {\label{fig:C6:44}\includegraphics[width= 0.3\textwidth]{figures/C6/itr4.jpg}} \\
+\caption{Simulated experiments II} 
+\label{fig:C6:SE_RP}
+\end{figure} 
+
+\section{Conclusions}
+
+We present a new upsampling method for mobile LiDAR data. To the best of our knowledge, our method is the first example that considers point visibility and uses a ray casting scheme for upsampling mobile LiDAR data using spherical panoramas. The input is a set of sparse LiDAR points and their corresponding spherical images, with a dense point set as output.  Although the algorithm is designed for mobile LiDAR data, it is sufficiently general to apply to more generic range data with similar constraints.  
+ 
+We validate the {\it virtual sensor} concept in the context of window detection from interpolated LiDAR data. The window
+detection algorithm described in Chapter 4 clearly fails on LiDAR data that simulates the characteristics of typical low-cost lasers. However, with the RT method, the window detection
+is successful on the interpolated LiDAR data from a up to 1/5 
+of the original data. The interpolation on sparse LiDAR data using
+the RT method is very poor as it does not use any color information from images. With the RP method, we can effectively 
+upsample more sparse LiDAR, and achieve better results than the
+RT method. But the interpolated data is still limited in terms of window detection as proper image segmentations are very hard to achieve. Further research is needed to address better segmentation algorithms or use color information more effectively.  
+
+In essence, we answer the question in Section 1.4: With certain resolution $e.g.,$ up to
+1/5 of Navteq True, with the RT method, the virtual sensor achieves better performance than the real sensor in the context of window detection; With a very sparse LiDAR data $e.g.,$
+1.56\% of the original one, the RP method achieves better interpolation results than the RT method. Future work is identified to improve the segmentation results for a better interpolation so that window detection on interpolated data from sparse LiDAR data will be feasible.
+
+
+
+
+

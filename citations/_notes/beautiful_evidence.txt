@@ -1,0 +1,10 @@
+Page 9: "the point of evidence displays is to assist the thinking of the producer and consumer alike"
+
+page 48: "A single word of 6 or 7 letters, the average English word length, makes 100 to 1,000 visual distinctions. Why not also construct empty{data graphics} that work at the resolution of routine typography? Thus the idea of sparklines: small, intense, wordlike graphics."
+
+Page 49: crazy idea with chinese characters, emoticons?
+
+Page 50: "The idea is to be approximately right rather than exactly wrong"
+ "The resolving power of the eye enables it to differentiate to 0.1 mm where provoked to do so." (D.P. Bickmore, "The relevance of Cartography")
+
+Page 53: Lots of scientific papers are low res, high res is 200 numbers per square centimeter, and helps describe big data sets. Also great sorting algorithm picture
