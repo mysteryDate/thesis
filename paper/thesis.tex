@@ -9,7 +9,8 @@
 \usepackage[ampersand]{easylist}
 
 % Aaron's Packages
-\usepackage{Style/ichago}   %
+\usepackage{Style/ichago} 
+\usepackage{url}
 
 % Custom packages
 \usepackage[first]{Style/datestamp}			% Datestamp on first page of each chapter
@@ -141,9 +142,10 @@ There are some things I should probably pre-face, certainly not reface.
 
 %========== Bibliography
 \typeout{}
-\begin{singlespace}
-    \bibliography{../citations/references}
-    \bibliographystyle{ieeetr}
-\end{singlespace}
+%\begin{singlespace}
+    \renewcommand\refname{References}
+    \bibliography{../citations/references,../citations/other_references}
+    \bibliographystyle{Style/ichago}
+%\end{singlespace}
 
 \end{document}
