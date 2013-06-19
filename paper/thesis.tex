@@ -9,6 +9,7 @@
 \usepackage[ampersand]{easylist}
 
 % Aaron's Packages
+\usepackage{Style/ichago}   %
 
 % Custom packages
 \usepackage[first]{Style/datestamp}			% Datestamp on first page of each chapter
@@ -40,19 +41,19 @@
 \author{Aaron Henry Krajeski}
 \date{\Month\ \number\year}
 \organization{%
-  \\[0.2in]
-  \McGillCrest {!}{1in}\\	% McGill University crest
-  \\[0.1in]
-  Department of Music Technology\\
-  Schulich School of Music, McGill University\\
-  Montreal, Canada}
+    \\[0.2in]
+    \McGillCrest {!}{1in}\\	% McGill University crest
+    \\[0.1in]
+    Department of Music Technology\\
+    Schulich School of Music, McGill University\\
+    Montreal, Canada}
 \note{%
-  {\color{red} \hrule height 0.4ex}
-  \vskip 3ex
-  A thesis submitted to McGill University in partial fulfillment of the
-  requirements for the degree of Master of Arts.
-  \vskip 3ex
-  \copyright\ \the\year\ Aaron Henry Krajeski
+    {\color{red} \hrule height 0.4ex}
+    \vskip 3ex
+    A thesis submitted to McGill University in partial fulfillment of the
+    requirements for the degree of Master of Arts.
+    \vskip 3ex
+    \copyright\ \the\year\ Aaron Henry Krajeski
 }
 
 \maketitle
@@ -99,11 +100,11 @@ There are some things I should probably pre-face, certainly not reface.
 \chapter*{List of Acronyms}\markright{List of Terms}
 
 \begin{longtable}{ll}
-  IDMIL	& 	Input Devices for Musical Interaction Laboratory\\ 
-  MVC 	& 	Model View Controller\\
-  DMI 	& 	Digital Musical Instrument\\
-  OSC 	& 	Open Sound Control\\
-  GUI		& 	Graphical User Interface
+    IDMIL	& 	Input Devices for Musical Interaction Laboratory\\ 
+    MVC 	& 	Model View Controller\\
+    DMI 	& 	Digital Musical Instrument\\
+    OSC 	& 	Open Sound Control\\
+    GUI		& 	Graphical User Interface
 \end{longtable}
 
 \cleardoublepage
@@ -141,8 +142,8 @@ There are some things I should probably pre-face, certainly not reface.
 %========== Bibliography
 \typeout{}
 \begin{singlespace}
-  \bibliography{../citations/references}
-  \bibliographystyle{ieeetr}
+    \bibliography{../citations/references}
+    \bibliographystyle{Style/ichago}
 \end{singlespace}
 
 \end{document}
