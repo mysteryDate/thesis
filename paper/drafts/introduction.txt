@@ -1,0 +1,20 @@
+INTRODUCTION
+
+%%%%%%%%%%%
+  (start with some kind of epigraph, maybe Tufte?)
+  cite: maybe Marcelo's paper on mapping, DOT, libmapper
+	look at Joe's 1-3
+	1: separate parts
+S. Mann, “Natural interfaces for musical expression: Physiphones and a physics-based organology,” in Proceedings of the 2007 Conference on New Interfaces for Musical Expression (NIME-07), (New York, USA), pp. 118–123, 2007.
+	2: controller any arbitrary shape
+E. R. Miranda and M. M. Wanderley, New Digital Instruments: Control and Interac- tion Beyond the Keyboard, vol. 21 of The Computer Music and Digital Audio Series. Middleton, Wisconsin, USA: A-R Editions, Inc., 2006.
+	3: mapping
+J. Ryan, “Some remarks on musical instrument design at STEIM,” Contemporary Music Review, vol. 6, no. 1, pp. 3–17, 1991.
+	probably use marcelo's paper instead
+%%%%%%%%%%%
+
+	For the vast majority of human history, a musical instrument was definitively both the physical object with which the musician interacted and the direct source of the sound created: a violin has strings, a saxophone a vibrating reed, and timpani a stiff membrane. 
+
+%\cite{Chadabe, Joel (February 2000), The Electronic Century Part I: Beginnings, Electronic Musician, pp. 74–90}
+
+	What are useful features of a graphical interface for musical mapping?
