@@ -27,32 +27,40 @@ Though it may not be possible to find a perfect solution to all of the above que
 
 \section{Context and Motivation}
 
-libmapper was created at the Input Devices and Music Interaction Laboratory (IDMIL) in response to the challenges of collaborative musical mapping \shortcite{malloch}. As summarized in its website:
+In response to the challenges of collaborative musical mapping, the libmapper protocol was created at the Input Devices and Music Interaction Laboratory (IDMIL) \shortcite{malloch}. The tool is summarized by its website as follows:
 
 \begin{quote} 
-libmapper is an open-source, cross-platform software library for declaring data signals on a shared network and enabling arbitrary connections to be made between them. libmapper creates a distributed mapping system/network, with no central points of failure, the potential for tight collaboration and easy parallelization of media synthesis. The main focus of libmapper development is to provide tools for creating and using systems for interactive control of media synthesis.
-\footnote{\emph{libmapper: a library for connecting things}, \url{libmapper.org} (Last accessed June, 2013)}
+libmapper is an open-source, cross-platform software library for declaring data signals on a shared network and enabling arbitrary connections to be made between them. libmapper creates a distributed mapping system/network, with no central points of failure, the potential for tight collaboration and easy parallelization of media synthesis. The main focus of libmapper development is to provide tools for creating and using systems for interactive control of media synthesis.\footnote{\emph{libmapper: a library for connecting things}, \url{libmapper.org} (Last accessed June, 2013)}
 \end{quote}
 
-In its most basic state, libmapper takes the form of an application programming interface (API). APIs require input in the form of text
+In its most basic state, libmapper takes the form of an application programming interface (API). APIs require input in the form of text. For example, the following portion of code causes a synthesizer to announce itself and start communicating with other devices on a libmapper enabled network \shortcite{malloch}:
 
-\lstset{language=C}
-\begin{lstlisting}
+\begin{figure}[h!]
+\begin{lstlisting}[]
 #include <mapper.h>
 mapper_admin_init();
 my_admin = mapper_admin_new("tester", MAPPER_DEVICE_SYNTH, 8000); 
 mapper_admin_input_add(my_admin, "/test/input","i")) 
 mapper_admin_input_add(my_admin, "/test/another_input","f"))
+
 // Loop until port and identifier ordinal are allocated. 
-while ( !my_admin->port.locked
-|| !my_admin->ordinal.locked )
+while ( !my_admin->port.locked	|| !my_admin->ordinal.locked )
 {
-usleep(10000); // wait 10 ms mapper_admin_poll(my_admin);
+	usleep(10000); // wait 10 ms 
+	mapper_admin_poll(my_admin);
 }
-for (;;) {
-  usleep(10000);
-mapper_admin_poll(my_admin); }
+
+for (;;) 
+{
+	usleep(10000);
+	mapper_admin_poll(my_admin); 
+}
 \end{lstlisting}
+\caption{A sample of libmapper code}
+\end{figure}
+
+This obviously makes libmapper inaccessible to users who do not have the time or desire to read through documentation files, or those who have no experience with basic programming semantics. 
+%Fig. 13. Framework for a synth-side C program using libmapper. This is the minimal code needed for a synth-side device to announce itself and communicate with other devices on the network.
 
 
 %Possible use cases: Performance, composition, demonstration (of a new DMI), experimentation
