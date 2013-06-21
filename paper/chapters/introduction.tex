@@ -1,4 +1,4 @@
-
+%!TEX root = ../thesis.tex
 
 \chapter{Introduction \& Motivation}
 %%%%%%%%%%%%
@@ -13,20 +13,50 @@
 %	J. Ryan, “Some remarks on musical instrument design at STEIM,” Contemporary Music Review, vol. 6, no. 1, pp. 3–17, 1991.
 %	probably use marcelo's paper instead
 %%%%%%%%%%%%
-For the vast majority of human history a musical instrument was definitively both the physical object with which the musician interacted \emph{and} the direct source of the sound created: a violin with vibrating strings, a reeded saxophone, a timpani with its membrane, etc.  With the advent of electronic sound the late 19\textsuperscript{th} century 
-it became possible for interactive objects to separate from the sound producing devices they control. %\tocite{Chadabe, Joel (February 2000), The Electronic Century Part I: Beginnings, Electronic Musician, pp. 74–90}
+Throughout the vast majority of human history, a musical instrument was definitively both the physical object with which the musician interacted \emph{and} the direct source of the sound created: a violin with vibrating strings, a reeded saxophone, a timpani with its membrane, etc.  With the advent of electronic sound the late 19\textsuperscript{th} century 
+it became possible for interactive objects to begin to separate from the sound producing devices they control. %\tocite{Chadabe, Joel (February 2000), The Electronic Century Part I: Beginnings, Electronic Musician, pp. 74–90}
 As technological development progressed, so did the capacity to divide musical instruments into independent parts. With digitization it is now not only possible to arbitrarily connect a control element to any sound synthesis dimension, but also to modify this association according to the whims of the user. Since mechanical linkages are no longer necessary in the design of musical instruments, control surfaces can, and often do, take on a variety of wild and arbitrary shapes and modes of interaction. %\tocite{somebody to support this, maybe International Conference on New Interfaces for Musical Expression. [Online]. Available: http://www.nime.org/. Accessed June 16, 2007.}
 All that is necessary is for these devices to output some kind of electronic signal that other, sound producing instruments can accept. With no obvious means of implementation, the success or failure of these new digital musical instruments (DMIs) often depends on how artfully their output signals are ``mapped" to synthesis parameters.
 
 More and more frequently, the mapping itself becomes part of the expressive element of a musical work, %\tocite{}
-associating itself with both composition and performance with certain DMIs. Thus is becomes necessary for mapping to be modular and interactive: sometimes poured over in composition studios, sometimes edited mid-piece. Musicians are not necessarily computer programmers, so ideally musical mapping would be something in which non-experts in DMI design could participate. This means that, on top of the low-level layer of interactive mapping that is simply telling a machine to connect certain signals to others in certain ways, there needs to exist an interface to make such an activity easy, logical, intuitive and in line with the artistic process.
+associating itself with both composition and performance with certain DMIs. Thus is becomes necessary for mapping to be modular and interactive: sometimes poured over in composition studios, sometimes edited mid-piece. Musicians are not necessarily computer programmers, so ideally musical mapping is something in which non-experts in DMI design could participate. This means that on top of the low-level layer of interactive mapping that is simply telling a machine to connect certain signals to others in certain ways, there needs to exist an interface to make such an activity easy, logical, intuitive and in line with the artistic process.
 
-As the actual act of mapping is as expansive and nebulous as the instruments it hopes to assist. The design of such an interface presents many interesting challenges
+As the actual act of mapping is as expansive and nebulous as the instruments it hopes to assist, the design of such a mapping interface presents many interesting challenges. Due to the tremendously wide variety of possible use cases, several seemingly contradictory goals emerge: What is the best way visually represent complex musical networks while simultaneously allowing for easy manipulation of these networks? How can systems with many devices and signals be well represented while still for allowing for in-depth control of small systems? How can an interface be transparent to non-technical users while still accommodating all possible functionality that advanced users may wish to use? 
 
-
-	What are useful features of a graphical interface for musical mapping?
+Though it may not be possible to find a perfect solution to all of the above questions, it \emph{is} feasible address each in turn and accept the best available compromise. Overall it is simply necessary to wonder: What are useful features of a graphical interface for musical mapping?
 
 \section{Context and Motivation}
+
+libmapper was created at the Input Devices and Music Interaction Laboratory (IDMIL) in response to the challenges of collaborative musical mapping \shortcite{malloch}. As summarized in its website:
+
+\begin{quote} 
+libmapper is an open-source, cross-platform software library for declaring data signals on a shared network and enabling arbitrary connections to be made between them. libmapper creates a distributed mapping system/network, with no central points of failure, the potential for tight collaboration and easy parallelization of media synthesis. The main focus of libmapper development is to provide tools for creating and using systems for interactive control of media synthesis.
+\footnote{\emph{libmapper: a library for connecting things}, \url{libmapper.org} (Last accessed June, 2013)}
+\end{quote}
+
+In its most basic state, libmapper takes the form of an application programming interface (API). APIs require input in the form of text
+
+\lstset{language=C}
+\begin{lstlisting}
+#include <mapper.h>
+mapper_admin_init();
+my_admin = mapper_admin_new("tester", MAPPER_DEVICE_SYNTH, 8000); 
+mapper_admin_input_add(my_admin, "/test/input","i")) 
+mapper_admin_input_add(my_admin, "/test/another_input","f"))
+// Loop until port and identifier ordinal are allocated. 
+while ( !my_admin->port.locked
+|| !my_admin->ordinal.locked )
+{
+usleep(10000); // wait 10 ms mapper_admin_poll(my_admin);
+}
+for (;;) {
+  usleep(10000);
+mapper_admin_poll(my_admin); }
+\end{lstlisting}
+
+
+%Possible use cases: Performance, composition, demonstration (of a new DMI), experimentation
+%	Actuator need not necessarily to be SOUND devices, but could be vibrotactile feedback, light projectors, 
 
 \section{Project Overview}
 
