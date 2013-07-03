@@ -5,15 +5,24 @@ Dynamic mapping is becoming an increasingly important requirement for digital mu
 
 \section{Mapping}
 
+	At the most fundamental level, \emph{mapping} is the act of associating two or more sets of information. Mappings can be mathematical, computational, linguistic (like translation), geographic, or even poetic\footnote{What is metaphor if not the association of unlike things?}. Within the context of DMI design mapping is the relationship between sensor outputs and synthesis inputs. The entire character of a new instrument can be drastically altered though mapping, even while control surface and sound source are held constant \shortcite{hunt_mapping_is_important}. As a result, the theoretical formalism of mapping becomes yet another necessary tool in the modern instrument designer's arsenal.
+
 	\subsection{Mapping Theory}
 
+	From the perspective of mathematics, the term \emph{mapping} is very nearly synonymous with \emph{function} \cite{native_set_theory}, as both describe how one set of numbers corresponds with another. The first group is commonly refered to as the \emph{domain} and the second as the \emph{codomain} or \emph{range}. An in-depth description review of functions in mathematics is beyond the scope of this thesis, however a few fundamental examples will be useful for reference in section \ref{sec:mappingforDMIs}. The following are examples of the four basic types of mathematical functions,\footnote{Though not all are technically functions.} as relevant to musical mapping:
+	\begin{equation} y = x + 1 \end{equation} \label{eq:one-to-one} \vspace*{-0.7cm}
+	\begin{equation} y = x^2 \end{equation} \label{eq:one-to-many} \vspace*{-0.7cm}
+	\begin{equation} y = \pm\sqrt{x} \end{equation} \label{eq:many-to-one} \vspace*{-0.7cm}
+	\begin{equation} y = \pm\sqrt{1 - x^2} \end{equation} \label{eq:many-to-many} \vspace*{-0.7cm}
+
+	As we can see in 
+
+	\subsection{Mapping for Digital Musical Instruments} \label{sec:mappingforDMIs}
 		\begin{itemize}
-			\item many2one/one2one/one2many/many2many, certainly can cite a gestures class readgin %tocite{}
 			\item Cite vijay about the inputs-outputs/outputs->inputs/sources->destinations thing
+			\item many2one/one2one/one2many/many2many, certainly can cite a gestures class readgin \shortcite{wanderley}
+			\item These two contexts have also been referred to as a systems point of view and a functional point of view respectively [11].  Systems = network, functional = connection properties Two types of mapping \cite{two_types_of_mapping}
 		\end{itemize}
-
-
-	\subsection{Mapping for Digital Musical Instruments}
 	\subsection{libmapper}
 		joe's libmapper paper: \shortcite{malloch}
 		joe's other paper? (earlier), his master's thesis
