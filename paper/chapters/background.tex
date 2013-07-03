@@ -8,14 +8,68 @@ Dynamic mapping is becoming an increasingly important requirement for digital mu
 	At the most fundamental level, \emph{mapping} is the act of associating two or more sets of information. Mappings can be mathematical, computational, linguistic (like translation), geographic, or even poetic\footnote{What is metaphor if not the association of unlike things?}. Within the context of DMI design mapping is the relationship between sensor outputs and synthesis inputs. The entire character of a new instrument can be drastically altered though mapping, even while control surface and sound source are held constant \shortcite{hunt_mapping_is_important}. As a result, the theoretical formalism of mapping becomes yet another necessary tool in the modern instrument designer's arsenal.
 
 	\subsection{Mapping Theory}
+	\subsubsection{Types of Mappings}
 
-	From the perspective of mathematics, the term \emph{mapping} is very nearly synonymous with \emph{function} \cite{native_set_theory}, as both describe how one set of numbers corresponds with another. The first group is commonly refered to as the \emph{domain} and the second as the \emph{codomain} or \emph{range}. An in-depth description review of functions in mathematics is beyond the scope of this thesis, however a few fundamental examples will be useful for reference in section \ref{sec:mappingforDMIs}. The following are examples of the four basic types of mathematical functions,\footnote{Though not all are technically functions.} as relevant to musical mapping:
-	\begin{equation} y = x + 1 \end{equation} \label{eq:one-to-one} \vspace*{-0.7cm}
-	\begin{equation} y = x^2 \end{equation} \label{eq:one-to-many} \vspace*{-0.7cm}
-	\begin{equation} y = \pm\sqrt{x} \end{equation} \label{eq:many-to-one} \vspace*{-0.7cm}
-	\begin{equation} y = \pm\sqrt{1 - x^2} \end{equation} \label{eq:many-to-many} \vspace*{-0.7cm}
+	From the perspective of mathematics, the term \emph{mapping} is very nearly synonymous with \emph{function} \cite{native_set_theory}, as both describe how one set of numbers corresponds with another. The first group is commonly refered to as the \emph{domain} and the second as the \emph{codomain} or \emph{range}. An in-depth review of functions in mathematics is beyond the scope of this thesis, however a few fundamental examples will be useful for reference in section \ref{sec:mappingforDMIs}. The following are instances of two basic types of mathematical functions:
 
-	As we can see in 
+	\begin{equation} y = 2x - 1 \label{eq:one-to-one} \end{equation} 
+	\begin{equation} y = x^2  \label{eq:many-to-one}  \end{equation}
+
+	Each function takes a single input value (\emph{x}) and \emph{maps} that number onto its range (\emph{y}). 
+	%For example, an input of \textbf{5} maps to \textbf{9} in equation \ref{eq:one-to-one}, while the same input results in an output \textbf{25} for equation \ref{eq:one-to-many}. 
+	The fact that each of these equations take in only a single number as input, and output a single number in turn, means they can be graphed in a two dimensional space. This is not necessarily the case, as functions can input and output lists of numbers (vectors). Mathematically they are not very interesting, but they represent two fundamentally different \emph{kinds} of functions.
+
+	\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[my style, xtick={-2,-1,...,2}, ytick={-2,-1,...,2}, xmin=-2, xmax=2, ymin=-2, ymax=3]
+				\addplot[domain=-100:100]{2*x-1}; 
+			\end{axis}
+		\end{tikzpicture}	
+	\caption{The function described in equation \ref{eq:one-to-one}, graphed in two dimensions.}
+	\label{fig:one-to-one_graph}
+	\end{figure}
+
+
+	For equation \ref{eq:one-to-one} each input value has \emph{one and only one} corresponding output value. The same is true if the function is to be inverted, as each output value corresponds to only one input value. The domain is simply a scaled and shifted version of the range. The mapping's \emph{one-to-one} nature can clearly be seen in figure \ref{fig:one-to-one_graph}.
+
+	\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[my style, xtick={-3,-2,...,3}, ytick={-3,-2,...,3}, xmin=-3, xmax=3, ymin=-1, ymax=4]
+				\addplot[domain=-3:3]{x^2}; 
+			\end{axis}
+		\end{tikzpicture}
+	\caption{Equation \ref{eq:many-to-one} projected on the Cartesian plane.}
+	\label{fig:many-to-one_graph}
+	\end{figure}
+
+
+	This is not the case for equation \ref{eq:many-to-one}, for although each input has only one output, single positions in the codomain can have multiple corresponding inputs (e.g. both $3^2$ \emph{and} $-3^2$ are equal to 9). Thus we can consider equation \ref{eq:many-to-one} to be a canonical example of a \emph{many-to-one} mapping. In figure \ref{fig:many-to-one_graph} the range of the function is wrapped back onto itself such that a horizontal line could intersect the function twice.
+
+	Two more categories of mapping are relevant to instrument design, an example of each:  
+
+	\begin{equation} y = \pm\sqrt{x} \label{eq:one-to-many} \end{equation} 
+	\begin{equation} y = \pm\sqrt{1 - x^2} \label{eq:many-to-many} \end{equation} 
+
+	They are not considered to be functions by mathematicians, but are nonetheless important for our purposes. In equation \ref{eq:one-to-many} a single input can result in multiple outputs (an input of 4 results in the output of \emph{both} 2 and -2), yet each output has only a single input. This is simply the inverse function of equation \ref{eq:many-to-one}, and is called a \emph{one-to-many} mapping. On a graph of such a mapping, a \emph{vertical} line may cross at multiple points. The final equation is that of a circle centered at the origin with a radius of one. This is an example of a \emph{many-to-many} mapping, as both it an its inverse result in multiple outputs from a single input.
+
+	\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[my style, xtick={-1,...,1}, ytick={-1,...,1}, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
+				\addplot[domain=-1:1]{sqrt(1 - x^2)}; 
+				\addplot[domain=-1:1]{-sqrt(1 - x^2)}; 
+			\end{axis}
+		\end{tikzpicture}
+	\caption{Equation \ref{eq:many-to-many}, a many-to-many mapping.}
+	\end{figure}
+
+	Though a graphical plane is the most common way for mathematicians to visualize two-dimensional functions, drawing the direct association between input and output will be more useful going forward.
+
+	\begin{itemize}
+		\item continuous vs discreet
+	\end{itemize} 
 
 	\subsection{Mapping for Digital Musical Instruments} \label{sec:mappingforDMIs}
 		\begin{itemize}
