@@ -1,98 +1,136 @@
 %!TEX root = ../thesis.tex
 \chapter{Background}
 
-Dynamic mapping is becoming an increasingly important requirement for digital musical instruments. This chapter surveys currently available tools that allow for manipulation of musical and non-musical networks in real time. The first section presents a review of mapping itself, both from a theoretical and a musical standpoint. This portion also introduces the libmapper application programming interface. The second section reviews relevant work in the visual representation of information. The third section of this chapter describes applicable techniques in user interface design. Finally, a review of user interfaces for mapping is presented.
+Dynamic mapping is becoming an increasingly important requirement for digital musical instruments. This chapter surveys currently available tools that allow for manipulation of musical and non-musical networks in real time. The first section presents a review of mapping itself, both from a theoretical and a musical standpoint. This portion also introduces the libmapper application programming interface. The second section reviews relevant work in the visual representation of information. The following portion describes applicable techniques in user interface design. Finally, a review of user interfaces for mapping is presented.
 
 \section{Mapping}
 
-	At the most fundamental level, \emph{mapping} is the act of associating two or more sets of information. Mappings can be mathematical, computational, linguistic (like translation), geographic, or even poetic\footnote{What is metaphor if not the association of unlike things?}. Within the context of DMI design mapping is the relationship between sensor outputs and synthesis inputs. The entire character of a new instrument can be drastically altered though mapping, even while control surface and sound source are held constant \shortcite{hunt_mapping_is_important}. As a result, the theoretical formalism of mapping becomes yet another necessary tool in the modern instrument designer's arsenal.
+At the most fundamental level, \emph{mapping} is the act of associating two or more sets of information. Mappings can be mathematical, computational, linguistic (like translation), geographic, or even poetic\footnote{What is metaphor if not the association of unlike things?}. Within the context of DMI design mapping is the relationship between sensor outputs and synthesis inputs. The entire character of a new instrument can be drastically altered though mapping, even while control surface and sound source are held constant \shortcite{hunt_mapping_is_important}. As a result, the theoretical formalism of mapping becomes yet another necessary tool in the modern instrument designer's arsenal.
 
-	\subsection{Mapping Theory}
-	\subsubsection{Types of Mappings}
+\subsection{Mapping Theory}
+\subsubsection{Mapping as function and the four mapping classes}
+\label{sec:mapping_classes}
 
-	From the perspective of mathematics, the term \emph{mapping} is very nearly synonymous with \emph{function} \cite{native_set_theory}, as both describe how one set of numbers corresponds with another. The first group is commonly refered to as the \emph{domain} and the second as the \emph{codomain} or \emph{range}. An in-depth review of functions in mathematics is beyond the scope of this thesis, however a few fundamental examples will be useful for reference in section \ref{sec:mappingforDMIs}. The following are instances of two basic types of mathematical functions:
+From the perspective of mathematics, the term \emph{mapping} is very nearly synonymous with \emph{function} \cite{native_set_theory}, as both describe how one set of numbers corresponds with another. The first group is commonly refered to as the \emph{domain} and the second as the \emph{codomain} or \emph{range}. An in-depth review of functions in mathematics is beyond the scope of this thesis, however a few fundamental examples will be useful for reference in section \ref{sec:mappingforDMIs}. The following are instances of two basic types of mathematical functions:
 
-	\begin{equation} y = 2x - 1 \label{eq:one-to-one} \end{equation} 
-	\begin{equation} y = x^2  \label{eq:many-to-one}  \end{equation}
+\begin{equation} y = 2x - 1 \label{eq:one-to-one} \end{equation} 
+\begin{equation} y = x^2  \label{eq:many-to-one}  \end{equation}
 
-	Each function takes a single input value (\emph{x}) and \emph{maps} that number onto its range (\emph{y}). 
-	%For example, an input of \textbf{5} maps to \textbf{9} in equation \ref{eq:one-to-one}, while the same input results in an output \textbf{25} for equation \ref{eq:one-to-many}. 
-	The fact that each of these equations take in only a single number as input, and output a single number in turn, means they can be graphed in a two dimensional space. This is not necessarily the case, as functions can input and output lists of numbers (vectors). Mathematically they are not very interesting, but they represent two fundamentally different \emph{kinds} of functions.
+Each function takes a single input value (\emph{x}) and \emph{maps} that number onto its range (\emph{y}). 
+%For example, an input of \textbf{5} maps to \textbf{9} in equation \ref{eq:one-to-one}, while the same input results in an output \textbf{25} for equation \ref{eq:one-to-many}. 
+The fact that each of these equations take in only a single number as input, and output a single number in turn, means they can be graphed in a two dimensional space. This is not necessarily the case, as functions can input and output lists of numbers (vectors). Mathematically they are not very interesting, but they represent two fundamentally different \emph{kinds} of functions.
 
-	\begin{figure}[h]
-		\centering
-		\begin{tikzpicture}
-			\begin{axis}[my style, xtick={-2,-1,...,2}, ytick={-2,-1,...,2}, xmin=-2, xmax=2, ymin=-2, ymax=3]
-				\addplot[domain=-100:100]{2*x-1}; 
-			\end{axis}
-		\end{tikzpicture}	
-	\caption{The function described in equation \ref{eq:one-to-one}, graphed in two dimensions.}
-	\label{fig:one-to-one_graph}
-	\end{figure}
-
-
-	For equation \ref{eq:one-to-one} each input value has \emph{one and only one} corresponding output value. The same is true if the function is to be inverted, as each output value corresponds to only one input value. The domain is simply a scaled and shifted version of the range. The mapping's \emph{one-to-one} nature can clearly be seen in figure \ref{fig:one-to-one_graph}.
-
-	\begin{figure}[h]
-		\centering
-		\begin{tikzpicture}
-			\begin{axis}[my style, xtick={-3,-2,...,3}, ytick={-3,-2,...,3}, xmin=-3, xmax=3, ymin=-1, ymax=4]
-				\addplot[domain=-3:3]{x^2}; 
-			\end{axis}
-		\end{tikzpicture}
-	\caption{Equation \ref{eq:many-to-one} projected on the Cartesian plane.}
-	\label{fig:many-to-one_graph}
-	\end{figure}
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[my style, xtick={-2,-1,...,2}, ytick={-2,-1,...,2}, xmin=-2, xmax=2, ymin=-2, ymax=3]
+			\addplot[domain=-100:100]{2*x-1}; 
+		\end{axis}
+	\end{tikzpicture}	
+\caption{The function described in equation \ref{eq:one-to-one}, graphed in two dimensions.}
+\label{fig:one-to-one_graph}
+\end{figure}
 
 
-	This is not the case for equation \ref{eq:many-to-one}, for although each input has only one output, single positions in the codomain can have multiple corresponding inputs (e.g. both $3^2$ \emph{and} $-3^2$ are equal to 9). Thus we can consider equation \ref{eq:many-to-one} to be a canonical example of a \emph{many-to-one} mapping. In figure \ref{fig:many-to-one_graph} the range of the function is wrapped back onto itself such that a horizontal line could intersect the function twice.
+For equation \ref{eq:one-to-one} each input value has \emph{one and only one} corresponding output value. The same is true if the function is to be inverted, as each output value corresponds to only one input value. The range is simply a scaled and shifted version of the domain. The mapping's \emph{one-to-one} nature can clearly be seen in figure \ref{fig:one-to-one_graph}.
 
-	Two more categories of mapping are relevant to instrument design, an example of each:  
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[my style, xtick={-3,-2,...,3}, ytick={-3,-2,...,3}, xmin=-3, xmax=3, ymin=-1, ymax=4]
+			\addplot[domain=-3:3]{x^2}; 
+		\end{axis}
+	\end{tikzpicture}
+\caption{Equation \ref{eq:many-to-one} projected on the Cartesian plane.}
+\label{fig:many-to-one_graph}
+\end{figure}
 
-	\begin{equation} y = \pm\sqrt{x} \label{eq:one-to-many} \end{equation} 
-	\begin{equation} y = \pm\sqrt{1 - x^2} \label{eq:many-to-many} \end{equation} 
 
-	They are not considered to be functions by mathematicians, but are nonetheless important for our purposes. In equation \ref{eq:one-to-many} a single input can result in multiple outputs (an input of 4 results in the output of \emph{both} 2 and -2), yet each output has only a single input. This is simply the inverse function of equation \ref{eq:many-to-one}, and is called a \emph{one-to-many} mapping. On a graph of such a mapping, a \emph{vertical} line may cross at multiple points. The final equation is that of a circle centered at the origin with a radius of one. This is an example of a \emph{many-to-many} mapping, as both it an its inverse result in multiple outputs from a single input.
+This is not the case for equation \ref{eq:many-to-one}, for although each input has only one output, single positions in the codomain can have multiple corresponding inputs (e.g. both $3^2$ \emph{and} $-3^2$ are equal to 9). Thus we can consider equation \ref{eq:many-to-one} to be a classical example of a \emph{many-to-one} mapping. In figure \ref{fig:many-to-one_graph} the range of the function is wrapped back onto itself such that a horizontal line could intersect the curve twice.
 
-	\begin{figure}[h]
-		\centering
-		\begin{tikzpicture}
-			\begin{axis}[my style, xtick={-1,...,1}, ytick={-1,...,1}, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
-				\addplot[domain=-1:1]{sqrt(1 - x^2)}; 
-				\addplot[domain=-1:1]{-sqrt(1 - x^2)}; 
-			\end{axis}
-		\end{tikzpicture}
-	\caption{Equation \ref{eq:many-to-many}, a many-to-many mapping.}
-	\end{figure}
+Two more categories of mapping are relevant to instrument design, an example of each:  
 
-	Though a graphical plane is the most common way for mathematicians to visualize two-dimensional functions, drawing the direct association between input and output will be more useful going forward.
+\begin{equation} y = \pm\sqrt{x} \label{eq:one-to-many} \end{equation} 
+\begin{equation} y = \pm\sqrt{1 - x^2} \label{eq:many-to-many} \end{equation} 
 
+They are not considered to be functions by mathematicians\footnote{In mathematics, a true function can have no more than one output value for every input value.}, but are nonetheless important for our purposes. In equation \ref{eq:one-to-many} a single input can result in multiple outputs (an input of 4 results in the output of \emph{both} 2 and -2), yet each output has only a single input. This is simply the inverse function of equation \ref{eq:many-to-one}, and is an example of a \emph{one-to-many} mapping. On a graph of such a mapping, a \emph{vertical} line may cross at multiple points. The final equation is that of a circle centered at the origin with a radius of one. This is a \emph{many-to-many} mapping, as both it an its inverse result in multiple outputs from a single input.
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[my style, xtick={-1,...,1}, ytick={-1,...,1}, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
+			\addplot[domain=-1:1]{sqrt(1 - x^2)}; 
+			\addplot[domain=-1:1]{-sqrt(1 - x^2)}; 
+		\end{axis}
+	\end{tikzpicture}
+\caption{Equation \ref{eq:many-to-many}, a many-to-many mapping.}
+\end{figure}
+
+Though a graphical plane is the most common way for mathematicians to visualize two-dimensional functions, drawing the direct association between input and output will be more useful going forward. Figure \ref{fig:types_of_mapping} provides an illustration of such an approach. The astute reader will notice a striking similarity to the GUI view mode described in section \ref{sec:list_view}, and a many to many mapping 
+
+\begin{figure}[ht]
+\centering
+	\scalebox{1}{\includegraphics{figures/types_of_mapping}}
+\caption{The four mapping classes}
+\label{fig:types_of_mapping}
+\end{figure}
+
+\subsubsection{Mapping as association}
+
+In computer science, a mapping is less commonly referred to as a function and more usually called an \emph{associative array} or a \emph{dictionary}, though the word \emph{map} is also used \cite{data_structures}. This type of data structure\footnote{What computer scientist call particular ways of storing and organizing data.} is generally the most flexible way for computers store information. An associative array consists of key/value pairs, where the \emph{value} is the data to be stored and the \emph{key} is the reference to that data. 
+
+\begin{table}
+\centering
+\Tcaption{An example of key/value pairs (contries and currencies)}
+\label{tab:key_value_pairs}
+\begin{tabular}{l l}
+\hline\hline
+key&value\\
+\hline
+Canada&Dollar\\
+France&Euro\\
+Bahrain&Dinar\\
+Germany&Euro\\
+Angola&Kwanza\\
+USA&Dollar\\
+\hline
+\end{tabular}
+\end{table}
+
+In table \ref{tab:key_value_pairs} the data is non-numeric and associations between keys and values are arbitrary (from a mathematical point of view). There obviously exists no distinct function that can transform a countries name into the name of its currency, thus the computer must explicitly remember the associations between the words in the form of a \emph{hash table}. At the lowest level, computers store information on a vast array of zeros and ones, and the value ``Kwanza'' only arises through a non-trivial process of encoding and decoding. In order to retrieve it the computer \emph{must} know where it can be found. The hash table takes the input of a key, finds the address for the value and returns it. In this way the hash table is literally the association between two sets of data and thus the mapping between them. 
+
+The four mapping classes outlined in the above section are not limited to the functional domain. The associative array in table \ref{tab:key_value_pairs} is another example of a many-to-one mapping, as many countries have the same currency name. In this vain a one-to-many mapping could be the same keys with values switched to ``Former Monarchs'' (``France'' would map to both ``Louis XVI'' and ``Napoleon III'', etc), while a value of ``Official Languages'' would be a many-to-many mapping (``Canada'' maps to both ``English'' and ``French'' while both ``Canada'' and ``France'' map to ``French'').
+
+Data structures like associative arrays are not limited to computer science. Telephone books (one-to-one),  multilingual dictionaries (many-to-many) and  Library card catalogs, 
+
+
+
+\subsection{Mapping for Digital Musical Instruments} \label{sec:mappingforDMIs}
 	\begin{itemize}
-		\item continuous vs discreet
-	\end{itemize} 
-
-	\subsection{Mapping for Digital Musical Instruments} \label{sec:mappingforDMIs}
-		\begin{itemize}
-			\item Cite vijay about the inputs-outputs/outputs->inputs/sources->destinations thing
-			\item many2one/one2one/one2many/many2many, certainly can cite a gestures class readgin \shortcite{wanderley}
-			\item These two contexts have also been referred to as a systems point of view and a functional point of view respectively [11].  Systems = network, functional = connection properties Two types of mapping \cite{two_types_of_mapping}
-		\end{itemize}
-	\subsection{libmapper}
-		joe's libmapper paper: \shortcite{malloch}
-		joe's other paper? (earlier), his master's thesis
-		\subsubsection{Open Sound Control}
-		OSC: \shortcite{osc}
-		\subsubsection{Structure of libmapper Networks}
-		\subsubsection{Control of libmapper Devices and Signals}
-	\begin{enumerate}
-		\item GDIF: \shortcite{GDIF} Describes the namespace that libmapper uses, ``Ideally, it should be possible to store all sorts of data from various commercial and custom made controllers, motion capture and computer vision systems, as well as results from differ- ent types of gesture analysis, in a coherent and consistent way. This would make it possible to use the information with different software, platforms and devices, and also allow for sharing data between research institutions.'' 
-		\item disembodied performance
-		\item Wanderley's mapping paper \shortcite{wanderley} 
-		\item Jamoma \shortcite{jamoma}
-		\item surely some other stuff from class
-	\end{enumerate}
+		\item Cite vijay about the inputs-outputs/outputs->inputs/sources->destinations thing
+		\item many2one/one2one/one2many/many2many, certainly can cite a gestures class readgin \shortcite{wanderley}
+		\item These two contexts have also been referred to as a systems point of view and a functional point of view respectively [11].  Systems = network, functional = connection properties Two types of mapping \cite{two_types_of_mapping}
+	\end{itemize}
+\subsection{libmapper}
+	joe's libmapper paper: \shortcite{malloch}
+	joe's other paper?
+	\subsubsection{Open Sound Control}
+	OSC: \shortcite{osc}
+	\subsubsection{Structure of libmapper Networks}
+	\subsubsection{Control of libmapper Devices and Signals}
+\begin{enumerate}
+	\item GDIF: \shortcite{GDIF} Describes the namespace that libmapper uses, ``Ideally, it should be possible to store all sorts of data from various commercial and custom made controllers, motion capture and computer vision systems, as well as results from differ- ent types of gesture analysis, in a coherent and consistent way. This would make it possible to use the information with different software, platforms and devices, and also allow for sharing data between research institutions.'' 
+	\item disembodied performance
+	\item Wanderley's mapping paper \shortcite{wanderley} 
+	\item Jamoma \shortcite{jamoma}
+	\item surely some other stuff from class
+	\item METADATA, and data
+\end{enumerate}
 
 \section{Data Visualization}
+
+The graphical user interface described in this thesis presents users with solely visual information. As it is a tool to be used with primarily sound producing objects auditory feedback is problematic and common digital devices (laptops, tablets, etc.) provide us with no means of producing haptic response. Mapping systems can contain tremendous amounts of information: device names, digital addresses, numbers of signals, signal names, units, ranges, data types, expressions, parent devices and any kind of meta-data a libmapper user may choose to add to his or her devices. As a result, it is necessary a review how best to visually represent vast amounts of structured data.
+
 	\subsection{Graphical Perception}
 		\subsubsection{Heirarchical Structures}
 		\subsubsection{Dense Information}
