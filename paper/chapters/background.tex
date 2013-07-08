@@ -11,7 +11,7 @@ At the most fundamental level, \emph{mapping} is the act of associating two or m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\subsection{Mapping Theory}
 
-\subsubsection{Mapping as function and mappin cardinality}
+\subsubsection{Mapping as function and mapping cardinality}
 \label{sec:mapping_classes}
 
 From the perspective of mathematics, the term \emph{mapping} is very nearly synonymous with \emph{function} \cite{native_set_theory}, as both describe how one set of numbers corresponds with another. The first group is commonly referred to as the \emph{domain} and the second as the \emph{codomain} or \emph{range}. An in-depth review of functions in mathematics is beyond the scope of this thesis, however a few fundamental examples will be useful for reference in section \ref{sec:mappingforDMIs}. The following are instances of two basic types of mathematical functions:
@@ -109,13 +109,44 @@ The above concepts from mathematics and computer science supply a base of knowle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\subsection{Mapping for Digital Musical Instruments} \label{sec:mappingforDMIs}
 
-With an acoustical musical instrument a musician must interact directly with the physical object that produces the sound. In this context, the concepts of ``control surface,'' and ``synthesis devices'' are not very relevant, as they are intrinsically linked. With an acoustic guitar the pick \emph{could} be considered to be a sort of control device (as it is primarily used for instrumental interaction), with the strings and body a acting as the sound producing section. The problem with this type of approach is that changing the material of the pick, perhaps to give a different feel for the player, will also modify the sound produced.
+With an acoustical musical instrument a musician must interact directly with the physical object that produces the sound. In this context, the concepts of ``control surface,'' and ``synthesis devices'' are not very relevant, as they are intrinsically linked. With an acoustic guitar the pick \emph{could} be considered to be a sort of control device (as it is primarily used for instrumental interaction), with the strings and body a acting as the sound producing section. The problem with this type of approach is that changing the material of the pick, perhaps to give a different feel for the player, will also necessarily modify the sound produced. The same can be said for modifying nearly any aspect of an acoustic instrument: it will change both the feel of the interface and the sound produced. This coupling of parameters causes any concept of a \emph{mapping layer} to be irrelevant.
+
+As stated in the introduction, is not the case for electronic instruments \shortcite{wanderley}. Electronic sensors transduce musical gestures into signals, which are in turn converted into auditory phenomena by amplifiers and speakers. Any arbitrary transformation can happen to the signals\footnote{Especially digital signals, which are remarkable for their robustness and mutability.} in between these two phases. This flexibility is most obvious with outlandish novel instruments like (TODO: maybe pictures?), but is fundamentally true for any electronic instrument. An electric guitar senses gesture with a magnetic pickup that transforms the signal of a vibrating string into an electronic signal, which is made audible by an amplifier. Though this can happen directly, more or less reproducing the sound of an acoustic guitar, but it is also possible to greatly modify this signal before it is amplified, creating tones that may be unrecognizable as the original acoustic instrument.
+
+	\subsubsection{The Mapping Layer}
+
+In response to the importance of this uncoupling of parameters, electronic instruments are often conceptualized as having three independent layers \cite{gestural_control_sound_synthesis}: (TODO diagram)
+
+	\begin{itemize}
+		\item The ``gestural controller'': The device with which the musician directly interacts. It generally has sensors that collect gestural data and can provide haptic feedback. The signals it generates are output into the mapping layer.
+		\item The ``sound generation unit'': The device that receives input signals from the mapping layer and uses them to generate sound. This layer can contain melody generating algorithms, sound modifying effects, physical models of acoustical instruments or any other construct that is directly used to produce sound.
+		\item The ``mapping layer'': The abstract space that receives input signals from the gestural controller that are output to the sound generation unit. These signals can be connected and modified independently of actions in the other two layers.
+	\end{itemize}
+
+As can be seen above, the words ``output'' and ``input'' become ambiguous, whether one is talking from the perspective of the devices (control devices \emph{output} signals that are \emph{input} into the synthesis devices) or the perspective of the mapping layer (the mapping receives \emph{input} from the controller which is \emph{output} to the synthesizer). For the detailed analysis of mappings and mapping devices, this can obviously create confusion \cite{vizmapper}. To avoid this, signals arriving at the mapping layer from the control surfaces will be referred to as \emph{source signals} and signals sent from the mapping layer to the sound generation units will be called \emph{destination signals} for the remainder of this thesis. This follows the nomenclature described in \shortciteN{new_libmapper}.
+
+In the above example it is difficult to determine which portion constitutes, the mapping
+
+Independent mapping layers (cooked and raw) \cite{wanderley}
+
+\cite{describing_mappings} : Finally, it may also be argued that it is hard to find more traditional, acoustic instruments dominated by simple one-to-one mappings (see e.g. Kvifte, 1989, pp. 138–145).
+
+This is also indicated in practical experiments where mappings of different types and complexity are compared (see Hunt and Wanderley, 2002, for a description and discussion), and the most complex mapping was found to be the most interesting and effective.
+
+\cite{interpolated_mappings}
+If the performer can comprehend the mappings embedded in an instrument, obviously a more refined performance can result. This argues for static mappings over dynamic, and simple over complex (although we shall see that overly simple mappings can be sub-optimal). Explicit construction of a mapping may or may not be better than having an algorithm compute it as the solution to some set of criteria.
+
+	\subsubsection{Functional Versus Systems Perspective on Mapping}
 
 	\begin{itemize}
 		\item Cite vijay about the inputs-outputs/outputs->inputs/sources->destinations thing
 		\item many2one/one2one/one2many/many2many, certainly can cite a gestures class readgin \shortcite{wanderley}
 		\item These two contexts have also been referred to as a systems point of view and a functional point of view respectively [11].  Systems = network, functional = connection properties Two types of mapping \cite{two_types_of_mapping}
 	\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{libmapper}
 	joe's libmapper paper: \shortcite{malloch}
 	joe's other paper?
