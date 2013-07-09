@@ -123,31 +123,28 @@ In response to the importance of this uncoupling of parameters, electronic instr
 		\item The ``mapping layer'': The abstract space that receives input signals from the gestural controller that are output to the sound generation unit. These signals can be connected and modified independently of actions in the other two layers.
 	\end{itemize}
 
-As can be seen above, the words ``output'' and ``input'' become ambiguous, whether one is talking from the perspective of the devices (control devices \emph{output} signals that are \emph{input} into the synthesis devices) or the perspective of the mapping layer (the mapping receives \emph{input} from the controller which is \emph{output} to the synthesizer). For the detailed analysis of mappings and mapping devices, this can obviously create confusion \cite{vizmapper}. To avoid this, signals arriving at the mapping layer from the control surfaces will be referred to as \emph{source signals} and signals sent from the mapping layer to the sound generation units will be called \emph{destination signals} for the remainder of this thesis. This follows the nomenclature described in \shortciteN{new_libmapper}.
-
-In the above example it is difficult to determine which portion constitutes, the mapping
-
-Independent mapping layers (cooked and raw) \cite{wanderley}
-
-\cite{describing_mappings} : Finally, it may also be argued that it is hard to find more traditional, acoustic instruments dominated by simple one-to-one mappings (see e.g. Kvifte, 1989, pp. 138–145).
-
-This is also indicated in practical experiments where mappings of different types and complexity are compared (see Hunt and Wanderley, 2002, for a description and discussion), and the most complex mapping was found to be the most interesting and effective.
-
-\cite{interpolated_mappings}
-If the performer can comprehend the mappings embedded in an instrument, obviously a more refined performance can result. This argues for static mappings over dynamic, and simple over complex (although we shall see that overly simple mappings can be sub-optimal). Explicit construction of a mapping may or may not be better than having an algorithm compute it as the solution to some set of criteria.
+As can be seen above, the words ``output'' and ``input'' become ambiguous, whether one is talking from the perspective of the devices (control devices \emph{output} signals that are \emph{input} into the synthesis devices) or the perspective of the mapping layer (the mapping receives \emph{input} from the controller which is \emph{output} to the synthesizer). For the detailed analysis of mappings and mapping devices, this can obviously create confusion \cite{vizmapper}. To avoid this, signals arriving at the mapping layer from the control surfaces will be referred to as \emph{source signals} and signals sent from the mapping layer to the sound generation units will be called \emph{destination signals} for the remainder of this thesis. This follows the nomenclature described in \shortciteN{new_libmapper} and the libmapper API in general.
 
 	\subsubsection{Functional Versus Systems Perspective on Mapping}
 
-	\begin{itemize}
-		\item Cite vijay about the inputs-outputs/outputs->inputs/sources->destinations thing
-		\item many2one/one2one/one2many/many2many, certainly can cite a gestures class readgin \shortcite{wanderley}
-		\item These two contexts have also been referred to as a systems point of view and a functional point of view respectively [11].  Systems = network, functional = connection properties Two types of mapping \cite{two_types_of_mapping}
-	\end{itemize}
+Both the more mathematical perspective of mapping as functions and the computer science standpoint of mapping as association are relevant to DMI design. These two concepts are often referred to as the \emph{functional} and the \emph{systems} points of view for mapping, respectively \cite{two_types_of_mapping}. 
 
+Once two signals are connected, say the position of a knob and the cutoff frequency of a low-pass filter,\footnote{A standard synthesis parameter that controls the brightness of a sound, think of the difference between the vowel `o' in `food' (low cutoff) and the vowel `a' in `sad' (high cutoff).} it is very possible that the raw numbers sent from the knob are not appropriate as input for the filter. It may be that the knob transmits numbers ranging from 0 - 127 ($2^7$) and the filter accepts numbers from 0 - 1023 ($2^{10}$). As a result the filter will always be more or less closed no matter how the user turns the knob. To account for this the mapping needs to \emph{scale} the source signal (by a factor of 8) to fit the destination range. This is a functional kind of mapping, analogous to section \ref{sec:mapping_classes}. The source signal may need to be transformed in many ways. 
 
+The other, higher-level perspective of mapping deals with the actual connection of the source to destination signals. On any mapping network there can exist several devices, each with numerous signals. The act of associating devices with devices, signals with signals can drastically change the character of a DMI or group of DMIs. This is known as the systems perspective on mapping. It is necessary for libmapper and the GUI to be able to assist with both kinds of mappings.
+
+	\subsubsection{Mapping Strategies}
+
+For expressive musical networks, simple one-to-one mappings are often insufficient.  \citeN{describing_mappings} argues that it is extremely rare to find such associations in acoustic instruments, as the control parameters are usually tightly coupled with several acoustic dimensions. Interfaces with hundreds of knobs and sliders, each one connected to a single sound parameter have thus been found to ``...hinder rather than help expressive musical behavior.'' \citeA{describing_mappings} In practical experiments where mappings of varying complexity are compared, the most complex were generaly found to be the most expressive and useful \cite{mapping_complexity_experiments}. However, \citeN{interpolated_mappings} states that mappings need to be simple enough for the performer to comprehend them. \citeANP{interpolated_mappings} argues for ``...static mappings over dynamic, and simple over complex'' and proposes an algorithmic solution to compute them. These ``interpolated mappings'' are generated by associating single points in the source and destination spaces (i.e. certain performer gestures with certain sounds) and mathematically filling in the spaces between.
+
+One proposed solution to the cognitive complexity of associating many source and destination signals is to \shortcite{wanderley}. Instead of dealing with raw sensor output, like acceleration and inclination, musicians can interact with more interesting gestural information such as ``jab'' or ``left-arm swing'' while dynamically creating mappings. These ``cooked'' parameters are argued to be more meaningful and useful musical information than the raw signals. This approach is explored in \citeN{mapping_layers} for mapping both to audio and visual synthesis. The conventional wisdom that mappings need to be complex, yet transparent and meaningful all point to the necessity of a tool for the intuitive and expressive configuration of mappings.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{libmapper}
+
+The McGill Digital Orchestra project\footnote{The McGill Digital Orchestra. [Online]. Available: \url{http://www.music.mcgill.ca/musictech/DigitalOrchestra/}. Accessed July 9, 2013} began in 2006 with the aim of bringing together researchers  and performers in music technology to work collaboratively in creating hardware and software solutions for live performance with digital technology. In response to the difficulty of creating dynamic musical mappings in a collaborative setting, the libmapper project was created \shortcite{malloch}. In it's lowest level form, libmapper is a library for connecting things, as described by its website: 
+
+	joe's new paper: \cite{new_libmapper}
 	joe's libmapper paper: \shortcite{malloch}
 	joe's other paper?
 	\subsubsection{Open Sound Control}
