@@ -32,13 +32,9 @@ As the actual act of mapping is as expansive and nebulous as the instruments it 
 \section{Context and Motivation}
 
 The world of digital musical instruments is still dominated by keyboard type input devices. Though many novel DMIs currently exist (and many more are being created) these devices are usually unique and often difficult to use without their creator being present \cite{squeezevox}.
-Since mapping is such an important feature of DMIs, a means of transparently editing them could inspire more people to use novel musical controllers. In response to this challenge, the libmapper protocol was created at the Input Devices and Music Interaction Laboratory (IDMIL) \shortcite{malloch}. The tool is summarized by its website as follows:
+Since mapping is such an important feature of DMIs, a means of transparently editing them could inspire more people to use novel musical controllers. In response to this challenge, libmapper, a tool for collaborative mapping, was created at the Input Devices and Music Interaction Laboratory (IDMIL).
 
-\begin{quote} 
-``libmapper is an open-source, cross-platform software library for declaring data signals on a shared network and enabling arbitrary connections to be made between them. libmapper creates a distributed mapping system/network, with no central points of failure, the potential for tight collaboration and easy parallelization of media synthesis. The main focus of libmapper development is to provide tools for creating and using systems for interactive control of media synthesis.''\footnote{libmapper: a library for connecting things. [Online]. Available: \url{libmapper.org}. Accessed June, 2013}
-\end{quote}
-
-In its most basic state, libmapper takes the form of an application programming interface (API). APIs are primarily a means for different pieces of computer software to communicate with one another. The only possible way to communicate directly with the libmapper API is through coded text. For example, the following portion of code causes a synthesizer to announce itself and begin communicating with other devices on a libmapper-enabled network \shortcite{malloch}:
+In its most basic state, libmapper takes the form of an application programming interface (API). APIs are primarily a means for different pieces of computer software to communicate with one another. The only possible way to communicate directly with the libmapper API is through coded text. For example, figure \ref{fig:libmapper_code} causes a synthesizer to announce itself and begin communicating with other devices on a libmapper-enabled network \shortcite{malloch}.
 
 \begin{figure}[h!]
 \begin{lstlisting}[]
@@ -62,6 +58,7 @@ for (;;)
 }
 \end{lstlisting}
 \caption{A sample of libmapper code}
+\label{fig:libmapper_code}
 \end{figure}
 
 This is obviously inaccessible to users who do not have the time or desire to read through documentation files, or those who have no knowledge of programming semantics. A steep learning curve is especially a problem for a network tool like libmapper: because it is primarily a means of communication between instruments, it can only be successful if it is widely adopted. A libmapper-enabled controller will only be useful if many high quality libmapper synthesizers exist. In turn, synthesizer makers will only have incentive to incorporate libmapper into their designs if there are already controllers that use the system. 
