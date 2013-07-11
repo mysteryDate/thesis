@@ -4,15 +4,15 @@
 Dynamic mapping is becoming an increasingly important requirement for digital musical instruments. This chapter surveys currently available tools that allow for manipulation of musical and non-musical networks in real time. The first section presents a review of mapping itself, both from a theoretical and a musical standpoint. This portion also introduces the libmapper application programming interface. The second section reviews relevant work in the visual representation of information. The following portion describes applicable techniques in user interface design. Finally, a review of user interfaces for mapping is presented.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			\section{Mapping}
+\section{Mapping}
 
 At the most fundamental level, \emph{mapping} is the act of associating two or more sets of information. Mappings can be mathematical, computational, linguistic (like translation), geographic, or even poetic\footnote{What is metaphor if not the association of unlike things?}. Within the context of DMI design mapping is the relationship between sensor outputs and synthesis inputs. The entire character of a new instrument can be drastically altered though mapping, even while control surface and sound source are held constant \shortcite{hunt_mapping_is_important}. As a result, the theoretical formalism of mapping becomes yet another necessary tool in the modern instrument designer's arsenal.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\subsection{Mapping Theory}
+\subsection{Mapping Theory}
 
-\subsubsection{Mapping as function and mapping cardinality}
-\label{sec:mapping_classes}
+	\subsubsection{Mapping as function and mapping cardinality}
+	\label{sec:mapping_classes}
 
 From the perspective of mathematics, the term \emph{mapping} is very nearly synonymous with \emph{function} \cite{native_set_theory}, as both describe how one set of numbers corresponds with another. The first group is commonly referred to as the \emph{domain} and the second as the \emph{codomain} or \emph{range}. An in-depth review of functions in mathematics is beyond the scope of this thesis, however a few fundamental examples will be useful for reference in section \ref{sec:mappingforDMIs}. The following are instances of two basic types of mathematical functions:
 
@@ -107,7 +107,7 @@ Though most applicably represented in computer science, data structures like ass
 The above concepts from mathematics and computer science supply a base of knowledge for understanding mappings theoretically and provide a starting point for analyzing them in a musical context.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\subsection{Mapping for Digital Musical Instruments} \label{sec:mappingforDMIs}
+\subsection{Mapping for Digital Musical Instruments} \label{sec:mappingforDMIs}
 
 With an acoustical musical instrument a musician must interact directly with the physical object that produces the sound. In this context, the concepts of ``control surface,'' and ``synthesis devices'' are not very relevant, as they are intrinsically linked. With an acoustic guitar the pick \emph{could} be considered to be a sort of control device (as it is primarily used for instrumental interaction), with the strings and body a acting as the sound producing section. The problem with this type of approach is that changing the material of the pick, perhaps to give a different feel for the player, will also necessarily modify the sound produced. The same can be said for modifying nearly any aspect of an acoustic instrument: it will change both the feel of the interface and the sound produced. This coupling of parameters causes any concept of a \emph{mapping layer} to be irrelevant.
 
@@ -142,11 +142,13 @@ One proposed solution to the cognitive complexity of associating many source and
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{libmapper}
 
-The McGill Digital Orchestra project\footnote{The McGill Digital Orchestra. [Online]. Available: \url{http://www.music.mcgill.ca/musictech/DigitalOrchestra/}. Accessed July 9, 2013} began in 2006 with the aim of bringing together researchers  and performers in music technology to work collaboratively in creating hardware and software solutions for live performance with digital technology. In response to the difficulty of creating dynamic musical mappings in a collaborative setting, the libmapper project was created \shortcite{malloch}. In its lowest level form, libmapper is a library for connecting things, as described by its website: 
+The McGill Digital Orchestra project\footnote{The McGill Digital Orchestra. [Online]. Available: \url{http://www.music.mcgill.ca/musictech/DigitalOrchestra/}. Accessed July 9, 2013} began in 2006 with the aim of helping researchers  and performers in music technology to work collaboratively in creating hardware and software solutions for live performance with digital technology. The libmapper project began in response to the difficulty of creating dynamic musical mappings in a collaborative setting \shortcite{malloch}. In its most basic state, libmapper is a library for connecting things. As described by its website: 
 
 \begin{quote} 
 ``libmapper is an open-source, cross-platform software library for declaring data signals on a shared network and enabling arbitrary connections to be made between them. libmapper creates a distributed mapping system/network, with no central points of failure, the potential for tight collaboration and easy parallelization of media synthesis. The main focus of libmapper development is to provide tools for creating and using systems for interactive control of media synthesis.''\footnote{libmapper: a library for connecting things. [Online]. Available: \url{libmapper.org}. Accessed June, 2013}
 \end{quote}
+
+
 
 	joe's new paper: \cite{new_libmapper}
 	joe's libmapper paper: \shortcite{malloch}
@@ -166,66 +168,68 @@ The McGill Digital Orchestra project\footnote{The McGill Digital Orchestra. [Onl
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			\section{Data Visualization}
+\section{Data Visualization}
 
 
 The graphical user interface described in this thesis presents users with solely visual information. As it is a tool to be used with primarily sound producing objects auditory feedback is problematic and common digital devices (laptops, tablets, etc.) provide us with no means of producing haptic response. Mapping systems can contain tremendous amounts of information: device names, digital addresses, numbers of signals, signal names, units, ranges, data types, expressions, parent devices and any kind of meta-data a libmapper user may choose to add to his or her devices. As a result, it is necessary a review how best to visually represent vast amounts of structured data.
 
-	\subsection{Graphical Perception}
-		\subsubsection{Heirarchical Structures}
-		\subsubsection{Dense Information}
-	\subsection{Visualization Techniques}
-		\subsubsection{Filtering}
-		\subsubsection{Spark Lines}
-		\subsubsection{Dash Plots}
-	\subsection{Visualization Systems}
-		Allosphere?, Braun Braun: view OSC data flows \shortcite{braun}, HEB?
-	\begin{enumerate}
-		\item Allosphere? :\shortcite{allosphere}
-		\item Heirarchical edge bundling: \shortcite{HEB}
-		\item Tukey: \shortcite{tuckey}
-		\item Envisioning information: \shortcite{tufte1}
-		\item Beautiful Evidence: \shortcite{tufte2}
-		\item The other Tufte book I have at home.
-		\item OSC data flows with Braun \shortcite{braun}
-	\end{enumerate}
+\subsection{Graphical Perception}
+	\subsubsection{Heirarchical Structures}
+	\subsubsection{Dense Information}
+\subsection{Visualization Techniques}
+	\subsubsection{Filtering}
+	\subsubsection{Spark Lines}
+	\subsubsection{Dash Plots}
+\subsection{Visualization Systems}
+	Allosphere?, Braun Braun: view OSC data flows \shortcite{braun}, HEB?
+\begin{enumerate}
+	\item Allosphere? :\shortcite{allosphere}
+	\item Heirarchical edge bundling: \shortcite{HEB}
+	\item Tukey: \shortcite{tuckey}
+	\item Envisioning information: \shortcite{tufte1}
+	\item Beautiful Evidence: \shortcite{tufte2}
+	\item The other Tufte book I have at home.
+	\item OSC data flows with Braun \shortcite{braun}
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			\section{User Interface Design}
+\section{User Interface Design}
 
-	\subsection{A Brief History of Electronic User Interfaces}
-	\subsection{Task Analysis}
-	\subsection{Recall and Recognition?}
-	\subsection{Collaborative Network Interfaces}
-		MPG Care Package \shortcite{MPGcarepackage}
-	\subsection{The Model-View-Controller Architecture}
-		MVC Krasner Pope \shortcite{MVC_krasnerpope}
-	\subsection{User Centric Design}
-		Organizational context \shortcite{usd}
-		Usability testing \shortcite{usd_corry}
-		Information professionals \shortcite{usd_schulze}
-	\begin{enumerate}
-		\item Inclusive interconnections \shortcite{inclusiveinterconnections}
-		\item Sense Stage \shortcite{senseStage}
-	\end{enumerate}
+\subsection{A Brief History of Electronic User Interfaces}
+\subsection{Task Analysis}
+\subsection{Recall and Recognition?}
+\subsection{Collaborative Network Interfaces}
+	MPG Care Package \shortcite{MPGcarepackage}
+\subsection{The Model-View-Controller Architecture}
+	MVC Krasner Pope \shortcite{MVC_krasnerpope}
+\subsection{User Centric Design}
+	Organizational context \shortcite{usd}
+	Usability testing \shortcite{usd_corry}
+	Information professionals \shortcite{usd_schulze}
+\begin{enumerate}
+	\item Inclusive interconnections \shortcite{inclusiveinterconnections}
+	\item Sense Stage \shortcite{senseStage}
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			\section{Relevant User Interfaces}
+\section{Relevant User Interfaces}
 
-	\subsection{Junxion}
-		Junxion \shortcite{junxion}
-	\subsection{Osculator}
-		Osculator: mapping OSC stuff \shortcite{osculator}
-	\subsection{Other Similar Interfaces}
-		mpgcarepackage?
-		Integra \shortcite{integra}
-		Eaganmatrix: GRID VIEW! \shortcite{eaganmatrix}
-		Patchage: a linking, dragging, connecting interface \shortcite{patchage}
-	\subsection{Prior Interfaces for libmapper} \label{sec:priorGUIs}
-		Vizmapper \shortcite{vizmapper}
-	
+\subsection{Junxion}
+	Junxion \shortcite{junxion}
+\subsection{Osculator}
+	Osculator: mapping OSC stuff \shortcite{osculator}
+\subsection{Other Similar Interfaces}
+	mpgcarepackage?
+	Integra \shortcite{integra}
+	Eaganmatrix: GRID VIEW! \shortcite{eaganmatrix}
+	Patchage: a linking, dragging, connecting interface \shortcite{patchage}
+\subsection{Prior Interfaces for libmapper} \label{sec:priorGUIs}
+	Vizmapper \shortcite{vizmapper}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
 	
