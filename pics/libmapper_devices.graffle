@@ -62,11 +62,11 @@
 	<array>
 		<dict>
 			<key>Bounds</key>
-			<string>{{674, 394.35175}, {148, 66}}</string>
+			<string>{{635.5, 403.67587}, {194, 33}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
-			<string>Vertical</string>
+			<string>YES</string>
 			<key>Flow</key>
 			<string>Resize</string>
 			<key>FontInfo</key>
@@ -77,12 +77,14 @@
 					<string>0</string>
 				</dict>
 				<key>Font</key>
-				<string>CMUSerif-Roman</string>
+				<string>CMUSerif-Italic</string>
 				<key>Size</key>
-				<real>12</real>
+				<real>24</real>
 			</dict>
 			<key>ID</key>
-			<integer>67</integer>
+			<integer>74</integer>
+			<key>Rotation</key>
+			<real>90</real>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -117,10 +119,74 @@
 				<key>VerticalPad</key>
 				<integer>0</integer>
 			</dict>
+			<key>Wrap</key>
+			<string>NO</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{579.39362, 638}, {187, 33}}</string>
+			<string>{{135.5, 403.67587}, {144, 33}}</string>
+			<key>Class</key>
+			<string>ShapedGraphic</string>
+			<key>FitText</key>
+			<string>YES</string>
+			<key>Flow</key>
+			<string>Resize</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Color</key>
+				<dict>
+					<key>w</key>
+					<string>0</string>
+				</dict>
+				<key>Font</key>
+				<string>CMUSerif-Italic</string>
+				<key>Size</key>
+				<real>24</real>
+			</dict>
+			<key>ID</key>
+			<integer>73</integer>
+			<key>Rotation</key>
+			<real>270</real>
+			<key>Shape</key>
+			<string>Rectangle</string>
+			<key>Style</key>
+			<dict>
+				<key>fill</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+			</dict>
+			<key>Text</key>
+			<dict>
+				<key>Pad</key>
+				<integer>0</integer>
+				<key>Text</key>
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 CMUSerif-Roman;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+
+\f0\i\fs48 \cf0 source signals}</string>
+				<key>VerticalPad</key>
+				<integer>0</integer>
+			</dict>
+			<key>Wrap</key>
+			<string>NO</string>
+		</dict>
+		<dict>
+			<key>Bounds</key>
+			<string>{{565.64221, 638}, {187, 33}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -180,65 +246,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{143, 394.35175}, {100.48923, 66}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FitText</key>
-			<string>Vertical</string>
-			<key>Flow</key>
-			<string>Resize</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Color</key>
-				<dict>
-					<key>w</key>
-					<string>0</string>
-				</dict>
-				<key>Font</key>
-				<string>CMUSerif-Roman</string>
-				<key>Size</key>
-				<real>12</real>
-			</dict>
-			<key>ID</key>
-			<integer>58</integer>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>fill</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Pad</key>
-				<integer>0</integer>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 CMUSerif-Roman;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
-
-\f0\i\fs48 \cf0 source signals}</string>
-				<key>VerticalPad</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{200.16504, 638}, {136, 33}}</string>
+			<string>{{213.80389, 638}, {136, 33}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -318,7 +326,7 @@
 				<real>12</real>
 			</dict>
 			<key>ID</key>
-			<integer>56</integer>
+			<integer>71</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -378,7 +386,7 @@
 				<real>12</real>
 			</dict>
 			<key>ID</key>
-			<integer>55</integer>
+			<integer>72</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -490,7 +498,7 @@
 			<integer>53</integer>
 			<key>Points</key>
 			<array>
-				<string>{425, 283.73984}</string>
+				<string>{424.55246, 283.73984}</string>
 				<string>{470, 298}</string>
 				<string>{481, 392}</string>
 				<string>{514.26776, 405}</string>
@@ -564,8 +572,8 @@
 			<integer>49</integer>
 			<key>Points</key>
 			<array>
-				<string>{419.72839, 420.17587}</string>
-				<string>{520.21765, 420.17587}</string>
+				<string>{419.22839, 420.17587}</string>
+				<string>{520.71765, 420.17587}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -604,8 +612,8 @@
 			<integer>48</integer>
 			<key>Points</key>
 			<array>
-				<string>{419.72839, 283.73984}</string>
-				<string>{520.21765, 283.73984}</string>
+				<string>{419.22839, 283.73984}</string>
+				<string>{520.71765, 283.73984}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -629,28 +637,28 @@
 			<key>AllowConnections</key>
 			<string>NO</string>
 			<key>Bounds</key>
-			<string>{{339.70654, 160.84654}, {259.53302, 21.390167}}</string>
+			<string>{{339.70898, 160.51341}, {257.29346, 21.390167}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
 			<dict>
 				<key>Font</key>
-				<string>CMUSerif-Roman</string>
+				<string>CMUSerif-Italic</string>
 				<key>Size</key>
 				<real>12</real>
 			</dict>
 			<key>ID</key>
 			<integer>27</integer>
 			<key>Rotation</key>
-			<real>0.49656212329864502</real>
+			<real>0.35251671075820923</real>
 			<key>Shape</key>
 			<string>AdjustableArrow</string>
 			<key>ShapeData</key>
 			<dict>
 				<key>ratio</key>
-				<real>0.32189163565635681</real>
+				<real>0.17837005853652954</real>
 				<key>width</key>
-				<real>14.973806381225586</real>
+				<real>15.012021064758301</real>
 			</dict>
 			<key>Style</key>
 			<dict>
@@ -658,14 +666,12 @@
 				<dict>
 					<key>Color</key>
 					<dict>
-						<key>a</key>
-						<string>0.1</string>
 						<key>b</key>
-						<string>0</string>
+						<string>0.268725</string>
 						<key>g</key>
-						<string>0</string>
+						<string>0.268725</string>
 						<key>r</key>
-						<string>0</string>
+						<string>0.268725</string>
 					</dict>
 					<key>MiddleFraction</key>
 					<real>0.70634919404983521</real>
@@ -683,6 +689,8 @@
 						<key>r</key>
 						<string>0</string>
 					</dict>
+					<key>Draws</key>
+					<string>NO</string>
 					<key>Fuzziness</key>
 					<real>0.0</real>
 					<key>ShadowVector</key>
@@ -701,6 +709,8 @@
 						<key>r</key>
 						<string>0</string>
 					</dict>
+					<key>Draws</key>
+					<string>NO</string>
 				</dict>
 			</dict>
 			<key>TextRelativeArea</key>
@@ -723,7 +733,7 @@
 				<key>Font</key>
 				<string>CMUSerif-Roman</string>
 				<key>Size</key>
-				<real>12</real>
+				<real>14</real>
 			</dict>
 			<key>ID</key>
 			<integer>12</integer>
@@ -745,6 +755,16 @@
 						<string>1</string>
 					</dict>
 				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
 			</dict>
 			<key>Text</key>
 			<dict>
@@ -756,7 +776,7 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 granul8.2/grain.1/frequency}</string>
+\f0\fs28 \cf0 granul8.2/grain.1/frequency}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -774,7 +794,7 @@
 				<key>Font</key>
 				<string>CMUSerif-Roman</string>
 				<key>Size</key>
-				<real>12</real>
+				<real>14</real>
 			</dict>
 			<key>ID</key>
 			<integer>11</integer>
@@ -796,6 +816,16 @@
 						<string>1</string>
 					</dict>
 				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
 			</dict>
 			<key>Text</key>
 			<dict>
@@ -807,7 +837,7 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 granul8.1/grain.1/basenote}</string>
+\f0\fs28 \cf0 granul8.1/grain.1/basenote}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -825,7 +855,7 @@
 				<key>Font</key>
 				<string>CMUSerif-Roman</string>
 				<key>Size</key>
-				<real>12</real>
+				<real>14</real>
 			</dict>
 			<key>ID</key>
 			<integer>10</integer>
@@ -847,6 +877,16 @@
 						<string>1</string>
 					</dict>
 				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
 			</dict>
 			<key>Text</key>
 			<dict>
@@ -858,14 +898,14 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 granul8.2/filter/envelope/frequency/low}</string>
+\f0\fs28 \cf0 granul8.2/filter/envelope/frequency/low}</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>AllowConnections</key>
 			<string>NO</string>
 			<key>Bounds</key>
-			<string>{{534.36896, 137.57684}, {277.04932, 490.72888}}</string>
+			<string>{{537.33423, 137.57684}, {242.97156, 490.72888}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -891,12 +931,22 @@
 					<key>Color</key>
 					<dict>
 						<key>b</key>
-						<string>0.611237</string>
+						<string>0.846651</string>
 						<key>g</key>
-						<string>0.566479</string>
+						<string>0.769365</string>
 						<key>r</key>
 						<string>1</string>
 					</dict>
+				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
 				</dict>
 			</dict>
 			<key>Text</key>
@@ -929,7 +979,7 @@
 				<key>Font</key>
 				<string>CMUSerif-Roman</string>
 				<key>Size</key>
-				<real>12</real>
+				<real>14</real>
 			</dict>
 			<key>ID</key>
 			<integer>23</integer>
@@ -951,6 +1001,16 @@
 						<string>0.201814</string>
 					</dict>
 				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
 			</dict>
 			<key>Text</key>
 			<dict>
@@ -962,7 +1022,7 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 tstick.1/cooked/accelerometer/2/amplitude}</string>
+\f0\fs28 \cf0 tstick.1/cooked/accelerometer/2/amplitude}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -980,7 +1040,7 @@
 				<key>Font</key>
 				<string>CMUSerif-Roman</string>
 				<key>Size</key>
-				<real>12</real>
+				<real>14</real>
 			</dict>
 			<key>ID</key>
 			<integer>24</integer>
@@ -1002,6 +1062,16 @@
 						<string>0.201814</string>
 					</dict>
 				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
 			</dict>
 			<key>Text</key>
 			<dict>
@@ -1013,7 +1083,7 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 tstick.1/raw/accelerometer/2/y}</string>
+\f0\fs28 \cf0 tstick.1/raw/accelerometer/2/y}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -1031,7 +1101,7 @@
 				<key>Font</key>
 				<string>CMUSerif-Roman</string>
 				<key>Size</key>
-				<real>12</real>
+				<real>14</real>
 			</dict>
 			<key>ID</key>
 			<integer>25</integer>
@@ -1053,6 +1123,16 @@
 						<string>0.201814</string>
 					</dict>
 				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
 			</dict>
 			<key>Text</key>
 			<dict>
@@ -1064,12 +1144,12 @@
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs24 \cf0 tstick.1/raw/accelerometer/1/x}</string>
+\f0\fs28 \cf0 tstick.1/raw/accelerometer/1/x}</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{129.64038, 137.57684}, {277.04932, 490.72888}}</string>
+			<string>{{160.64032, 137.57684}, {242.97156, 490.72888}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -1097,10 +1177,20 @@
 						<key>b</key>
 						<string>1</string>
 						<key>g</key>
-						<string>0.726484</string>
+						<string>0.836872</string>
 						<key>r</key>
-						<string>0.688309</string>
+						<string>0.809121</string>
 					</dict>
+				</dict>
+				<key>shadow</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
+				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>Draws</key>
+					<string>NO</string>
 				</dict>
 			</dict>
 			<key>Text</key>
@@ -1168,7 +1258,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-07-12 20:22:11 +0000</string>
+	<string>2013-07-12 20:39:16 +0000</string>
 	<key>Modifier</key>
 	<string>Aaron Krajeski</string>
 	<key>NotesVisible</key>
@@ -1246,7 +1336,7 @@
 		<key>ExpandedCanvases</key>
 		<array/>
 		<key>Frame</key>
-		<string>{{-0, 13}, {926, 765}}</string>
+		<string>{{57, -79}, {926, 765}}</string>
 		<key>ListView</key>
 		<false/>
 		<key>OutlineWidth</key>
@@ -1258,7 +1348,7 @@
 		<key>SidebarWidth</key>
 		<integer>138</integer>
 		<key>VisibleRegion</key>
-		<string>{{2, 88}, {926, 655}}</string>
+		<string>{{2, 85}, {926, 655}}</string>
 		<key>Zoom</key>
 		<real>1</real>
 		<key>ZoomValues</key>

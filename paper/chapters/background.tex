@@ -154,7 +154,7 @@ As a low-level library, libmapper does not introduce many abstractions on top of
 
 Another advantage of libmapper, which is especially relevant to this project, is the ability to create an administrative device. These ``monitors'' can query libmapper devices for data, and thus collect data on the network overall. Monitors also are able to create, destroy and modify connections on the network. This allows for external visualization and control of a libmapper network.
 
-	\subsubsection{Open Sound Control and libmapper Messages}
+	\subsubsection{Open Sound Control and libmapper Syntax}
 
 Like any communication, communication between digital devices functions well only when the devices speak the same language. In the Internet age this becomes particularly relevant: the vast array of continuously connected devices, sending and requesting information would instantly collapse if every developer coded to his or her own idiosyncrasies. To prevent this, computer scientists make use of various communication ``protocols'' when creating software. Hypertext Transfer Protocol (HTTP) is the most famous example of such a system.
 
@@ -171,18 +171,23 @@ OSC formats messages much like Internet URLs, arbitrary strings of characters se
 
 This structure of signal names aims to be semantically relevant, and allows a GUI to display hierarchical structure of networks. Any one of the above signals transmits not only the signal's value, but also metadata. Signal metadata usually includes data type, length (single number vs. vector), units like volts or meters per second, maximum value and minimum value. Designers can ``tag'' signals with any extra metadata they may wish to add, such as physical position, color or owner's name. In the GUI it is necessary to allow users to view and manipulate any arbitrary kind of signal metadata.
 
-To make signal names as coherent and consistent as possible, libmapper makes use of the \emph{Gesture Description Interchange Format} (GDIF) \shortcite{GDIF}, which provides a standard for motion capture data. Structures are given short, semantically relevant names. GDIF also provides a standard vocabulary for describing motion with dimensions such as ``weight,'' ``space,'' ``time'' and ``flow.''
+To make signal names as coherent and consistent as possible, libmapper makes use of the \emph{Gesture Description Interchange Format} (GDIF) \shortcite{GDIF}, which provides a standard for motion capture data. Structures are given short, semantically relevant names. GDIF also provides a standard vocabulary for describing motion with dimensions such as ``weight,'' ``space,'' ``time'' and ``flow.'' 
 
 	\subsubsection{Structure of libmapper Networks}
 
+Data organized into a time series. Conceptually a signal is continuous, however our use of the term signal will refer to discretized signals, without assumptions regarding sampling intervals.
+signals, devices, expressions
+In order to maintain internal consistency, libmapper introduces a naming convention of its own. A libmapper \emph{device} 
 
+\begin{figure}[ht]
+\centering
+	\scalebox{1}{\includegraphics{figures/libmapper_devices}}
+\caption{A simple libmapper network}
+\label{fig:libmapper_devices}
+\end{figure}
 
 	\subsubsection{Control of libmapper Devices and Signals}
-\begin{enumerate}
-	\item GDIF: \shortcite{GDIF} Describes the namespace that libmapper uses, ``Ideally, it should be possible to store all sorts of data from various commercial and custom made controllers, motion capture and computer vision systems, as well as results from differ- ent types of gesture analysis, in a coherent and consistent way. This would make it possible to use the information with different software, platforms and devices, and also allow for sharing data between research institutions.''  
-	\item surely some other stuff from class
-	\item METADATA, and data
-\end{enumerate}
+expression, range (source and dest), signal mode (linear, calibrate, bypass, expression), mute, send as instance?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
