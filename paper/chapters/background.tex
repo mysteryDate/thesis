@@ -78,7 +78,7 @@ Though a graphical plane is the most common way for mathematicians to visualize 
 
 	\subsubsection{Mapping as association}
 
-In computer science, a mapping is less commonly referred to as a function and more usually called an \emph{associative array} or a \emph{dictionary}, though the word \emph{map} is also used \cite{data_structures}. This type of data structure\footnote{What computer scientist call particular ways of storing and organizing data.} is generally the most flexible way for computers store information. An associative array consists of key/value pairs, where the \emph{value} is the data to be stored and the \emph{key} is the reference to that data. 
+In computer science, a mapping is less commonly referred to as a function and more usually called an \emph{associative array} or a \emph{dictionary}, though the word \emph{map} is also used \cite{data_structures}. This type of data structure is generally the most flexible way for computers store information. An associative array consists of key/value pairs, where the \emph{value} is the data to be stored and the \emph{key} is the reference to that data. 
 
 \begin{table}
 \centering
@@ -102,14 +102,14 @@ In table \ref{tab:key_value_pairs} the data is non-numeric and associations betw
 
 The four mapping classes outlined in the above section are not limited to the functional domain. The associative array in table \ref{tab:key_value_pairs} is another example of a many-to-one mapping, as many countries have the same currency name. In this vain a one-to-many mapping could be the same keys with values switched to ``Former Monarchs'' (``France'' would map to both ``Louis XVI'' and ``Napoleon III'', etc), while a value of ``Official Languages'' would be a many-to-many mapping (``Canada'' maps to both ``English'' and ``French'' while both ``Canada'' and ``France'' map to ``French'').
 
-Though most applicably represented in computer science, data structures like associative arrays appear in many other fields. Library card catalogs (one-to-one), multilingual dictionaries (many-to-many) and address books (many-to-one) are all very straightforward instances of key/value pairs. In a library card catalog the call number even acts as a sort of hash table. In a large library, a book that is placed in the incorrect position on the shelves will likely be lost for a very long time. Thus the system must remember the keys (titles) and associated values (the books themselves) but also their positions in memory, their call numbers.
+Though most applicably represented in computer science, data structures like associative arrays appear in many other fields. Library card catalogs (one-to-one), multilingual dictionaries (many-to-many) and address books (many-to-one) are all very straightforward instances of key/value pairs. In a library card catalog the call number even acts as a sort of hash table. In a large library, a book that is placed in the incorrect position on the shelves will likely be lost for a very long time. Thus the system must not only remember the keys (titles) and associated values (the books themselves) but also their positions in memory, their call numbers.
 
-The above concepts from mathematics and computer science supply a base of knowledge for understanding mappings theoretically and provide a starting point for analyzing them in a musical context.
+%The above concepts from mathematics and computer science supply a base of knowledge for understanding mappings theoretically and provide a starting point for analyzing them in a musical context.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mapping for Digital Musical Instruments} \label{sec:mappingforDMIs}
 
-With an acoustical musical instrument a musician must interact directly with the physical object that produces the sound. In this context, the concepts of ``control surface,'' and ``synthesis devices'' are not very relevant, as they are intrinsically linked. With an acoustic guitar the pick \emph{could} be considered to be a sort of control device (as it is primarily used for instrumental interaction), with the strings and body a acting as the sound producing section. The problem with this type of approach is that changing the material of the pick, perhaps to give a different feel for the player, will also necessarily modify the sound produced. The same can be said for modifying nearly any aspect of an acoustic instrument: it will change both the control interface and the created sound. This coupling of parameters causes any concept of a \emph{mapping layer} to be irrelevant.
+With an acoustical musical instrument a musician must interact directly with the physical object that produces the sound. In this context, the concepts of ``control surface,'' and ``synthesis devices'' are not very relevant, as they are intrinsically linked. In the case of an acoustic guitar the pick \emph{could} be considered to be a sort of control device (as it is primarily used for instrumental interaction), with the strings and body a acting as the sound producing section. The problem with this type of approach is that changing the material of the pick, perhaps to give a different feel for the player, will also necessarily modify the sound produced. The same can be said for modifying nearly any aspect of an acoustic instrument: it will change both the control interface and the created sound. This coupling of parameters causes any concept of a \emph{mapping layer} to be irrelevant.
 
 As stated in the introduction, this is not the case for electronic instruments \shortcite{wanderley}. Electronic sensors transduce musical gestures into signals, which are in turn converted into auditory phenomena by amplifiers and speakers. Any arbitrary transformation can happen to the signals\footnote{Especially digital signals, which are remarkable for their robustness and mutability.} in between these two phases. This flexibility is most obvious with outlandish novel instruments like (TODO: maybe pictures?), but is fundamentally true for any electronic instrument. An electric guitar senses gesture with a magnetic pickup that transforms the signal of a vibrating string into an electronic signal, which is made audible by an amplifier. Though this can happen directly, more or less reproducing the sound of an acoustic guitar, it is also possible to greatly modify this signal before it is amplified, creating tones that may be unrecognizable as the original acoustic instrument.
 
@@ -120,10 +120,10 @@ In response to the importance of this uncoupling of parameters, electronic instr
 	\begin{itemize}
 		\item The ``gestural controller'': The device with which the musician interacts directly. It generally has sensors that collect gestural data and can provide haptic feedback. The generated signals are output into the mapping layer.
 		\item The ``sound generation unit'': This device receives input signals from the mapping layer and uses them to generate sound. This layer can contain melody generating algorithms, sound modifying effects, physical models of acoustical instruments or any other construct that is directly used to produce sound.
-		\item The ``mapping layer'': The abstract space that receives input signals from the gestural controller that are output to the sound generation unit. These signals can be connected and modified independently of actions in the other two layers.
+		\item The ``mapping layer'': The abstract space that receives input signals from the gestural controller and outputs to the sound generation unit. These signals can be connected and modified independently of actions in the other two layers.
 	\end{itemize}
 
-As can be seen above, the words ``output'' and ``input'' become ambiguous, whether one is talking from the perspective of the devices (control devices \emph{output} signals that are \emph{input} into the synthesis devices) or the perspective of the mapping layer (the mapping receives \emph{input} from the controller which is \emph{output} to the synthesizer). For the detailed analysis of mappings and mapping devices, this can obviously create confusion \cite{vizmapper}. To avoid this, signals arriving at the mapping layer from the control surfaces will be referred to as \emph{source signals} and signals sent from the mapping layer to the sound generation units will be called \emph{destination signals} for the remainder of this thesis. This follows the nomenclature described in \shortciteN{new_libmapper} and the libmapper API in general.
+As can be seen above, the words ``output'' and ``input'' become ambiguous, whether one is speaking from the perspective of devices (control devices \emph{output} signals that are \emph{input} into the synthesis devices) or the perspective of the mapping layer (the mapping receives \emph{input} from the controller which is \emph{output} to the synthesizer). For the detailed analysis of mappings and mapping devices, this can obviously create confusion. To avoid this, signals arriving at the mapping layer from the control surfaces will be referred to as \emph{source signals} and signals sent from the mapping layer to the sound generation units will be called \emph{destination signals} for the remainder of this thesis. This follows the nomenclature described in \shortciteN{new_libmapper} and the libmapper API in general.
 
 	\subsubsection{Functional Versus Systems Perspective on Mapping}
 
@@ -215,7 +215,7 @@ Creation of links and connections is mapping from the systems perspective, but l
 		\item\emph{Fold}: When the signal passes outside of the boundary, the value is inverted back onto the destination range. 
 	\end{itemize}
 	\item\textbf{Mute}: A true-or-false value denoting whether the connection should send any values at all.
-	\item\textbf{Send as instance}:
+	\item\textbf{Send as instance}: TODO
 \end{itemize}
 
 Though concept of ``mapping'' itself is extremely abstract, the libmapper API places it into a concrete context. libmapper is not only means of organizing networks though the creation and destruction of links and connections, it is also a tool for customizing response by its support for modifying connection properties. In this way it can serve both the high-level systems perspective and the low-level functional view of mapping. Though designed for musical devices, the API's loose framework could readily be applied to any type of multimedia system. libmapper is an extremely powerful, flexible tool and requires a user interface that can elegantly deploy its full range of capabilities.
@@ -224,8 +224,7 @@ Though concept of ``mapping'' itself is extremely abstract, the libmapper API pl
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Visualization}
 
-
-The graphical user interface described in this thesis presents users with solely visual information. As it is a tool to be used with primarily sound producing objects auditory feedback is problematic and common digital devices (laptops, tablets, etc.) provide us with no means of producing haptic response. Mapping systems can contain tremendous amounts of information: device names, digital addresses, numbers of signals, signal names, units, ranges, data types, expressions, parent devices and any kind of meta-data a libmapper user may choose to add to his or her devices. As a result, it is necessary a review how best to visually represent vast amounts of structured data.
+The graphical user interface described in this thesis presents users with solely visual information. As it is a tool to be used with primarily sound producing objects auditory feedback is problematic and common digital devices (laptops, tablets, etc.) provide us with no means of producing haptic response. Mapping systems can contain tremendous amounts of information: device names, digital addresses, numbers of signals, signal names, units, ranges, data types, expressions, parent devices and any kind of meta-data a libmapper user may choose to add to the network. As a result, it is necessary a review how best to visually represent vast amounts of structured data.
 
 \subsection{Graphical Perception}
 	\subsubsection{Heirarchical Structures}
@@ -239,8 +238,8 @@ The graphical user interface described in this thesis presents users with solely
 \begin{enumerate}
 	\item Allosphere? :\shortcite{allosphere}
 	\item Heirarchical edge bundling: \shortcite{HEB}
-	\item Tukey: \shortcite{tuckey}
 	\item Envisioning information: \shortcite{tufte1}
+	\item Tukey: \shortcite{tuckey}
 	\item Beautiful Evidence: \shortcite{tufte2}
 	\item The other Tufte book I have at home.
 	\item OSC data flows with Braun \shortcite{braun}
