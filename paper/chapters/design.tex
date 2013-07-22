@@ -1,7 +1,7 @@
 %!TEX root = ../thesis.tex
 \chapter{Design \& Implementation}
 
-	Development of a graphical user interface for libmapper creates a unique challenge. Obviously such an interface is a practical tool, and should function as such, yet it also must work in concert with DMIs which are inherently designed for abstract and creative use. For the purposes of this project, the assumed solution to this innate paradox is to provide the user with multiple independent modes of control.  This assumption was made based on experiences with prior user interfaces for libmapper (vizmapper, max mapperGUI): for each interface users reported excellent functionality for certain use cases, and poor functionality for others. Libmapper itself is an extremely flexible API that makes few assumptions as to the network of devices and signals, nor how they are being mapped. It is fitting that a GUI for libmapper would be equally as flexible. In lieu of a single perfect solution for network visualization an interactivity, providing users with various independent solutions provided a good compromise.
+	Development of a graphical user interface for libmapper creates a unique challenge. Obviously such an interface is a practical tool, and should function as such, yet it also must work in concert with DMIs which are inherently designed for creative use. For the purposes of this project, the assumed solution to this innate paradox is to provide the user with multiple independent modes of control.  This assumption based on experiences with prior user interfaces for libmapper: for each interface users reported excellent functionality for certain use cases, and poor functionality for others. libmapper itself is an extremely flexible API that makes few assumptions as to the network of devices and signals or how they are mapped. It is thus fitting that a GUI for libmapper would be equally as flexible. In lieu of a single perfect solution for network visualization and interactivity, providing users with various independent solutions provided a good compromise.
 	
 \section{Design Background}
 
@@ -16,21 +16,71 @@ Work on this project began with a moderately featured, little used GUI for libma
 
 Webmapper utilizes the Python bindings for libmapper by registering an administrative monitor to communicate with a libmapper network. The monitor can create and modify connections or links, as well as query the network as to what devices, signals, links and connections are present. The webmapper code creates a simple HTTP server and attempts to open Google Chrome\footnote{Chrome Browser. [Online]. Available: \url{https://www.google.com/intl/en/chrome/browser/}. Accessed July 17, 2013} on the host computer. If Google Chrome is not present, the user must navigate directly to the server using the web address \url{localhost:50000}. The monitor communicates with the libmapper network and the local server, the browser is able to see messages the monitor ``posts'' to the server (such as `new device') and respond to them appropriately. The browser in turn can send messages to the server (like `connect') that will propagate up to libmapper itself, eventually resulting in a message cascading back down to the browser reflecting the change to the network (such as `new connection'). 
 
-The interface itself is written for a web browser using the scripting language JavaScript\footnote{JavaScript | MDN. [Online]. Available: \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}. Accessed July 17, 2013} to control web-standard HyperText Markup Language (HTML) elements and Cascading Style Sheets (CSS). The JavaScript code stores four main data structures: devices, links, connections and signals. The code never directly modifies any of this data, and instead waits for messages relayed from libmapper. For example, if a user creates a new link, webmapper does not add a link to the links array but simply sends a message to the network. If it receives a `new link' message back, only then does it add the new link to the array. This is done to ensure that the data structures within webmapper always reflect what is actually present on the network in the case that messages are dropped, an error occurs, etc.
+The interface itself is written for a web browser using the scripting language JavaScript\footnote{JavaScript | MDN. [Online]. Available: \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}. Accessed July 17, 2013} to control web-standard HyperText Markup Language (HTML) elements and Cascading Style Sheets (CSS). The JavaScript code stores four main data structures: devices, links, connections and signals. The code never directly modifies any of this data, and instead waits for messages relayed from libmapper. For example: if a user creates a new link, webmapper does not add the link directly to the links array but simply sends a message to the network. If it receives back a `new link' message, only then does it add the new link to the array. This is done to ensure that the data structures within webmapper always reflect what is actually present.
 
-Figure \ref{fig:webmapper} shows the look of the interface before the work of this project began. Users are able to perform all libmapper functions: connecting, linking and modifying connections, but only the simplest of feature sets is included. For example, in order to form a connection the user must click on a source signal, click on a destination signal and then click on a button labeled ``connect.'' Many useful features of the Max/MSP interface, such as column headers, table sorting, drawing connections and search filtering are not present.
+Figure \ref{fig:webmapper} displays the look of the interface before this project began. Users are able to perform all libmapper functions: connecting, linking and modifying connections, but only the simplest of feature sets is included. In order to form a connection the user must click on a source signal, click on a destination signal and then click on a button labeled ``connect.'' Many useful features of the Max/MSP interface, such as column headers, table sorting, drawing connections and search filtering are not present.
 
 \section{Development of a Flexible Interface}
 	
-Prior GUIs for libmapper have been successfully used for some time, but all have failed to become a standard for one reason: they cannot accommodate all possible use-cases of libmapper. List based views like the Max/MSP GUI and webmapper cannot show hierarchies while the cluster view implemented in vizmapper can be overly cumbersome for interaction with simple networks. Especially with so much work already completed on prior GUIs, it was more suitable to integrate different approaches into a single GUI than to begin work on some new, hopefully superior approach that would likely prove to be flawed like all that came before it. 
+Prior GUIs for libmapper have been successfully used for some time, but all have failed to become a standard for the same reason: they cannot accommodate all possible use-cases of libmapper. List based views like the Max/MSP GUI and webmapper cannot show hierarchies while the cluster view implemented in vizmapper can be overly cumbersome for interaction with simple networks. Especially with so much work already completed on prior GUIs, it is more suitable to integrate different approaches into a single GUI than to begin work on some new, hopefully superior approach that would likely prove to be flawed like all that came before it. 
 
-Interface integration was accomplished through an extremely simple approach: a drop-down menu was added to the upper left corner of the interface. Options on this menu represent different visualization modes available to the user. By selecting 
+Interface integration is accomplished through an extremely simple approach: a drop-down menu is added to the upper left corner of the interface. Options on this menu represent different visualization modes available to the user. By selecting a new visualization mode the GUI drastically changes it appearance, replacing every visual element excepting the upper toolbar.
 	%Needs to be adaptable, show any metadata
+
+\subsection{Top toolbar}
+
+Certain tasks and information providing structures are sensible to include across visualization modes. In light of this, a static toolbar is presented at the top of the GUI. This toolbar contains all administrative controls and connection modification fields. 
+
+\begin{figure}[ht]
+\centering
+	\scalebox{0.67}{\includegraphics{figures/top_toolbar}}
+\caption{The upper toolbar}
+\label{fig:toolbar}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{Administrative controls}
+	\begin{itemize}
+		\item\emph{Load/Save buttons}: These elements respond to clicks and save and load mappings, as discussed in section \ref{sec:saving_and_loading}.
+		\item\emph{Visual mode selection}: A drop-down menu containing all possible view modes (at the writing of this thesis: List, Grid and Hive).
+		\item\emph{Refresh Button}: When clicked, all data residing on the GUI is erased and re-gathered. This is useful if the monitor somehow desynchronizes with the network.
+	\end{itemize}
+
+	\item \textbf{Connection modification}
+	\begin{itemize}
+		\item\emph{Connection mode selectors}: If a single connection is selected within the GUI, this array of buttons allows the user to choose between the available connection modes.
+		\item\emph{Expression editor}: Here the user inputs a custom expression, if in ``Expr'' mode, in other modes this field displays the connection's expression but is not editable.
+		\item\emph{Source range editor}: These two numbers reflect the maximum and minimum values of the input signal, is only editable in the ``Line'' connection mode.
+		\item\emph{Destination range editor}: Same as above but for the destination signal. Due to boundary conditions these fields are useful in all modes.
+		\item\emph{Boundary mode selectors}: Two buttons that cycle through five boundary modes for both the maximum and minimum destination value. A graphic exists to represent each mode.
+	\end{itemize}
+\end{itemize}
+
+All interface features not present in the top toolbar are part of the current visualization mode and are placed into a ``container'' element below, occupying the remainder of the window.
 
 \subsection{List view}
 \label{sec:list_view}
 
-The first implemented, and thus far most functional view mode for the GUI is the ``list'' view. Based heavily on the Max/MSP GUI described in section \ref{sec:similar_interfaces}, 
+
+The first implemented, and thus far most functional view mode for the GUI is the ``list'' view. Based heavily on the Max/MSP GUI described in section \ref{sec:similar_interfaces}, the list view provides the most straightforward way to visualize and interact with libmapper. Two tables dominate the visible area, listing source elements on the left and destination elements on the right. B\'ezier curves form lines between associated list elements on each each list. Because these curves do not always represent the same data structures, the lines themselves are referred to as \emph{arrows} by the GUI code, and by this document.
+
+\begin{figure}[ht]
+\centering
+	\scalebox{0.4}{\includegraphics{figures/list_view_all_devices}}
+\caption{The list view with all devices selected}
+\label{fig:list_view_all_devices}
+\end{figure}
+
+The view itself is divided into two major modes: ``All Devices'' and individual linked source devices. Switching between these modes is accomplished through tabs that appear at the top of the container, much like the tabs that appear in modern web browsers. In the All Devices tab, every device displayed on the network is listed in one of the two columns, as in \ref{fig:list_view_all_devices}. Source devices are listed in the left table, while the right table lists destination devices. Intermediate devices, such as implicit mappers described in \cite{interpolated_mappings}, will be listed in both tables. Here arrows represent links between devices. Currently the GUI provides users with names, the number of child signals, IP addresses and a port for every device. Since no connections or signals are displayed, most of the top bar is disabled in the All Devices tab. Saving and loading is also disabled.
+
+\begin{figure}[ht]
+\centering
+	\scalebox{0.4}{\includegraphics{figures/list_view_single_link}}
+\caption{The list view with device \textbf{testsend.1} selected}
+\label{fig:list_view_single_link}
+\end{figure}
+
+The GUI draws a tab for every source device with at least one link to a destination device. Clicking on any of these devices will redraw both tables. The left table now shows all child signals for the selected source device while the right table displays child signals for every destination device linked to the selected device. 
 
 \subsection{Grid view}
 \subsection{Hive plot}
@@ -49,6 +99,8 @@ The first implemented, and thus far most functional view mode for the GUI is the
 
 	The model consists of an abstract copy of the network, residing on the local machine. Independent views can consult this data, but cannot directly modify it.
 
+	%low bandwidth allowances
+
 \subsection{Controller-View Pairs}
 
 \section{Graphical Design}
@@ -58,8 +110,8 @@ The first implemented, and thus far most functional view mode for the GUI is the
 \begin{figure}[ht]
 \centering
 	\scalebox{0.4}{\includegraphics{figures/final_list}}
-\caption{The list view after redesign}
-\label{fig:final_list}
+\caption{The list view after redesign} %TODO before redesign
+\label{fig:before_makeover}
 \end{figure}
 
 \begin{figure}[ht]
@@ -79,6 +131,9 @@ The first implemented, and thus far most functional view mode for the GUI is the
 	
 \section{User Centric Design}
 	use cases
+
+\section{Saving and Loading}
+\label{sec:saving_and_loading}
 
 \section{Robustness and Responsiveness}
 	speed tests
