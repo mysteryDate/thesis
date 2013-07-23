@@ -81,21 +81,21 @@ Though a graphical plane is the most common way for mathematicians to visualize 
 In computer science, a mapping is less commonly referred to as a function and more usually called an \emph{associative array} or a \emph{dictionary}, though the word \emph{map} is also used \cite{data_structures}. This type of data structure is generally the most flexible way for computers store information. An associative array consists of key/value pairs, where the \emph{value} is the data to be stored and the \emph{key} is the reference to that data. 
 
 \begin{table}
-\centering
-\Tcaption{An example of key/value pairs (contries and currencies)}
-\label{tab:key_value_pairs}
-\begin{tabular}{l l}
-\hline\hline
-key&value\\
-\hline
-Canada&Dollar\\
-France&Euro\\
-Bahrain&Dinar\\
-Germany&Euro\\
-Angola&Kwanza\\
-USA&Dollar\\
-\hline
-\end{tabular}
+	\centering
+	\Tcaption{An example of key/value pairs (contries and currencies)}
+	\label{tab:key_value_pairs}
+	\begin{tabular}{l l}
+		\hline\hline
+		key&value\\
+		\hline
+		Canada&Dollar\\
+		France&Euro\\
+		Bahrain&Dinar\\
+		Germany&Euro\\
+		Angola&Kwanza\\
+		USA&Dollar\\
+		\hline
+	\end{tabular}
 \end{table}
 
 In table \ref{tab:key_value_pairs} the data is non-numeric and associations between keys and values are arbitrary (from a mathematical point of view). There obviously exists no distinct function that can transform a countries name into the name of its currency, thus the computer must explicitly remember the associations between the words in the form of a \emph{hash table}. At the lowest level, computers store information on a vast array of zeros and ones, and the value ``Kwanza'' only arises through a non-trivial process of encoding and decoding. In order to retrieve it the computer \emph{must} know where it can be found. The hash table takes the input of a key, finds the address for the value and returns it. In this way the hash table is literally the association between two sets of data and thus the mapping between them. 
@@ -214,8 +214,12 @@ Creation of links and connections is mapping from the systems perspective, but l
 		\item\emph{Wrap}: Values exceeding the maximum are ``wrapped'' back to the minimum bound and vice versa.
 		\item\emph{Fold}: When the signal passes outside of the boundary, the value is inverted back onto the destination range. 
 	\end{itemize}
-	\item\textbf{Mute}: A true-or-false value denoting whether the connection should send any values at all.
-	\item\textbf{Send as instance}: TODO
+	\item\textbf{Mute}: A true-or-false value muting and un-muting data sent over the connection.
+	\item\textbf{Send as instance}: Not all signals on libmapper networks are unique and long lasting, a good example being a keypress on a keyboard. During the keypress, data like aftertouch and release can be sent, making it a bona fide signal. However, musicians constantly create and complete keypress events during performance with keyboard instruments. To maintain every keypress as a unique signal with unique metadata would be tremendously unhelpful for mapping. Also, forcing a user to map every keypress event individually would make live performance impossible.
+
+	To support this, libmapper gives connections the \emph{send as instance} property. Sending data as an instance means that libmapper treats the connected signals as instances of a general class of signals. New instances of a signal class will be treated like previous instances and do not need to be mapped individually.
+	\item\textbf{Link scope}: Not a property of connections, but of links. By default links are ``scoped'' to notify destination devices of the creation and destruction of signal instances on linked source devices. For intermediate devices, ones that function as both source and destination, this may not be the desired behavior. If device \url{A} is linked to intermediate device \url{B}, which is in turn linked to device \url{C}, then \url{C} will not be notified of instance events on \url{A} with default link scope settings. The user can modify the scope of link \url{B} $\rightarrow$ \url{C} to include \url{A} if desired.
+
 \end{itemize}
 
 	\subsubsection{libmapper bindings}
@@ -234,10 +238,113 @@ Though concept of ``mapping'' itself is extremely abstract, the libmapper API pl
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Visualization}
 
-The graphical user interface described in this thesis presents users with solely visual information. As it is a tool to be used with primarily sound producing objects auditory feedback is problematic and common digital devices (laptops, tablets, etc.) provide us with no means of producing haptic response. Mapping systems can contain tremendous amounts of information: device names, digital addresses, numbers of signals, signal names, units, ranges, data types, expressions, parent devices and any kind of meta-data a libmapper user may choose to add to the network. As a result, it is necessary a review how best to visually represent vast amounts of structured data.
+The graphical user interface described in this thesis is a purely visual interface. No means of auditory or haptic response was implemented, or even seriously considered. Creating an auditory tool for controlling musical instruments is obviously problematic and most personal computers provide no means of produce haptic feedback. This obviously limits the usable dimensions, but also greatly simplifies the problem of how to best represent the tremendous variety of libmapper networks.
 
-\subsection{Graphical Perception}
-	\subsubsection{Heirarchical Structures}
+Fortunately graphic designers and statisticians have already deeply probed the problem of how to best display data visually. It is necessary here to briefly review some of this work, especially the techniques relevant to the creation of a libmapper GUI and visual systems from which inspiration was drawn.
+
+\subsection{Graphical Dimensions}
+
+The visual dimension can be broken down into many sub-dimensions. These dimensions are not fully separable, but doing so creates a useful paradigm for understanding and creating solutions for our visual problem. \citeN{bertin_graphics} presents a simple vocabulary for categorizing graphical objects and relationships.
+
+\begin{table}
+	\centering
+	\Tcaption{Bertin's graphical relationships}
+	\label{tab:graphical_relationships}
+		\begin{tabular}{l  l}
+		\hline\hline
+		\textbf{Marks}& Points, lines and areas\\
+		\textbf{Positional}& 1-D, 2-D and 3-D\\
+		\textbf{Temporal}& Animation\\
+		\textbf{Retinal}& Color, shape, size, saturation, texture and orientation\\
+		\hline
+		\end{tabular}
+\end{table}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+	\centering
+		\includegraphics[width=0.4\textwidth]{figures/accuracy_of_visual_dimensions}
+		\caption{Cleveland and McGill's rankings for quantitative perceptual tasks.}
+		\label{fig:accuracy_of_visual_dimensions}
+\end{wrapfigure}
+
+Visual presentations use marks to encode information by way of their positional, temporal and retinal qualities. In table \ref{tab:graphical_relationships} \emph{retinal} properties are so called because the eye is sensitive to them independently of their position. Though the third positional dimension is relevant and would be useful, it is currently beyond the scope of this research, not to mention the hardware on which the GUI is to run. 
+
+
+\citeN{cleveland} expand on this vocabulary, enumerating further sub-dimensions of marks and retinal properties. An experiment is described in which subjects are asked the relative values of various visual objects (e.g. the first box is 50\% larger than the box on the left), for various visual dimensions. From the data, they were able to create a ranking of visual dimensions for quantitative information. In figure \ref{fig:accuracy_of_visual_dimensions}, differences between objects are more accurately perceived when the difference is encoded using a variable higher up the chart. Note that variables like shape, texture and opacity are not included. 
+
+\citeN{visual_dimensions} uses this ranking to expand into non-quantitative data sets. Nominal information is that in which elements can be understood to be similar or dissimilar to one another, yet have no definite order or value. libmapper uses nominal information in the form of device, signal, link and connection names, as well as connection modes and boundary conditions. Ordinal data fits between quantitative and nominal, ordinal items are understood to be greater than or less than one another, while having no definite numerical ratios. If multiple devices of the same class are present on the same libmapper network, libmapper will append ordinal numbers to the end of their device names (e.g. \url{tstick.1}, \url{tstick.2} and \url{tstick.3}).
+
+\begin{table}
+\setlength{\tabcolsep}{12pt}
+	\centering
+	\Tcaption{Mackinlay's Graphical Rankings}
+	\label{tab:graphical_rankings}
+		\begin{tabular}{l l l}
+		\textbf{quantitative}&	\textbf{ordinal}	&	\textbf{nominal}\\
+		\hline\hline
+		position 			& 	position 			&	position 		\\
+		length 				& 	density 			&	color hue 		\\
+		angle 				& 	color saturation 	&	texture 		\\
+		slope				&	color hue 			&	connection 		\\
+		area				&	texture				&	containment 	\\
+		volume				&	connection 			&	density 		\\
+		density				&	containment 		&	color saturation\\
+		color saturation	&	length 				&	shape 			\\
+		color hue			&	angle 				&	length 			\\
+		texture				&	slope 				&	angle 			\\
+		\emph{connection}	&	area 				&	slope 			\\
+		\emph{containment}	&	volume 				&	area 			\\
+		\emph{shape}		&	\emph{shape} 		&	volume 			\\
+		\hline
+	\end{tabular}
+\end{table}
+
+In table \ref{tab:graphical_rankings}, items in italics are considered unsuitable by Mackinlay. Though position is the most accurate dimension for all types of data, dimensions like \emph{length} differ widely. For the visualization of libmapper networks, it is often necessary to encode many dimensions of data onto a single mark. Devices, signals, connections and links all have a set of metadata with quantitative, ordinal and nominative data. The list in table \ref{tab:metadata_types} is by no means a complete set, as libmapper may yet expand to include data like device position and users are able to tag devices/signals/links/connections with any extra data they may want.
+
+%\begin{longtable}{l l l l}
+%\caption[libmapper metadata types for graphical consideration]{libmapper metadata types for graphical consideration} \label{grid_mlmmh}
+%	\hline\hline
+%	\textbf{Devices} & & \\
+%	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
+%	\hline
+%	number of inputs & device ordinal & device name\\
+%		number of outputs \\
+%	ip address \\
+%	port \\ [0.7cm]%
+
+%	\hline\hline
+%	\textbf{Signals} & & \\
+%	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
+%	\hline
+%	length & direction & parent device name\\
+%	minimum value & & signal name \\
+%	maximum value & & data type (float, integer, etc.)\\
+%	sampling rate & & units \\ [0.7cm]%
+
+%	\hline\hline
+%	\textbf{Links} & & \\
+%	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
+%	\hline
+%	& & link name \\
+%	& & source device name \\
+%	& & destination device name \\
+%	& & scope \\ [0.7cm]%
+
+%	\hline\hline
+%	\textbf{Connections} & & \\
+%	\emph{quantitative} & \emph{ordinal} & \emph{nominal} & \emph{boolean}\\
+%	\hline
+%	source minimum & instance number & boundary modes & mute\\
+%	source maximum & & connection mode & send as instance\\
+%	destination minimum & & destination data type \\
+%	destination maximum & & mute \\
+%	& & expression \\
+%	& & \\
+%\end{longtable}
+
+A fourth data category \emph{boolean} has been added to specify data that only has two values (\emph{true or false}), as it is a common metadata feature. Boolean information is not covered in the Mackinlay paper. Going forward it will be treated more or less like ordinal data, as \emph{true} obviously has a relationship to \emph{false}, even though there is no quantitative value associated with them.
+
+
 	\subsubsection{Dense Information}
 \subsection{Visualization Techniques}
 	\subsubsection{Filtering}
