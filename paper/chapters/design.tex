@@ -22,7 +22,56 @@ The interface itself is written for a web browser using the scripting language J
 
 Figure \ref{fig:webmapper} displays the look of the interface before this project began. Users are able to perform all libmapper functions: connecting, linking and modifying connections, but only the simplest of feature sets is included. In order to form a connection the user must click on a source signal, click on a destination signal and then click on a button labeled ``connect.'' Many useful features of the Max/MSP interface, such as column headers, table sorting, drawing connections and search filtering are not present.
 
-\section{Development of a Flexible Interface}
+\subsection{Evaluation of graphical variables}
+
+The list in table \ref{tab:metadata_types} is by no means a complete set, as libmapper may yet expand to include data like device position and users are able to tag devices/signals/links/connections with any extra data they may want.
+
+A fourth data category \emph{boolean} has been added to specify data that only has two values (\emph{true or false}), as it is a common metadata feature. Boolean information is not covered in the Mackinlay paper. Going forward it will be treated more or less like ordinal data, as \emph{true} obviously has a relationship to \emph{false}, even though there is no quantitative value associated with them.
+
+
+\begin{longtable}{l l l l}
+\caption[libmapper metadata types]{libmapper metadata types} \label{tab:metadata_types} \\
+
+	\hline\hline
+	\textbf{Devices} & & \\
+	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
+	\hline
+	number of inputs & device ordinal & device name\\
+		number of outputs \\
+	ip address \\
+	port \\ [0.7cm]
+
+	\hline\hline
+	\textbf{Signals} & & \\
+	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
+	\hline
+	length & direction & parent device name\\
+	minimum value & & signal name \\
+	maximum value & & data type (float, integer, etc.)\\
+	sampling rate & & units \\ [0.7cm]
+
+	\hline\hline
+	\textbf{Links} & & \\
+	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
+	\hline
+	& & link name \\
+	& & source device name \\
+	& & destination device name \\
+	& & scope \\ [0.7cm]
+
+	\hline\hline
+	\textbf{Connections} & & \\
+	\emph{quantitative} & \emph{ordinal} & \emph{nominal} & \emph{boolean}\\
+	\hline
+	source minimum & instance number & boundary modes & mute\\
+	source maximum & & connection mode & send as instance\\
+	destination minimum & & destination data type \\
+	destination maximum & & mute \\
+	& & expression \\
+	& & \\
+\end{longtable}
+
+\section{Development of a flexible interface}
 	
 Prior GUIs for libmapper have been successfully used for some time, but all have failed to become a standard for the same reason: they cannot accommodate all possible use-cases of libmapper. List based views like the Max/MSP GUI and webmapper cannot show hierarchies while the cluster view implemented in vizmapper can be overly cumbersome for interaction with simple networks. Especially with so much work already completed on prior GUIs, it is more suitable to integrate different approaches into a single GUI than to begin work on some new, hopefully superior approach that would likely prove to be flawed like all that came before it. 
 
@@ -89,21 +138,21 @@ The GUI draws a tab for every source device with at least one link to a destinat
 \subsection{Cluster view (vizmapper)}
 
 \section{Control Features}
-\subsection{Creating Connections/Links}
-\subsection{Modifying Signals}
+\subsection{Creating connections/links}
+\subsection{Modifying signals}
 
 \section{The Model-View-Controller}
 \label{sec:MVC}
 
 	Because a modular design is desired, the Model-View-Controller (MVC) metaphor for structuring software applications as described in [KrasnerPope88] was used as a general framework for structuring the application. In fact, the whole scale swapping in and out of independent visual modes can be thought of as a quintessential implementation of MVC. 
 	
-\subsection{The Model}
+\subsection{The model}
 
 	The model consists of an abstract copy of the network, residing on the local machine. Independent views can consult this data, but cannot directly modify it.
 
 	%low bandwidth allowances
 
-\subsection{Controller-View Pairs}
+\subsection{Controller-view pairs}
 
 \section{Graphical Design}
 	wiggly arrows

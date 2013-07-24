@@ -9,7 +9,7 @@ Dynamic mapping is becoming an increasingly important requirement for digital mu
 At the most fundamental level, \emph{mapping} is the act of associating two or more sets of information. Mappings can be mathematical, computational, linguistic (like translation), geographic, or even poetic\footnote{What is metaphor if not the association of unlike things?}. Within the context of DMI design mapping is the relationship between sensor outputs and synthesis inputs. The entire character of a new instrument can be drastically altered though mapping, even while control surface and sound source are held constant \shortcite{hunt_mapping_is_important}. As a result, the theoretical formalism of mapping becomes yet another necessary tool in the modern instrument designer's arsenal.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Mapping Theory}
+\subsection{Mapping theory}
 	\label{sec:mapping_theory}
 
 	\subsubsection{Mapping as function and mapping cardinality}
@@ -107,13 +107,13 @@ Though most applicably represented in computer science, data structures like ass
 %The above concepts from mathematics and computer science supply a base of knowledge for understanding mappings theoretically and provide a starting point for analyzing them in a musical context.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Mapping for Digital Musical Instruments} \label{sec:mappingforDMIs}
+\subsection{Mapping for digital musical instruments} \label{sec:mappingforDMIs}
 
 With an acoustical musical instrument a musician must interact directly with the physical object that produces the sound. In this context, the concepts of ``control surface,'' and ``synthesis devices'' are not very relevant, as they are intrinsically linked. In the case of an acoustic guitar the pick \emph{could} be considered to be a sort of control device (as it is primarily used for instrumental interaction), with the strings and body a acting as the sound producing section. The problem with this type of approach is that changing the material of the pick, perhaps to give a different feel for the player, will also necessarily modify the sound produced. The same can be said for modifying nearly any aspect of an acoustic instrument: it will change both the control interface and the created sound. This coupling of parameters causes any concept of a \emph{mapping layer} to be irrelevant.
 
 As stated in the introduction, this is not the case for electronic instruments \shortcite{wanderley}. Electronic sensors transduce musical gestures into signals, which are in turn converted into auditory phenomena by amplifiers and speakers. Any arbitrary transformation can happen to the signals\footnote{Especially digital signals, which are remarkable for their robustness and mutability.} in between these two phases. This flexibility is most obvious with outlandish novel instruments like (TODO: maybe pictures?), but is fundamentally true for any electronic instrument. An electric guitar senses gesture with a magnetic pickup that transforms the signal of a vibrating string into an electronic signal, which is made audible by an amplifier. Though this can happen directly, more or less reproducing the sound of an acoustic guitar, it is also possible to greatly modify this signal before it is amplified, creating tones that may be unrecognizable as the original acoustic instrument.
 
-	\subsubsection{The Mapping Layer}
+	\subsubsection{The mapping layer}
 
 In response to the importance of this uncoupling of parameters, electronic instruments are often conceptualized as having three independent layers \cite{gestural_control_sound_synthesis}: (TODO diagram)
 
@@ -125,7 +125,7 @@ In response to the importance of this uncoupling of parameters, electronic instr
 
 As can be seen above, the words ``output'' and ``input'' become ambiguous, whether one is speaking from the perspective of devices (control devices \emph{output} signals that are \emph{input} into the synthesis devices) or the perspective of the mapping layer (the mapping receives \emph{input} from the controller which is \emph{output} to the synthesizer). For the detailed analysis of mappings and mapping devices, this can obviously create confusion. To avoid this, signals arriving at the mapping layer from the control surfaces will be referred to as \emph{source signals} and signals sent from the mapping layer to the sound generation units will be called \emph{destination signals} for the remainder of this thesis. This follows the nomenclature described in \shortciteN{new_libmapper} and the libmapper API in general.
 
-	\subsubsection{Functional Versus Systems Perspective on Mapping}
+	\subsubsection{Functional versus systems perspective on mapping}
 
 Both the more mathematical perspective of mapping as functions and the computer science standpoint of mapping as association are relevant to DMI design. These two concepts are often referred to as the \emph{functional} and the \emph{systems} points of view for mapping, respectively \cite{two_types_of_mapping}. 
 
@@ -133,7 +133,7 @@ Once two signals are connected, say the position of a knob and the cutoff freque
 
 The other, higher-level perspective on mapping deals with the actual connection of source to destination signals. On any mapping network there can exist several devices, each with numerous signals. The act of associating devices with devices, signals with signals can drastically change the character of a DMI or group of DMIs. This is known as the systems perspective on mapping. It is necessary for libmapper and the GUI to be able to assist with both kinds of mappings.
 
-	\subsubsection{Mapping Strategies}
+	\subsubsection{Mapping strategies}
 
 For expressive musical networks, simple one-to-one mappings are often insufficient.  \citeN{describing_mappings} argues that it is extremely rare to find such associations in acoustic instruments, as the control parameters are usually tightly coupled with several acoustic dimensions. Interfaces with hundreds of knobs and sliders, each one connected to a single sound parameter have thus been found to ``...hinder rather than help expressive musical behavior.'' \citeA{describing_mappings} In practical experiments where mappings of varying complexity are compared, the most complex were generaly found to be the most expressive and useful \cite{mapping_complexity_experiments}. However, \citeN{interpolated_mappings} states that mappings need to be simple enough for the performer to comprehend them. \citeANP{interpolated_mappings} argues for ``...static mappings over dynamic, and simple over complex'' and proposes an algorithmic solution to compute them. These ``interpolated mappings'' are generated by associating single points in the source and destination spaces (i.e. certain performer gestures with certain sounds) and mathematically filling in the spaces between.
 
@@ -154,7 +154,7 @@ As a C\footnote{An extremely popular, multi-purpose programming language.} libra
 
 Another advantage of libmapper, which is especially relevant to this project, is the ability to create an administrative device. These ``monitors'' can query libmapper devices for data, and thus collect data on the network overall. Monitors also are able to create, destroy and modify connections on the network. This allows for external visualization and control of a libmapper network.
 
-	\subsubsection{Open Sound Control and libmapper Syntax}
+	\subsubsection{Open sound control and libmapper syntax}
 
 Like any communication, communication between digital devices functions well only when the devices speak the same language. In the Internet age this becomes particularly relevant: the vast array of continuously connected devices, sending and requesting information would instantly collapse if every developer coded to his or her own idiosyncrasies. To prevent this, computer scientists make use of various communication ``protocols'' when creating software. Hypertext Transfer Protocol (HTTP) is the most famous example of such a system.
 
@@ -173,7 +173,7 @@ This structure of signal names aims to be semantically relevant, and allows a GU
 
 To make signal names as coherent and consistent as possible, libmapper makes use of the \emph{Gesture Description Interchange Format} (GDIF) \shortcite{GDIF}, which provides a standard for motion capture data. Structures are given short, semantically relevant names. GDIF also provides a standard vocabulary for describing motion with dimensions such as ``weight,'' ``space,'' ``time'' and ``flow.'' Though these standards are not enforced, as libmapper signals can be given any sort of names by their creators, most extant libmapper-enabled devices use them.
 
-	\subsubsection{Structure of libmapper Networks}
+	\subsubsection{Structure of libmapper networks}
 
 In order to maintain internal consistency, libmapper introduces a naming convention of its own. At the heart of any libmapper network are \emph{signals}, defined in \citeN{new_libmapper} as:
 \begin{quote}
@@ -242,7 +242,7 @@ The graphical user interface described in this thesis is a purely visual interfa
 
 Fortunately graphic designers and statisticians have already deeply probed the problem of how to best display data visually. It is necessary here to briefly review some of this work, especially the techniques relevant to the creation of a libmapper GUI and visual systems from which inspiration was drawn.
 
-\subsection{Graphical Dimensions}
+\subsection{Graphical dimensions}
 
 The visual dimension can be broken down into many sub-dimensions. These dimensions are not fully separable, but doing so creates a useful paradigm for understanding and creating solutions for our visual problem. \citeN{bertin_graphics} presents a simple vocabulary for categorizing graphical objects and relationships.
 
@@ -299,81 +299,67 @@ Visual presentations use marks to encode information by way of their positional,
 	\end{tabular}
 \end{table}
 
-In table \ref{tab:graphical_rankings}, items in italics are considered unsuitable by Mackinlay. Though position is the most accurate dimension for all types of data, dimensions like \emph{length} differ widely. For the visualization of libmapper networks, it is often necessary to encode many dimensions of data onto a single mark. Devices, signals, connections and links all have a set of metadata with quantitative, ordinal and nominative data. The list in table \ref{tab:metadata_types} is by no means a complete set, as libmapper may yet expand to include data like device position and users are able to tag devices/signals/links/connections with any extra data they may want.
+In table \ref{tab:graphical_rankings}, items in italics are considered unsuitable by Mackinlay. Though position is the most accurate dimension for all types of data, dimensions like \emph{length} differ widely. For the visualization of libmapper networks, it is often necessary to encode many dimensions of data onto a single mark. Devices, signals, connections and links all have a set of metadata with quantitative, ordinal and nominative information. In the design of an effective GUI it will be necessary to properly associate high-accuracy visual dimensions to network properties that require them and reserve low-accuracy dimensions for those that do not. In this way the problem of this thesis conveniently becomes one of mapping: how can we best correlate visual dimensions with properties of libmapper networks?
 
-%\begin{longtable}{l l l l}
-%\caption[libmapper metadata types for graphical consideration]{libmapper metadata types for graphical consideration} \label{grid_mlmmh}
-%	\hline\hline
-%	\textbf{Devices} & & \\
-%	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
-%	\hline
-%	number of inputs & device ordinal & device name\\
-%		number of outputs \\
-%	ip address \\
-%	port \\ [0.7cm]%
+\subsection{Relevant visualization techniques and systems}
 
-%	\hline\hline
-%	\textbf{Signals} & & \\
-%	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
-%	\hline
-%	length & direction & parent device name\\
-%	minimum value & & signal name \\
-%	maximum value & & data type (float, integer, etc.)\\
-%	sampling rate & & units \\ [0.7cm]%
+	\subsubsection{Encoding Color}
 
-%	\hline\hline
-%	\textbf{Links} & & \\
-%	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
-%	\hline
-%	& & link name \\
-%	& & source device name \\
-%	& & destination device name \\
-%	& & scope \\ [0.7cm]%
+``Color'' itself is a multi-dimensional phenomenon that does much to communicate information in modern user interfaces. Since color was an uncommon feature of computer displays at the time neither \citeN{bertin_graphics} nor \citeN{cleveland}  explore its use in depth. \citeANP{cleveland} simply state that it is not good for encoding quantitative information. \citeN{visual_dimensions} elaborates on this, breaking color into ``hue'' and ``saturation,'' upgrading its use for ordinal and nominal data. 
 
-%	\hline\hline
-%	\textbf{Connections} & & \\
-%	\emph{quantitative} & \emph{ordinal} & \emph{nominal} & \emph{boolean}\\
-%	\hline
-%	source minimum & instance number & boundary modes & mute\\
-%	source maximum & & connection mode & send as instance\\
-%	destination minimum & & destination data type \\
-%	destination maximum & & mute \\
-%	& & expression \\
-%	& & \\
-%\end{longtable}
+\citeN{tufte2} provides a definite procedure for incorporating color into evidence displays\footnote{Tufte's favorite term for data-driven graphics}. Techniques are gleaned from centuries-old map making and applied to computer interfaces. Principal rules, summarized and expanded from \citeN{imhof}, are found to be (paraphrased):
 
-A fourth data category \emph{boolean} has been added to specify data that only has two values (\emph{true or false}), as it is a common metadata feature. Boolean information is not covered in the Mackinlay paper. Going forward it will be treated more or less like ordinal data, as \emph{true} obviously has a relationship to \emph{false}, even though there is no quantitative value associated with them.
+	\begin{itemize}
+		\item \emph{First rule}: Bright colors are painful when used uninterrupted over large areas or when placed adjacent to each other, but can be extremely powerful when used sparingly while accompanied by dull tones.
+		\item \emph{Second rule}: Light, bright colors produce unpleasant results when accompanied with the color white.
+		\item \emph{Third rule}: Background and base colors should be muted or neutral. For this reason, \emph{gray} is regarded to be the most versatile of colors.
+		\item \emph{Fourth rule}: Two or more large, enclosed areas within a single display cause the image to fall apart. Unity can be maintained if the colors of one section are interspersed throughout the other. ``All colors of the main theme should be scattered like islands in the background color.''
+	\end{itemize}
 
+	\subsubsection{Links and causal arrows}
 
-	\subsubsection{Dense Information}
-\subsection{Visualization Techniques}
-	\subsubsection{Filtering}
-	\subsubsection{Spark Lines}
-	\subsubsection{Dash Plots}
-\subsection{Visualization Systems}
-	Allosphere?, Braun Braun: view OSC data flows \shortcite{braun}, HEB?
-\begin{enumerate}
-	\item Allosphere? :\shortcite{allosphere}
-	\item Heirarchical edge bundling: \shortcite{HEB}
-	\item Envisioning information: \shortcite{tufte1}
-	\item Tukey: \shortcite{tuckey}
-	\item Beautiful Evidence: \shortcite{tufte2}
-	\item The other Tufte book I have at home.
-	\item OSC data flows with Braun \shortcite{braun}
-\end{enumerate}
+For the visualization of networks, the idea of a visual ``connection'' becomes very important. This linking action is usually accomplished by an arrow-like object in evidence displays. \citeN{tufte1} enumerates numerous guidelines for incorporating line-like objects into presentations. Again drawing inspiration from map making (an obvious inspiration for ``mapping''), the use of differentiation among linking arrows is greatly emphasized: ``Nouns name a specific something; arrows and links are too often non-specific, generic, identical, undifferentiated, and ambiguous.'' The use of many line properties, such as dashing, arrow-heads and color can better illustrate a variety of influences in a linked chart.
+
+\citeANP{tufte1} also cautions against using heavy line weights when unnecessary, as it effectively decreases display resolution. Thick lines are also more likely to create $1 + 1 = 3$ noise, or the effect of negative space acting as a display feature.
+
+\begin{figure}[ht]
+\centering
+	\includegraphics[width=0.8\textwidth]{figures/1and1equals3}
+\caption{An example of Tufte's $1 + 1 = 3$ noise}
+\label{fig:1and1equals3}
+\end{figure}
+
+In figure \ref{fig:1and1equals3} the negative space between the two lines appears as its own white line, as opposed to simply empty space. In displays with numerous or thick lines this can cause negative space to compete with informative features, attenuating the overall effectiveness of the display. $1 + 1 = 3$ noise plagues dense computer user interfaces, borders and other non-essential display features should be lightened, thinned and removed when at all possible.
+
+	\subsubsection{Hierarchical edge bundling}
+
+Of course, in diagrams with tremendous amounts of connections no amount of thinning and coloration can create an informative display. The technique of hierarchical edge bundling \cite{HEB} groups lines based on adjacency relationships. Displays take advantage of hierarchical information encoded within the dataset. Linking arrows are curved towards other arrows that are connected to related elements. Figure \ref{fig:heb} demonstrates this effect for arbitrary data.\footnote{Images courtesy of: mbostock - The d3 visualization library. [Online]. Available: \url{https://github.com/mbostock/d3/wiki/Gallery}. Accessed July 24, 2013} 
+
+In a libmapper system, this would mean that connections between signals on the same device will be pulled towards one another. If a hierarchical structure exists in the naming convention, connections between related signals will experience an even stronger force between them. For example, the connections from signal \url{tstick.1/raw/accelerometer/1/x} will be bundled tightly with connections from signal \url{tstick.1/raw/accelerometer/1/y}, but less tightly to \url{tstick.1/raw/accelerometer/2/x}. Any of these connections will not be pulled at all towards connections from signals on other devices.
+
+\begin{figure}[ht]
+\centering
+	\includegraphics[width=1\textwidth]{figures/heb}
+\caption{A dense interconnected network displayed with and without hierarchical edge bundling techniques}
+\label{fig:heb}
+\end{figure}
+
+	\subsubsection{Braun}
+
+Braun is an application for visualizing OSC data flows on a scrolling graph \cite{braun}. Users are presented with options to adjust what dimension is displayed on the y-axis, the x-axis being reserved for time. Multiple data flows can be viewed on the same set of axes, and time scales can be set arbitrarily, giving the users an overall impression of trends in OSC messages over their networks. An extremely simple visualization, it creates a sort of oscilloscope, but for network OSC data.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{User Interface Design}
 
-\subsection{A Brief History of Electronic User Interfaces}
-\subsection{Task Analysis}
-\subsection{Recall and Recognition?}
-\subsection{Collaborative Network Interfaces}
+\subsection{A brief history of electronic user interfaces}
+\subsection{Task analysis}
+\subsection{Recall and recognition?}
+\subsection{Collaborative network interfaces}
 	MPG Care Package \shortcite{MPGcarepackage}
-\subsection{The Model-View-Controller Architecture}
+\subsection{The model-view-controller architecture}
 	MVC Krasner Pope \shortcite{MVC_krasnerpope}
-\subsection{User Centric Design}
+\subsection{User centric design}
 \begin{enumerate}
 	\item Organizational context \shortcite{usd}
 	\item Usability testing \shortcite{usd_corry}
@@ -394,14 +380,14 @@ A fourth data category \emph{boolean} has been added to specify data that only h
 	Junxion \shortcite{junxion}
 \subsection{Osculator}
 	Osculator: mapping OSC stuff \shortcite{osculator}
-\subsection{Other Similar Interfaces}
+\subsection{Other similar interfaces}
 	\begin{enumerate}
 	\item mpgcarepackage?
 	\item Integra \shortcite{integra}
 	\item Eaganmatrix: GRID VIEW! \shortcite{eaganmatrix}
 	\item Patchage: a linking, dragging, connecting interface \shortcite{patchage}
 	\end{enumerate}
-\subsection{Prior Interfaces for libmapper} \label{sec:priorGUIs}
+\subsection{Prior interfaces for libmapper} \label{sec:priorGUIs}
 	Vizmapper \shortcite{vizmapper}
 
 
