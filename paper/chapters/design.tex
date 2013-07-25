@@ -2,15 +2,24 @@
 \chapter{Design \& Implementation}
 
 	Development of a graphical user interface for libmapper creates a unique challenge. Obviously such an interface is a practical tool, and should function as such, yet it also must work in concert with DMIs which are inherently designed for creative use. For the purposes of this project, the assumed solution to this innate paradox is to provide the user with multiple independent modes of control.  This assumption based on experiences with prior user interfaces for libmapper: for each interface users reported excellent functionality for certain use cases, and poor functionality for others. libmapper itself is an extremely flexible API that makes few assumptions as to the network of devices and signals or how they are mapped. It is thus fitting that a GUI for libmapper would be equally as flexible. In lieu of a single perfect solution for network visualization and interactivity, providing users with various independent solutions provided a good compromise.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Prior interfaces for libmapepr} % (fold)
+\label{sec:prior_interfaces_for_libmapepr}
+
+	\subsection{Maxmapper} % (fold)
+	\label{sub:maxmapper}
 	
-\section{Prior interfaces for libmapper}
+	% subsection maxmapper (end)
 
-\subsection{Maxmapper}
+	\subsection{Vizmapper} % (fold)
+	\label{sub:vizmapper}
+	
+	% subsection vizmapper (end)
 
-\subsection{Vizmapper}
-
-\subsection{Webmapper}
-
+	\subsection{Webmapper} % (fold)
+	\label{sub:webmapper}
+	
 \begin{figure}[ht]
 	\centering
 	%\scalebox{0.42}{
@@ -28,7 +37,47 @@ The interface itself is written for a web browser using the scripting language J
 
 Figure \ref{fig:webmapper} displays the look of the interface before this project began. Users are able to perform all libmapper functions: connecting, linking and modifying connections, but only the simplest of feature sets is included. In order to form a connection the user must click on a source signal, click on a destination signal and then click on a button labeled ``connect.'' Many useful features of the Max/MSP interface, such as column headers, table sorting, drawing connections and search filtering are not present.
 
-\subsection{Evaluation of graphical variables}
+	% subsection webmapper (end)
+
+% section prior_interfaces_for_libmapepr (end)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Integration of Interface Features}
+	
+	\subsection{Display libmapper metadata} % (fold)
+	\label{sub:display_libmapper_metadata}
+	
+	% subsection display_libmapper_metadata (end)
+
+	\subsection{Visual feedback} % (fold)
+	\label{sub:visual_feedback}
+		% # of signals/etc.
+		% muted lines
+
+	% subsection visual_feedback (end)
+
+	\subsection{Namespace filtering} % (fold)
+	\label{sub:namespace_filtering}
+	
+	% subsection namespace_filtering (end)
+
+	\subsection{Table sorting} % (fold)
+	\label{sub:table_sorting}
+	
+	% subsection table_sorting (end)
+
+	\subsection{Draggable connections and links} % (fold)
+	\label{sub:draggable_connections_and_links}
+	
+	% subsection draggable_connections_and_links (end)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Extension of Control and Visual Elements}
+
+	\subsection{Evaluation of libmapper variables} % (fold)
+	\label{sec:evaluation_of_libmapper_variables}
 
 The list in table \ref{tab:metadata_types} is by no means a complete set, as libmapper may yet expand to include data like device position and users are able to tag devices/signals/links/connections with any extra data they may want.
 
@@ -77,14 +126,53 @@ A fourth data category \emph{boolean} has been added to specify data that only h
 	& & \\
 \end{longtable}
 
-\section{Development of a flexible interface}
+	% subsection evaluation_of_libmapper_variables (end)
+
+	\subsection{Keyboard shortcuts} % (fold)
+	\label{sec:keyboard_shortcuts}
 	
+	% subsection keyboard_shortcuts (end)
+
+	\subsection{Window resizing} % (fold)
+	\label{sec:window_resizing}
+	
+	% subsection window_resizing (end)
+
+	\subsection{Variable line heights} % (fold)
+	\label{sec:variable_line_heights}
+	
+	% subsection variable_line_heights (end)
+
+	\subsection{Visual Redesign} % (fold)
+	\label{sec:visual_redesign}
+	
+	% subsection visual_redesign (end)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Development of a Flexible System}
+
 Prior GUIs for libmapper have been successfully used for some time, but all have failed to become a standard for the same reason: they cannot accommodate all possible use-cases of libmapper. List based views like the Max/MSP GUI and webmapper cannot show hierarchies while the cluster view implemented in vizmapper can be overly cumbersome for interaction with simple networks. Especially with so much work already completed on prior GUIs, it is more suitable to integrate different approaches into a single GUI than to begin work on some new, hopefully superior approach that would likely prove to be flawed like all that came before it. 
 
 Interface integration is accomplished through an extremely simple approach: a drop-down menu is added to the upper left corner of the interface. Options on this menu represent different visualization modes available to the user. By selecting a new visualization mode the GUI drastically changes it appearance, replacing every visual element excepting the upper toolbar.
 	%Needs to be adaptable, show any metadata
 
-\subsection{Top toolbar}
+	\subsection{MVC architecture} % (fold)
+	\label{sec:mvc_architecture}
+
+Because a modular design is desired, the Model-View-Controller (MVC) metaphor for structuring software applications as described in [KrasnerPope88] was used as a general framework for structuring the application. In fact, the whole scale swapping in and out of independent visual modes can be thought of as a quintessential implementation of MVC. 
+
+	%Conatainer, top, selection-thingy
+
+		\subsubsection{The model}
+
+The model consists of an abstract copy of the network, residing on the local machine. Independent views can consult this data, but cannot directly modify it.
+
+		\subsubsection{Controller-view pairs}
+	
+	% subsection mvc_architecture (end)
+
+	\subsection{Top toolbar} % (fold)
+	\label{sec:top_toolbar}
 
 Certain tasks and information providing structures are sensible to include across visualization modes. In light of this, a static toolbar is presented at the top of the GUI. This toolbar contains all administrative controls and connection modification fields. 
 
@@ -115,6 +203,41 @@ Certain tasks and information providing structures are sensible to include acros
 
 All interface features not present in the top toolbar are part of the current visualization mode and are placed into a ``container'' element below, occupying the remainder of the window.
 
+	% subsection top_toolbar (end)
+
+	\subsection{Grid \& Hive views} % (fold)
+	\label{sec:grid_&_hive_views}
+
+\begin{figure}[ht]
+\centering
+	\scalebox{0.4}{\includegraphics{figures/grid}}
+\caption{The grid view}
+\label{fig:grid}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+	\scalebox{0.4}{\includegraphics{figures/hive}}
+\caption{The hive view}
+\label{fig:hive}
+\end{figure}
+	
+	% subsection grid_&_hive_views (end)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Other GUI Features}
+
+	\subsection{Saving \& Loading} % (fold)
+	\label{sec:saving_and_loading}
+	
+	% subsection saving_&_loading (end)
+
+	\subsection{Creation of a standalone \& distribution} % (fold)
+	\label{sec:creation_of_a_standalone_and_distribution}
+	
+	% subsection creation_of_a_standalone_&_distribution (end)
+
+
 \subsection{List view}
 \label{sec:list_view}
 
@@ -139,31 +262,6 @@ The view itself is divided into two major modes: ``All Devices'' and individual 
 
 The GUI draws a tab for every source device with at least one link to a destination device. Clicking on any of these devices will redraw both tables. The left table now shows all child signals for the selected source device while the right table displays child signals for every destination device linked to the selected device. 
 
-\subsection{Grid view}
-\subsection{Hive plot}
-\subsection{Cluster view (vizmapper)}
-
-\section{Control Features}
-\subsection{Creating connections/links}
-\subsection{Modifying signals}
-
-\section{The Model-View-Controller}
-\label{sec:MVC}
-
-	Because a modular design is desired, the Model-View-Controller (MVC) metaphor for structuring software applications as described in [KrasnerPope88] was used as a general framework for structuring the application. In fact, the whole scale swapping in and out of independent visual modes can be thought of as a quintessential implementation of MVC. 
-	
-\subsection{The model}
-
-	The model consists of an abstract copy of the network, residing on the local machine. Independent views can consult this data, but cannot directly modify it.
-
-	%low bandwidth allowances
-
-\subsection{Controller-view pairs}
-
-\section{Graphical Design}
-	wiggly arrows
-\subsection{Typography}
-
 \begin{figure}[ht]
 \centering
 	\scalebox{0.4}{\includegraphics{figures/final_list}}
@@ -171,28 +269,4 @@ The GUI draws a tab for every source device with at least one link to a destinat
 \label{fig:before_makeover}
 \end{figure}
 
-\begin{figure}[ht]
-\centering
-	\scalebox{0.4}{\includegraphics{figures/grid}}
-\caption{The grid view}
-\label{fig:grid}
-\end{figure}
 
-\begin{figure}[ht]
-\centering
-	\scalebox{0.4}{\includegraphics{figures/hive}}
-\caption{The hive view}
-\label{fig:hive}
-\end{figure}
-
-	
-\section{User Centric Design}
-	use cases
-
-\section{Saving and Loading}
-\label{sec:saving_and_loading}
-
-\section{Robustness and Responsiveness}
-	speed tests
-
-\section{Creation of a Standalone}
