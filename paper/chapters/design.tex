@@ -3,47 +3,12 @@
 
 	Development of a graphical user interface for libmapper creates a unique challenge. Obviously such an interface is a practical tool, and should function as such, yet it also must work in concert with DMIs which are inherently designed for creative use. For the purposes of this project, the assumed solution to this innate paradox is to provide the user with multiple independent modes of control.  This assumption based on experiences with prior user interfaces for libmapper: for each interface users reported excellent functionality for certain use cases, and poor functionality for others. libmapper itself is an extremely flexible API that makes few assumptions as to the network of devices and signals or how they are mapped. It is thus fitting that a GUI for libmapper would be equally as flexible. In lieu of a single perfect solution for network visualization and interactivity, providing users with various independent solutions provided a good compromise.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Prior interfaces for libmapepr} % (fold)
-\label{sec:prior_interfaces_for_libmapepr}
 
-	\subsection{Maxmapper} % (fold)
-	\label{sub:maxmapper}
-	
-	% subsection maxmapper (end)
-
-	\subsection{Vizmapper} % (fold)
-	\label{sub:vizmapper}
-	
-	% subsection vizmapper (end)
-
-	\subsection{Webmapper} % (fold)
-	\label{sub:webmapper}
-	
-\begin{figure}[ht]
-	\centering
-	%\scalebox{0.42}{
-	\includegraphics[width=1\textwidth]%
-		{figures/webmapper}
-	\caption{The webmapper interface}
-	\label{fig:webmapper}
-\end{figure}
-
-Work on this project began with a moderately featured, little used GUI for libmapper known as ``webmapper.'' Webmapper was created at IDMIL as an attempt to replace the Max/MSP GUI as the result of limitations described in section \ref{sec:similar_interfaces}, the principle among which being the cross-platform incompatibility of Max/MSP. It was thought that a browser-based approach would greatly simplify the process of creating cross-compatibility with all major operating systems and even mobile devices. 
-
-Webmapper utilizes the Python bindings for libmapper by registering an administrative monitor to communicate with a libmapper network. The monitor can create and modify connections or links, as well as query the network as to what devices, signals, links and connections are present. The webmapper code creates a simple HTTP server and attempts to open Google Chrome\footnote{Chrome Browser. [Online]. Available: \url{https://www.google.com/intl/en/chrome/browser/}. Accessed July 17, 2013} on the host computer. If Google Chrome is not present, the user must navigate directly to the server using the web address \url{localhost:50000}. The monitor communicates with the libmapper network and the local server, the browser is able to see messages the monitor ``posts'' to the server (such as `new device') and respond to them appropriately. The browser in turn can send messages to the server (like `connect') that will propagate up to libmapper itself, eventually resulting in a message cascading back down to the browser reflecting the change to the network (such as `new connection'). 
-
-The interface itself is written for a web browser using the scripting language JavaScript\footnote{JavaScript | MDN. [Online]. Available: \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}. Accessed July 17, 2013} to control web-standard HyperText Markup Language (HTML) elements and Cascading Style Sheets (CSS). The JavaScript code stores four main data structures: devices, links, connections and signals. The code never directly modifies any of this data, and instead waits for messages relayed from libmapper. For example: if a user creates a new link, webmapper does not add the link directly to the links array but simply sends a message to the network. If it receives back a `new link' message, only then does it add the new link to the array. This is done to ensure that the data structures within webmapper always reflect what is actually present.
-
-Figure \ref{fig:webmapper} displays the look of the interface before this project began. Users are able to perform all libmapper functions: connecting, linking and modifying connections, but only the simplest of feature sets is included. In order to form a connection the user must click on a source signal, click on a destination signal and then click on a button labeled ``connect.'' Many useful features of the Max/MSP interface, such as column headers, table sorting, drawing connections and search filtering are not present.
-
-	% subsection webmapper (end)
-
-% section prior_interfaces_for_libmapepr (end)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Integration of Interface Features}
+\section{Integration of Interface Features} % (fold)
+\label{sec:integration_of_interface_features}
 	
 	\subsection{Display libmapper metadata} % (fold)
 	\label{sub:display_libmapper_metadata}
@@ -72,9 +37,11 @@ Figure \ref{fig:webmapper} displays the look of the interface before this projec
 	
 	% subsection draggable_connections_and_links (end)
 
+% section integration_of_interface_features (end)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Extension of Control and Visual Elements}
+\section{Extension of Control and Visual Elements} % (fold)
+\label{sec:extension_of_control_and_visual_elements}
 
 	\subsection{Evaluation of libmapper variables} % (fold)
 	\label{sec:evaluation_of_libmapper_variables}
@@ -130,6 +97,8 @@ A fourth data category \emph{boolean} has been added to specify data that only h
 
 	\subsection{Keyboard shortcuts} % (fold)
 	\label{sec:keyboard_shortcuts}
+
+		%select all, large selections
 	
 	% subsection keyboard_shortcuts (end)
 
@@ -148,8 +117,11 @@ A fourth data category \emph{boolean} has been added to specify data that only h
 	
 	% subsection visual_redesign (end)
 
+% section extension_of_control_and_visual_elements (end)
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Development of a Flexible System}
+\section{Development of a Flexible System} % (fold)
+\label{sec:development_of_a_flexible_system}
 
 Prior GUIs for libmapper have been successfully used for some time, but all have failed to become a standard for the same reason: they cannot accommodate all possible use-cases of libmapper. List based views like the Max/MSP GUI and webmapper cannot show hierarchies while the cluster view implemented in vizmapper can be overly cumbersome for interaction with simple networks. Especially with so much work already completed on prior GUIs, it is more suitable to integrate different approaches into a single GUI than to begin work on some new, hopefully superior approach that would likely prove to be flawed like all that came before it. 
 
@@ -224,8 +196,11 @@ All interface features not present in the top toolbar are part of the current vi
 	
 	% subsection grid_&_hive_views (end)
 
+% section development_of_a_flexible_system (end)
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Other GUI Features}
+\section{Other GUI features} % (fold)
+\label{sec:other_gui_features}
 
 	\subsection{Saving \& Loading} % (fold)
 	\label{sec:saving_and_loading}
@@ -237,12 +212,14 @@ All interface features not present in the top toolbar are part of the current vi
 	
 	% subsection creation_of_a_standalone_&_distribution (end)
 
+% section other_gui_features (end)
+
 
 \subsection{List view}
 \label{sec:list_view}
 
 
-The first implemented, and thus far most functional view mode for the GUI is the ``list'' view. Based heavily on the Max/MSP GUI described in section \ref{sec:similar_interfaces}, the list view provides the most straightforward way to visualize and interact with libmapper. Two tables dominate the visible area, listing source elements on the left and destination elements on the right. B\'ezier curves form lines between associated list elements on each each list. Because these curves do not always represent the same data structures, the lines themselves are referred to as \emph{arrows} by the GUI code, and by this document.
+The first implemented, and thus far most functional view mode for the GUI is the ``list'' view. Based heavily on the Max/MSP GUI described in section \ref{sub:maxmapper}, the list view provides the most straightforward way to visualize and interact with libmapper. Two tables dominate the visible area, listing source elements on the left and destination elements on the right. B\'ezier curves form lines between associated list elements on each each list. Because these curves do not always represent the same data structures, the lines themselves are referred to as \emph{arrows} by the GUI code, and by this document.
 
 \begin{figure}[ht]
 \centering

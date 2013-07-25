@@ -3,12 +3,11 @@
 
 Dynamic mapping is becoming an increasingly important requirement for digital musical instruments. This chapter surveys currently available tools that allow for manipulation of musical and non-musical networks in real time. The first section presents a review of mapping itself, both from a theoretical and a musical standpoint. This portion also introduces the libmapper application programming interface. The second section reviews relevant work in the visual representation of information. The following portion describes applicable techniques in user interface design. Finally, a review of user interfaces for mapping is presented.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Mapping}
 
 At the most fundamental level, \emph{mapping} is the act of associating two or more sets of information. Mappings can be mathematical, computational, linguistic (like translation), geographic, or even poetic\footnote{What is metaphor if not the association of unlike things?}. Within the context of DMI design mapping is the relationship between sensor outputs and synthesis inputs. The entire character of a new instrument can be drastically altered though mapping, even while control surface and sound source are held constant \shortcite{hunt_mapping_is_important}. As a result, the theoretical formalism of mapping becomes yet another necessary tool in the modern instrument designer's arsenal.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mapping theory}
 	\label{sec:mapping_theory}
 
@@ -139,100 +138,6 @@ For expressive musical networks, simple one-to-one mappings are often insufficie
 
 One proposed solution to the cognitive complexity of associating many source and destination signals is to create a second mapping layer \shortcite{wanderley}. Instead of dealing with raw sensor output, like acceleration and inclination, musicians can interact with more interesting gestural information such as ``jab'' or ``left-arm swing.'' These ``cooked'' parameters are argued to be more meaningful and useful musical information than the raw signals. This approach is explored in \citeN{mapping_layers} for mapping both to audio and visual synthesis. The conventional wisdom that mappings need to be complex, yet transparent and meaningful all point to the necessity of a tool for the intuitive and expressive configuration of mappings.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{libmapper}
-
-The McGill Digital Orchestra project\footnote{The McGill Digital Orchestra. [Online]. Available: \url{http://www.music.mcgill.ca/musictech/DigitalOrchestra/}. Accessed July 9, 2013} began in 2006 with the aim of helping researchers  and performers in music technology to work collaboratively in creating hardware and software solutions for live performance with digital technology. The libmapper project began in response to the difficulty of creating dynamic musical mappings in a collaborative setting \shortcite{malloch}. In its most basic state, libmapper is a library for connecting things. As described by its website: 
-
-\begin{quote} 
-``libmapper is an open-source, cross-platform software library for declaring data signals on a shared network and enabling arbitrary connections to be made between them. libmapper creates a distributed mapping system/network, with no central points of failure, the potential for tight collaboration and easy parallelization of media synthesis. The main focus of libmapper development is to provide tools for creating and using systems for interactive control of media synthesis.''\footnote{libmapper: a library for connecting things. [Online]. Available: \url{libmapper.org}. Accessed June, 2013}
-\end{quote}
-
-Without libmapper, DMI designers are usually required to ``hard-code'' mappings into their designs. This has the disadvantage of being slow to modify, as it might be necessary to re-compile\footnote{A process in which human-readable code is translated into something the computer can understand. This can take anywhere from a few seconds to days.} code any time a change is made. If the DMI is built in a development environment like Max/MSP modifications can be more quickly implemented. Max/MSP is a ``high-level'' abstraction on top of machine readable code, so Max/MSP programs are prone to slowness and cross-compatibility issues, inhibiting collaboration \shortcite{jamoma}. In either implementation it is difficult for someone other than the original designer to modify mappings.
-
-As a C\footnote{An extremely popular, multi-purpose programming language.} library, libmapper does not introduce many abstractions on top of the data and can work quickly. Any device that embeds libmapper in its code can communicate with other devices that have done the same. In a libmapper network devices communicate with one another directly, as opposed to through some centralized network device. This means that less data overall needs to be sent over the network, and failure of a single device (like the router) will not crash the entire system \shortcite{new_libmapper}, an especially dire situation during live performance.
-
-Another advantage of libmapper, which is especially relevant to this project, is the ability to create an administrative device. These ``monitors'' can query libmapper devices for data, and thus collect data on the network overall. Monitors also are able to create, destroy and modify connections on the network. This allows for external visualization and control of a libmapper network.
-
-	\subsubsection{Open sound control and libmapper syntax}
-
-Like any communication, communication between digital devices functions well only when the devices speak the same language. In the Internet age this becomes particularly relevant: the vast array of continuously connected devices, sending and requesting information would instantly collapse if every developer coded to his or her own idiosyncrasies. To prevent this, computer scientists make use of various communication ``protocols'' when creating software. Hypertext Transfer Protocol (HTTP) is the most famous example of such a system.
-
-At its core, libmapper builds its on language on top of the Open Sound Control (OSC) protocol, as described by \shortciteN{osc}. OSC defines the format for messages that are sent between sound producing devices (as implied by the name), but can also be used for related multimedia devices such as stage lights or vibrating motors. It provides means for flexible, high-resolution communication and was intended to replace MIDI\footnote{MIDI Manufacturers Association - The official source of information about MIDI. [Online]. Available: \url{www.midi.org}. Accessed July 11, 2013}, the 30-year-old standard for musical instrument communication. 
-
-OSC formats messages much like Internet URLs, arbitrary strings of characters separated by `/' characters. libmapper messages also take on this format, using the structure to expose hierarchy of signals:
-
-	\begin{itemize}
-	\item\url{tstick.1/raw/accelerometer/1/x}: The data for the `x' dimension of the first accelerometer of the first instrument of class ``tstick'' on the network (see TODO for a description of the gestural controller T-Stick). Here the word ``raw'' denotes that no pre-processing has been applied to this signal. 
-	\item\url{tstick.1/raw/accelerometer/2/y}: A signal transmitting the data for the same instrument as above, but the `y' dimension of the second accelerometer.
-	\item\url{tstick.1/cooked/accelerometer/2/amplitude}: A ``cooked'' signal. All three dimensions of accelerometer 2 are combined to compute the overall acceleration of the point. These signals can also be cooked to expose angle and elevation as signals.
-	\item\url{granul8.2/filter/evelope/frequency/low}: The data for the low-end cutoff for the shape of the filter for the instrument named ``granul8.2'' (a granular synthesizer, thus a destination device).
-	\end{itemize}
-
-This structure of signal names aims to be semantically relevant, and allows a GUI to display hierarchical structure of networks. Any one of the above signals transmits not only the signal's value, but also metadata. Signal metadata usually includes data type, length (single number vs. vector), units like volts or meters per second, maximum value and minimum value. Designers can ``tag'' signals with any extra metadata they may wish to add, such as physical position, color or owner's name. In the GUI it is necessary to allow users to view and manipulate any arbitrary kind of signal metadata.
-
-To make signal names as coherent and consistent as possible, libmapper makes use of the \emph{Gesture Description Interchange Format} (GDIF) \shortcite{GDIF}, which provides a standard for motion capture data. Structures are given short, semantically relevant names. GDIF also provides a standard vocabulary for describing motion with dimensions such as ``weight,'' ``space,'' ``time'' and ``flow.'' Though these standards are not enforced, as libmapper signals can be given any sort of names by their creators, most extant libmapper-enabled devices use them.
-
-	\subsubsection{Structure of libmapper networks}
-
-In order to maintain internal consistency, libmapper introduces a naming convention of its own. At the heart of any libmapper network are \emph{signals}, defined in \citeN{new_libmapper} as:
-\begin{quote}
-``Data organized into a time series. Conceptually a signal is continuous, however our use of the term signal will refer to discretized signals, without assumptions regarding sampling intervals.''
-\end{quote}
-Here \shortciteANP{new_libmapper} are referring to digital as opposed to analog signals (hence the use of the term ``discretized''). Notice how signals are not necessarily numeric by this definition, though they will almost certainly will be going forward. Signals are the only information actually passed from control surfaces to synthesizers, all other data structures exist to organize and label them. \emph{Source signals} is data entering libmapper from control surfaces while \emph{destination signals} belong to synthesizers and receive data. A \emph{connection} is a bridge between two signals. Once a connection is created within libmapper, a source signal begins sending its data to a destination signal. A single source signal can be connected to many destination signals (a one-to-many mapping), but at the time of the writing of this document single destination signals cannot receive input from many source signals (a many-to-one mapping). Justification for this lack of functionality is discussed in \shortciteN{new_libmapper}.
-
-\emph{Devices} are essentially groups of signals. A device often has some kind of physical entity that makes the grouping logical, e.g. the ``T-Stick,'' which has many ``child'' signals. Within software the grouping is usually a discreet computer program. With development environments like Max/MSP users are free to group signals into devices however they may wish. As mentioned previously, libmapper devices do not send all signal data to some centralized router, and instead work directly with one another. In order to accomplish this devices must be explicitly \emph{linked}. Figure \ref{fig:libmapper_devices} demonstrates instances of libmapper devices, signals, links and connections.
-
-\begin{figure}[ht]
-\centering
-	\scalebox{1}{\includegraphics{figures/libmapper_devices}}
-\caption{A simple libmapper network}
-\label{fig:libmapper_devices}
-\end{figure}
-
-Devices and signals can carry a variety of \emph{metadata}. Devices usually list the number of child signals they possess and their location on the network (IP address and port). As previously stated users can tag devices and signals with arbitrary metadata. Connections have a much more specific set of metadata.
-
-	\subsubsection{Connection properties}
-
-Creation of links and connections is mapping from the systems perspective, but libmapper also allows for functional mapping through the modification of connections. This can be accomplished by altering certain properties possessed by every libmapper connection:
-
-\begin{itemize}
-	\item\textbf{Expression}: A mathematical equation relating the source ($x$) to destination ($y$) values. An expression of $y = x$ will simply pass through source values, while an expression of $y = 3x + 2$, will apply a linear transformation to the source data (e.g. a value of 1 will be output as 5). libmapper supports a variety of expressions, including exponential functions, trigonometric relations, comparison operators, derivation and integration. 
-	\item\textbf{Range}: An array of four numbers containing the user-specified maximum and minimum values for both the source and destination signals.
-	\item\textbf{Mode}: The type of connection, this influences the effect of the expression and range properties and can be one of four categories:
-	\begin{itemize}
-		\item \emph{Linear}: libmapper automatically scales the output such that it fits the destination range, based on the source range. For example, if a certain connection has a source range of $[0, 1]$, and a destination range of $[5, 10]$, libmapper will automatically apply an expression of $y = 5x + 5$, such that the minimum and maximum source values will correspond to the minimum and maximum destination values respectively. A source value that is outside of this source range will result in a destination value that is also outside of the range. In this mode the user cannot directly modify the expression. 
-		\item \emph{Calibration}: The same as the linear mode except the source range parameter is ignored. libmapper instead polls the source signal to find the source range directly.
-		\item \emph{Bypass}: Source values are sent directly through to the destination signal, as would happen with an expression $y = x$.
-		\item \emph{Expression}: The user is able to set the expression to any arbitrary relation.
-	\end{itemize}
-	\item\textbf{Boundary}: What is to happen to data values when they extend beyond the destination range. There are four options:
-	\begin{itemize}
-		\item\emph{None}: Values are passed through unchanged.
-		\item\emph{Clamp}: Values outside of the boundary are constrained to that value.
-		\item\emph{Mute}: No values outside of the boundary are passed to the output.
-		\item\emph{Wrap}: Values exceeding the maximum are ``wrapped'' back to the minimum bound and vice versa.
-		\item\emph{Fold}: When the signal passes outside of the boundary, the value is inverted back onto the destination range. 
-	\end{itemize}
-	\item\textbf{Mute}: A true-or-false value muting and un-muting data sent over the connection.
-	\item\textbf{Send as instance}: Not all signals on libmapper networks are unique and long lasting, a good example being a keypress on a keyboard. During the keypress, data like aftertouch and release can be sent, making it a bona fide signal. However, musicians constantly create and complete keypress events during performance with keyboard instruments. To maintain every keypress as a unique signal with unique metadata would be tremendously unhelpful for mapping. Also, forcing a user to map every keypress event individually would make live performance impossible.
-
-	To support this, libmapper gives connections the \emph{send as instance} property. Sending data as an instance means that libmapper treats the connected signals as instances of a general class of signals. New instances of a signal class will be treated like previous instances and do not need to be mapped individually.
-	\item\textbf{Link scope}: Not a property of connections, but of links. By default links are ``scoped'' to notify destination devices of the creation and destruction of signal instances on linked source devices. For intermediate devices, ones that function as both source and destination, this may not be the desired behavior. If device \url{A} is linked to intermediate device \url{B}, which is in turn linked to device \url{C}, then \url{C} will not be notified of instance events on \url{A} with default link scope settings. The user can modify the scope of link \url{B} $\rightarrow$ \url{C} to include \url{A} if desired.
-
-\end{itemize}
-
-	\subsubsection{libmapper bindings}
-
-A final crucial libmapper feature is its multi-language \emph{bindings}. The C language is ``low-level,'' in that it is very procedural and does not allow for very abstract data structures. This makes it extremely flexible, but difficult and time consuming to use. To make libmapper more friendly for different kinds of developers, ``bindings'' have been created for the higher-level 
-Python\footnote{Python Programming Language - Official Website. [Online]. Available: \url{http://www.python.org/}. Accessed July 17, 2013} 
-and 
-Java\footnote{java.com: Java + You. [Online]. Available: \url{java.com/en}. Accessed July 17, 2013} 
-programming languages. libmapper functions are bound to other languages using the 
-Simplified Wrapper and Interface Generator (SWIG)\footnote{Simplified Wrapper and Interface Generator. [Online]. Available: \url{http://www.swig.org/}. Accessed July 17, 2013}.
-SWIG automatically writes a kind of dictionary that interprets function calls from other languages to the original C. Automatically generated files sit in-between the controlling code and the original library. 
-
-Though concept of ``mapping'' itself is extremely abstract, the libmapper API places it into a concrete context. libmapper is not only means of organizing networks though the creation and destruction of links and connections, it is also a tool for customizing response by its support for modifying connection properties. In this way it can serve both the high-level systems perspective and the low-level functional view of mapping. Though designed for musical devices, the API's loose framework could readily be applied to any type of multimedia system. libmapper is an extremely powerful, flexible tool and requires a user interface that can elegantly deploy its full range of capabilities.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -365,11 +270,6 @@ Braun is an application for visualizing OSC data flows on a scrolling graph \cit
 	\item Usability testing \shortcite{usd_corry}
 	\item Information professionals \shortcite{usd_schulze}
 \end{enumerate}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Relevant User Interfaces}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

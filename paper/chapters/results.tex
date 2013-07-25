@@ -1,49 +1,117 @@
 %!TEX root = ../thesis.tex
-\chapter{Applications}
+\chapter{Applications \& Discussion}
 
 This chapter presents a discussion of the GUIS software design and its consequences for musical mapping. The interface's features are explored in an attempt to evaluate the successes and failures of the design. Each subview 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Effectiveness of Alternate Views}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Effectiveness of Alternate Views} % (fold)
+\label{sec:effectiveness_of_alternate_views}
+
+	\subsection{List view} % (fold)
+	\label{sub:list_view}
 
 %list view weaknesses
 %	intermediate devices
 %	heirarchical structures
 %	many-to-one mappings
+	
+	% subsection list_view (end)
 
+	\subsection{Grid view} % (fold)
+	\label{sub:grid_view}
+	
+	% subsection grid_view (end)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{User Feedback}
+	\subsection{Hive view} % (fold)
+	\label{sub:hive_view}
+	
+	% subsection hive_view (end)
 
+% section effectiveness_of_alternate_views (end)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Responsiveness and Reliability Testing}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{User Feedback} % (fold)
+\label{sec:user_feedback}
 
+	\subsection{Present use cases} % (fold)
+	\label{sub:present_use_cases}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Comparison to Similar Interfaces}
-\label{sec:similar_interfaces}
+		%Mailis, Clayton, Hakon, Julie
+
+	% subsection present_user_applications (end)
+
+	\subsection{Saving \& loading} % (fold)
+	\label{sub:saving_and_loading}
+	
+	% subsection saving_&_loading (end)
+
+	\subsection{Reliability} % (fold)
+	\label{sub:reliability}
+	
+	% subsection reliability (end)
+
+	\subsection{Other feedback} % (fold)
+	\label{sub:other_feedback}
+	
+	% subsection other_feedback (end)
+	
+% section user_feedback (end)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Responsiveness and Reliability Testing} % (fold)
+\label{sec:responsiveness_and_reliability_testing}
+
+Extension of interface features discussed in section \ref{sec:extension_of_control_and_visual_elements} leads to some control possibilities that could be difficult for the GUI to handle. Addition of shortcut keys for connecting, linking, disconnecting and unlinking, as well as the ability to select multiple devices and signals at once allows users to create and delete hundreds of connections with a single keypress. Na\"{i}ve saving and loading 
+
+	\subsection{Rate limiting certain functions} % (fold)
+	\label{sub:rate_limiting_certain_functions}
+	
+	% subsection rate_limiting_certain_functions (end)
+
+	\subsection{Creation of many arrows in the list view} % (fold)
+	\label{sub:creation_of_many_arrows_in_the_list_view}
+	
+	% subsection creation_of_many_arrows_in_the_list_view (end)
+
+% section responsiveness_and_reliability_testing (end)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Comparison to Similar Interfaces} % (fold)
+\label{sec:comparison_to_similar_interfaces}
+
+	\subsection{Junxion} % (fold)
+	\label{sub:junxion}
+		\cite{junxion}
+	% subsection junxion (end)
+
+	\subsection{Osculator} % (fold)
+	\label{sub:osculator}
+		\cite{osculator}
+	% subsection osculator (end)
+
+	\subsection{Other similar interfaces} % (fold)
+	\label{sub:other_similar_interfaces}
+	
 	\begin{enumerate}
 		\item Inclusive interconnections \shortcite{inclusiveinterconnections}
 		\item Sense Stage \shortcite{senseStage}
-	\end{enumerate}
-
-	\subsection{Junxion}
-		Junxion \shortcite{junxion}
-	\subsection{Osculator}
-		Osculator: mapping OSC stuff \shortcite{osculator}
-	\subsection{Other similar interfaces}
-		\begin{enumerate}
 		\item mpgcarepackage?
 		\item Integra \shortcite{integra}
 		\item Eaganmatrix: GRID VIEW! \shortcite{eaganmatrix}
 		\item Patchage: a linking, dragging, connecting interface \shortcite{patchage}
-		\end{enumerate}
+	\end{enumerate}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Goals}
+	% subsection other_similar_interfaces (end)
+
+% section comparison_to_similar_interfaces (end)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Evaluation of Goals} % (fold)
+\label{sec:evaluation_of_goals}
 	Are sections graphically unified? (Is this even necessary?)
 	%Why is what what on the top bar`'
+
+% section evaluation_of_goals (end)
 
 
 
