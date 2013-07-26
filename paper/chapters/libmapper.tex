@@ -147,3 +147,56 @@ Figure \ref{fig:webmapper} displays the look of the interface before this projec
 	% subsection webmapper (end)
 
 % section prior_interfaces_for_libmapper (end)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Evaluation of libmapper variables} % (fold)
+\label{sec:evaluation_of_libmapper_variables}
+
+The list in table \ref{tab:metadata_types} is by no means a complete set, as libmapper may yet expand to include data like device position and users are able to tag devices/signals/links/connections with any extra data they may want.
+
+A fourth data category \emph{boolean} has been added to specify data that only has two values (\emph{true or false}), as it is a common metadata feature. Boolean information is not covered in the Mackinlay paper. Going forward it will be treated more or less like ordinal data, as \emph{true} obviously has a relationship to \emph{false}, even though there is no quantitative value associated with them.
+
+\begin{longtable}{l l l l}
+\caption[libmapper metadata types]{libmapper metadata types} \label{tab:metadata_types} \\
+
+	\hline\hline
+	\textbf{Devices} & & \\
+	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
+	\hline
+	number of inputs & device ordinal & device name\\
+		number of outputs \\
+	ip address \\
+	port \\ [0.7cm]
+
+	\hline\hline
+	\textbf{Signals} & & \\
+	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
+	\hline
+	length & direction & parent device name\\
+	minimum value & & signal name \\
+	maximum value & & data type (float, integer, etc.)\\
+	sampling rate & & units \\ [0.7cm]
+
+	\hline\hline
+	\textbf{Links} & & \\
+	\emph{quantitative} & \emph{ordinal} & \emph{nominal}\\
+	\hline
+	& & link name \\
+	& & source device name \\
+	& & destination device name \\
+	& & scope \\ [0.7cm]
+
+	\hline\hline
+	\textbf{Connections} & & \\
+	\emph{quantitative} & \emph{ordinal} & \emph{nominal} & \emph{boolean}\\
+	\hline
+	source minimum & instance number & boundary modes & mute\\
+	source maximum & & connection mode & send as instance\\
+	destination minimum & & destination data type \\
+	destination maximum & & mute \\
+	& & expression \\
+	& & \\
+\end{longtable}
+
+% section evaluation_of_libmapper_variables (end)
+
