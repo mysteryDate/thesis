@@ -21,8 +21,8 @@ Because a modular design is desired, the Model-View-Controller (MVC) metaphor fo
 
 \begin{figure}[!ht]
 \centering
-	\includegraphics[width=0.8\textwidth]{figures/mapper_network}
-\caption{MVC hierarchy for the GUI and libmapper, blue arrows show propogation of network changes, dashed arrows denote messages requesting a network change.}
+	\includegraphics[width=0.9\textwidth]{figures/mapper_network2}
+\caption{MVC hierarchy for the GUI and libmapper, blue arrows show propagation of network changes, dashed arrows denote messages requesting a network change.}
 \label{fig:mapper_network}
 \end{figure}
 
@@ -33,7 +33,7 @@ First and foremost, it is essential that data on the screen should reflect data 
 
 \url{ {"cmd":"link","args":["/source.1","/dest.1"]} }
 
-Meaning: a linking command is sent to \url{source.1} and \url{dest.1} (the command itself is a python dictionary). After this, the display will not do anything, as the display has not yet been notified of the link. The monitor then relays this message to the network, using libmapper specific syntax. If the link is successful, the monitor receives notice, and sends a message to the main javascript file:
+Meaning: a linking command is sent to \url{source.1} and \url{dest.1} (the command itself is a python dictionary). After this, the display will not do anything, as the display has not yet been notified of the link. The monitor then relays this message to the network, using libmapper specific syntax. If the link is successful, the monitor receives notice, and sends a message to the main JavaScript file (main.js):
 
 \url{("new_link", {"src_name": "/source.1", "dest_name": "/dest.1"}) }
 
@@ -44,10 +44,10 @@ This states that a new link has been formed between the source device \url{sourc
 The model consists of an abstract copy of the network, residing on the local machine. Independent views can consult these data, but cannot directly modify it. Messages from the python monitor announce new links, modifications to connections, or any other changes on the network. All of these changes are recorded and reflected in the model. The model itself consists of four data structures.
 
 \begin{itemize}
- 	\item \textbf{Devices}: Storage of all present devices and device metadata.
- 	\item \textbf{Links}: A record of all links presently on the network.
- 	\item \textbf{Signals}: Keeps track of signals on the network, but only whichever signals are currently visible in the GUI. This is done to save bandwidth and processing power. View-controller pairs keep track of which devices are currently being viewed, and can ask for their child signals. 
- 	\item \textbf{Connections}: All connections and connection metadata between signals currently in the model.
+ 	\item \url{model.devices}: Storage of all present devices and device metadata.
+ 	\item \url{model.links}: A record of all links presently on the network.
+ 	\item \url{model.signals}: Keeps track of signals on the network, but only whichever signals are currently visible in the GUI. This is done to save bandwidth and processing power. View-controller pairs keep track of which devices are currently being viewed, and can ask for their child signals. 
+ 	\item \url{model.connections}: All connections and connection metadata between signals currently in the model.
  \end{itemize} 
 
 It is possible that previously viewed signals will persist in the model, but they and their connections will not be updated upon change.
@@ -60,20 +60,19 @@ All interaction handlers\footnote{Response to mouse clicks and certain keypresse
 	\item \url{view.initialize()}: Calls upon the view to create its visual elements and add 
 	\item \url{view.get_focused_devices()}: Returns whichever devices are currently visible in the view. This is used for populating the signal and connection data structures.
 	\item \url{view.cleanup()}: Causes the controller to remove all interaction handlers.
-	\item \url{view.update_display()}: Called whenever the model changes. The view is not aware
+	\item \url{view.update_display()}: Called whenever the model changes. The view is not made explicit aware of \emph{what} has changed, only that a change has occurs. In each view mode, this call causes visual features to be cleared and re-drawn, much like a screen refreshes. Though this creates more processor overhead (see section \ref{sec:testing_program_responsiveness}), it allows for much greater flexibility in designing new views.
 \end{itemize}
 
-
-		%initialize, cleanup, update_display
-	
 	% subsection mvc_architecture (end)
 
 	\subsection{Top toolbar} % (fold)
 	\label{sec:top_toolbar}
 
-Certain tasks and information providing structures are sensible to include across visualization modes. In light of this, a static toolbar is presented at the top of the GUI. This toolbar contains all administrative controls and connection modification fields. 
+One crucial way that the program departs traditional MVC is that the controller is broken up into two distinct parts. An extra ``user-input'' and controller section sits at the top-right corner of figure \ref{fig:mapper_network}, as a child of \url{main.js}.  It also would be possible to think of this as a separate view-controller pair, running constantly and simultaneously with the others, but since it is a part of the main JavaScript file, network visualization is more straightforward when it is thought of as an isolated controller.
 
-\begin{figure}[!h]
+Certain tasks and information providing structures are sensible to include across visualization modes. In light of this, a static toolbar is presented at the top of the GUI. This toolbar contains all administrative controls and connection modification fields.
+
+\begin{figure}[!ht]
 \centering
 	\includegraphics[width=1\textwidth]{figures/top_toolbar}
 \caption{The upper toolbar}
@@ -84,7 +83,7 @@ Certain tasks and information providing structures are sensible to include acros
 	\item \textbf{Administrative controls}
 	\begin{itemize}
 		\item\emph{Load/Save buttons}: These elements respond to clicks and save and load mappings, as discussed in section \ref{sec:saving_and_loading}.
-		\item\emph{Visual mode selection}: A drop-down menu containing all possible view modes (at the writing of this thesis: List, Grid and Hive).
+		\item\emph{Visual mode selection}: A drop-down menu containing all possible view modes (at the writing of this thesis: List, Grid and Hive), allowing the user to select between them.
 		\item\emph{Refresh Button}: When clicked, all data residing on the GUI is erased and re-gathered. This is useful if the monitor somehow desynchronizes with the network.
 	\end{itemize}
 
@@ -102,7 +101,7 @@ All interface features not present in the top toolbar are part of the current vi
 
 	% subsection top_toolbar (end)
 
-
+The file and communication structure described in this section allows for quick modification and extension of the interface. Developers can program new visual modes relatively easily, in comparison to prior GUIs. Hopefully this will eventually lead to a GUI with many useful view modes that can accommodate nearly every use-case for libmapper.
 
 % section development_of_a_flexible_system (end)
 
@@ -162,12 +161,14 @@ The original webmapper interface tables listing devices and signals have no head
 
 To include a necessary feature of max mapper, column headers are added to the list view. Also included are the new pieces of device and signal metadata listed in table \ref{tab:webmapper_list_view_metadata}. Tables draw themselves with invisible extra columns, such that adding extra data can be easily accomplished. If a user embeds extra metadata not listed above onto devices or signals, that data will automatically be included in the table display.  
 
-In general, the GUI tries to keep possible extensions to libmapper like this in mind. Very little is assumed about the network itself. In turn, the only device metadata that \emph{must} exist is the name and number of inputs/outputs, which is used to either display the device as a source or destination. For signals, the GUI takes vector length into account when deciding whether two signals are compatible and can be connected. However, disincluding length in the signal metadata will not result in an error.
+In general, the GUI tries to keep possible extensions to libmapper like this in mind. Very little is assumed about the network itself. In turn, the only device metadata that \emph{must} exist is the name and number of inputs/outputs, which is used to either display the device as a source or destination. For signals, the GUI takes vector length into account when deciding whether two signals are compatible and can be connected. However, dis-including length in the signal metadata will not result in an error.
 	
 	% subsection display_libmapper_metadata (end)
 
 	\subsection{Visual feedback} % (fold)
 	\label{sub:visual_feedback}
+
+Maxmapper 
 		% # of signals/etc.
 		% muted lines
 		% row striping
