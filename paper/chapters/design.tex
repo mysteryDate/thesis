@@ -127,7 +127,7 @@ The view itself is divided into two major modes: ``All Devices'' and individual 
 
 \begin{figure}[ht]
 \centering
-	\scalebox{0.4}{\includegraphics{figures/list_view_single_link}}
+	\includegraphics[width=1\textwidth]{figures/list_view_single_link}
 \caption{The list view with device \textbf{testsend.1} selected}
 \label{fig:list_view_single_link}
 \end{figure}
@@ -173,25 +173,61 @@ In networks with dense arrays of devices or signals, it can be difficult to find
 First, regular expression\footnote{TODO} supporting search-bars are not present at the top of each table. If the user types an expression of any kind into either of these fields, the GUI will filter elements displayed in the table beneath. Table rows can be filtered not just by the names of the signals/devices, but also by length, units, IP address or any other piece of information in the table row. To make the filter more responsive, the filtration code runs with every keypress, such that the table is dynamically filtered as the user inputs characters to the search field. 
 
 A common encountered use-case for Maxmapper was a dense field of signals with only a handful of connections that needed to be constantly modified. Obviously scrolling through a list hundred of rows long only to select between the same connections repeatedly can be very tedious. To assist these users Maxmapper features a ``hide-unconnected'' button that was incorporated into the list view as well. The button sits in a previously unused piece of screen above the canvas containing the arrows (see figures \ref{fig:list_view_all_devices} and \ref{fig:list_view_single_link}). When clicked, the GUI hides all signals not currently connected to any others. The text on this button then changes to ``show-unconnected.''
-		%hide unconnected signals
-		% table sorting
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/hide_unconnected}
+\caption{Functionality of hiding unconnected elements on a network with many devices and few links.}
+\label{fig:hide_unconnected}
+\end{figure}
+
+Finally, tables will sort when a user clicks on a column header. Signals and devices are initially placed into the table in whichever order they appear in the model. Upon a click to any column header, the table sorts the information ``descending'' (first numerically, then alphabetically) by that column. A second click on the same header will re-sort the information in an ``ascending'' fashion. Table rows can be sorted by any metadata appearing in the table.
+
 	% subsection locating_devices_and_signals (end)
 
 	\subsection{Visual feedback} % (fold)
 	\label{sub:visual_feedback}
 
 User feedback was a very important part of the design process (see section \ref{sec:user_feedback}). One comment re-iterated by nearly all users of this GUI and prior GUIs was that it became extremely frustrating when the display became out of sync with the network, or when it seemed like the GUI \emph{might} be out of sync. To ameliorate these difficulties, the GUI incorporates a few Maxmapper features entirely for visual feedback.
-
-
+		
 		% # of signals/etc.
-		% muted lines
+At the very bottom of the display is a bar showing the number of features on the network vs the number currently visible. For example, if there are 36 source devices on the network, but the user has filtered out all but two by either search filters or the ``hide-unconnected'' button, then the field underneath the source table will read ``2 of 36 devices'' (as in figure \ref{fig:hide_unconnected}). This data is also show for destination devices, links, connections and signals. This is done in order to help the user diagnose technical problems. If a desired signal is not appearing perhaps the device has become unresponsive or the user has encountered a bug in the GUI. If the user has simply filtered out the signal somehow, it is much more straightforward to see this immediately than to begin searching for possible errors.\footnote{libmapper, the GUI and most DMIs used with both are still in a stage of development where bugs are an inevitable part of the user experience. We like to call them ``features.''}
+
+		%top toolbar, muting
+The top toolbar automatically reflects metadata for selected connections. Expressions, connection modes and ranges can be observed simply by clicking on the arrow representing a connection. The toolbar displays non editable fields (depending on connection mode) as slightly more transparent. Arrows are re-drawn with dashed lines for muted connections. Figure \ref{fig:list_view_single_link} displays two muted connections. 
+
 		% row striping
+Though not feedback on the network itself, users have found large tables to be more easily navigable when row have ``zebra'' striping. The display re-calculates the alternate row striping any time a user filters the view. Rows highlight themselves when selected. Any number of rows on either table can be selected simultaneously. Row highlighting works in combination with row striping. 
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{figures/row_striping}
+	\caption{Multiple selection and row striping in the list view.}
+	\label{fig:row_striping}
+\end{figure}
+
+By incorporating popular visual feedback elements from Maxmapper, we were able to make the display more robust and useful. Though difficulties with interaction can still occur (missing devices, unresponsive connections, etc.), good visual feedback should allow users to more quickly diagnose and solve these problems.
 
 	% subsection visual_feedback (end)
 
 	\subsection{Improvements to User Interaction} % (fold)
 	\label{sub:improvements_to_user_interaction}
+
+Easily the greatest user complaint about Webmapper was the nature of interaction. In order to form a connection, a user must click on a source device, then click on a destination device, then finally click on a ``connect'' button. Even for simple mappings this became extremely cumbersome. In order to make our GUI useful, we clearly needed to improve on the speed of interaction. Fortunately UI features in Maxmapper are much more useful, and simply needed to be incorporated here.
 	
+		\subsubsection{Draggable links and connections}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{figures/drawing}
+	\caption{Multiple selection and row striping in the list view.}
+	\label{fig:drawing}
+\end{figure}
+
+	%also possible to drag right to left
+
+		\subsubsection{Keyboard shortcuts}
+			%select all, large selections
 	% subsection improvements_to_user_interaction (end)
 
 % section integration_of_interface_features (end)
@@ -199,13 +235,6 @@ User feedback was a very important part of the design process (see section \ref{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Extension of Control and Visual Elements} % (fold)
 \label{sec:extension_of_control_and_visual_elements}
-
-	\subsection{Keyboard shortcuts} % (fold)
-	\label{sec:keyboard_shortcuts}
-
-		%select all, large selections
-	
-	% subsection keyboard_shortcuts (end)
 
 	\subsection{Window resizing} % (fold)
 	\label{sec:window_resizing}
