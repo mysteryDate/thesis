@@ -213,21 +213,48 @@ By incorporating popular visual feedback elements from Maxmapper, we were able t
 	\subsection{Improvements to User Interaction} % (fold)
 	\label{sub:improvements_to_user_interaction}
 
-Easily the greatest user complaint about Webmapper was the nature of interaction. In order to form a connection, a user must click on a source device, then click on a destination device, then finally click on a ``connect'' button. Even for simple mappings this became extremely cumbersome. In order to make our GUI useful, we clearly needed to improve on the speed of interaction. Fortunately UI features in Maxmapper are much more useful, and simply needed to be incorporated here.
+Easily the greatest user complaint about Webmapper was the nature of interaction. In order to form a connection, a user must click on a source device, then click on a destination device, then finally click on a ``connect'' button. Even for simple mappings this became extremely cumbersome. In order to make our GUI useful, we clearly needed to improve on the speed of interaction. Fortunately UI features in Maxmapper can solve this problem.
 	
 		\subsubsection{Draggable links and connections}
+
+The drag to connect gesture is common among similar interfaces (\citeNP{patchage}, \shortciteNP{integra}), along with Maxmapper itself. Though more advanced to program than the improvements listed above, it was seen as necessary to get libmapper users to switch to our GUI.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{figures/drawing}
-	\caption{Multiple selection and row striping in the list view.}
+	\caption{Draggable links and connections.}
 	\label{fig:drawing}
 \end{figure}
+
+On every table row the user can click and drag onto the central canvas. Upon doing so, a slightly-thicker B\'ezier curve follows the mouse pointer about the canvas. Incompatible signals (ones with different length than the starting signal) become transparent. Once the mouse pointer comes within 50 pixels of the other table the drawn arrow snaps to the nearest row (if compatible), highlighting that device or signal. The user then can mouse up and down the rows of the target table and the drawn arrow will continue snapping to the nearest available row. Once the user lifts up on the mouse button, the GUI sends a message to connect the appropriate signals (or link the appropriate devices) to libmapper.
+
+Of course, the GUI does not draw the final linking/connecting arrow until a confirmation message is received from the monitor, by way of libmapper itself. Figure \ref{fig:drawing} demonstrates a dragged connection starting from a source signal and ending on a destination signal, though the same gesture is possible beginning with destination elements.
 
 	%also possible to drag right to left
 
 		\subsubsection{Keyboard shortcuts}
-			%select all, large selections
+
+To further accelerate GUI operations, some keyboard shortcuts were added:
+
+\begin{table}
+	\centering
+	\Tcaption{Shortcut keys in the list view}
+	\label{tab:list_view_shortcut_keys}
+		\begin{tabular}{l  l  l}
+		\hline\hline
+		key combination&action&from Maxmapper?\\
+		\hline
+		c 					& Connect/link selected rows & no\\
+		delete 				& Disconnect/unlink all selected & yes\\
+		command + a 		& Select all visible connections/links & yes\\
+		alt + tab 			& Change tab to the right & no\\
+		alt + shift + tab 	& Change tab to the left & no\\ 
+		m 					& Mute all selected connections/links & yes\\
+		\end{tabular}
+\end{table}
+
+For PC users, the ``select all'' key command is ``control + a.'' Tab changing is meant to further mimic functionality of web browsers. 
+
 	% subsection improvements_to_user_interaction (end)
 
 % section integration_of_interface_features (end)
@@ -236,39 +263,122 @@ Easily the greatest user complaint about Webmapper was the nature of interaction
 \section{Extension of Control and Visual Elements} % (fold)
 \label{sec:extension_of_control_and_visual_elements}
 
-	\subsection{Window resizing} % (fold)
-	\label{sec:window_resizing}
-	
-	% subsection window_resizing (end)
+With the new web based framework up and running, it is fairly easy to extend interface features beyond that of Maxmapper. Requested features that would have been very difficult to implement in Max/MSP were added to the GUI. Also, two new view modes were created, taking advantage of the modular, MVC-style code base.
 
-	\subsection{Variable line heights} % (fold)
-	\label{sec:variable_line_heights}
+	\subsection{Multiple selection} % (fold)
+	\label{sub:multiple_selection}
+
+Unlike in Maxmapper, in our GUI it is possible to select table rows with a mouse click. Any combination of rows can be selected on either table. This allows for multiple signals or devices to be connected/linked simultaneously upon pressing the `c' key. This particular command connects the superset of all selected elements. 
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/multi-select_before_connect}
+		\caption{Multiple rows selected}
+		\label{fig:multiple_connect_before}
+	\end{subfigure}
+	\begin{subfigure}[]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/multi-select_after_connect}
+		\caption{After pressing the `c' key}
+		\label{fig:multiple_connect_after}
+	\end{subfigure}
+	\caption{Simultaneous connection of multiple signals}\label{fig:multiple_connect}
+\end{figure}
+
+Users can also depress the ``shift'' key to select all rows between the click on row and the previously selected row. This is similar to functionality in other list interfaces like the Windows and Macintosh file browsers. Clicking anywhere on the container except for the tables deselects all currently selected rows.
 	
-	% subsection variable_line_heights (end)
+	% subsection multiple_selection (end)
+
+	\subsection{Accommodating varying window sizes} % (fold)
+	\label{sec:accomodating_sizes}
+
+One notable shortcoming of the Maxmapper GUI is inability to resize the application window. This obviously created problems for users with small screens, or those who would want to run Maxmapper side-by-side with other applications. The new GUI can be resized in the same fashion as any other application, supporting windows as small as 100 x 124 pixels (about 3cm x 3cm).\footnote{All physical screen sizes quoted in this section are for a 96 pixel-per-inch hi-res display. Lower resolution displays will result in larger windows.}
+
+Upon resizing, the size and shape of various on-screen elements change dynamically to fit the new window size. The two device/signal tables always occupy two-fifths of the container area, with the central canvas filling the remaining fifth. The container itself fills the entire window not occupied by the top bar. It will expand to fill any size, but has a programmed minimum height of 150 pixels (about 4cm) and minimum width of 700 pixels (about 18cm). Upon hitting minimum dimensions, the GUI adds scroll bars to allow the user to view the entire display. Elements within the top menu fold onto multiple lines to accommodate narrower windows.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[]{\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/before_resize_1280x760}
+		\caption{List view at 1280 x 760 pixels}
+		\label{fig:before_resize}
+	\end{subfigure}
+	\begin{subfigure}[]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/after_resize_650x450}
+		\caption{Same view resized to 650 x 450 pixels}
+		\label{fig:after_resize}
+	\end{subfigure}
+	\caption{Resizing the list view window. Rows condense, scroll bars appear and the top menu collapses in the smaller version.}\label{fig:resizing}
+\end{figure}
+
+Maxmapper table rows have constant height. Unless many devices or signals are present large parts of the display are often empty. The list view calculates table elements to fill the available space, as can be seen in most of the figures of this chapter. Minimum row heights are set to 17 pixels. Once there is not enough space to accommodate all necessary rows, the GUI adds a scroll bar to the appropriate table. 
+
+	% subsection accomodating_sizes (end)
 
 	\subsection{Visual Redesign} % (fold)
 	\label{sec:visual_redesign}
-	
+
+Keeping in line with visual guidelines summarized in section \ref{sec:data_viz}, we overhauled the look of the Webmapper interface to reduce visual noise, make better use of color and generally improve its aesthetic appeal. 
+
+\begin{figure}[h]
+\centering
+	\includegraphics[width=\textwidth]{figures/before_redesign}
+\caption{The list view before visual re-design}
+\label{fig:before_redesign}
+\end{figure}
+
+First, much of the display area was wasted for simple networks, leading to the dynamic row sizing described above. The display was plagued by $1 + 1 = 3$ noise, causing negative space like the central canvas to attract the eye and making the display seem much more complex than necessary. All black borders were removed and font weight was lightened for all text, drastically reducing visual noise. Arrows now display with one-half of the stroke weight. This too reduces visual noise and also differentiates arrows during the dragging gesture in dense fields of connections.
+
+The pink background, though whimsical and popular at IDMIL, was deemed to bright to be used effectively over such a large area. It also distracted from the red used to highlight selected connections and links. A neutral white was selected for the background, both to blend with input areas and to cause more contrast with row striping and highlights. Aside from the red for selected arrows, all colors are now a variation of an unobtrusive gray-blue. This contributes to the visual uniformity of the display, but also allows us to make visual distinctions between odd rows, even rows, selected rows, table headers and table footers without using borders.
+
+Finally, a logo was added to the upper right hand corner of the display. The logo is a simplified version of the overall libmapper logo\footnote{Can be seen at \url{www.libmapper.org}} with a white background. The red highlight color is maintained to match highlighted links and connections.
+
 	% subsection visual_redesign (end)
 
-	\subsection{Grid \& Hive views} % (fold)
-	\label{sec:grid_&_hive_views}
+	\subsection{Alternate views} % (fold)
+	\label{sec:alternate_views}
+
+Jon Wilansky, a fellow master's student at IDMIL, created two new views for the GUI. These took advantage of the new MVC architecture for the program. With these views in place it finally became possible to test our foundational hypothesis that a variety of displays would aid in mapping tasks.
+
+		\subsubsection{The grid view}
 
 \begin{figure}[ht]
 \centering
-	\scalebox{0.4}{\includegraphics{figures/grid}}
+	\includegraphics[width=\textwidth]{figures/grid_w_cursor}
 \caption{The grid view}
 \label{fig:grid}
 \end{figure}
 
+First programmed and implemented was the ``grid'' view. The network is represented with two $m$-by-$n$ grids. The leftmost grid lists source devices horizontally and destination devices vertically. Links are formed by clicking on the square at the intersection between the desired source and destination devices. The other grid represents signals and connections. Signals must be explicitly added to this grid from the device grid by selecting the intersection and clicking add or pressing the `a' key. 
+
+Both grids are fully filterable using text input fields below, and borrowing code from the list view. Grids are also zoomable using the endpoints of the scroll bars. Either the devices or signals grid can be hidden, allowing the user to focus on just a single grid. Because this view is more customizable than list, the designer added an option to save view settings, causing the view to remember which devices have been added to the signal grid.
+
+The grid view provides visual feedback by highlighting the associated row and column when the user places the cursor over a grid intersection. Text of the relevant devices/signals is also highlighted in this situation. Colors are designed to match the gray-blue style in the list view mode, hopefully keeping the feel of a unified interface. Red is also used as a highlighted color for selected grid squares.
+
+The top bar looks and functions in the exact same fashion for the grid view as in the list view. MVC architecture allows us to create modular view-control elements like this to be used with a variety of other view-controller pairs.
+
+	\subsubsection{The hive view}
+
 \begin{figure}[ht]
 \centering
-	\scalebox{0.4}{\includegraphics{figures/hive}}
+	\includegraphics[width=\textwidth]{figures/hive}
 \caption{The hive view}
 \label{fig:hive}
 \end{figure}
 	
-	% subsection grid_&_hive_views (end)
+The hive view attempts to address the problem of to visualize entire networks simultaneously. The visualization borrows many techniques from Vizmapper (see section \ref{sub:vizmapper}). Solid black lines emanating from the center of the view signify network devices. Small circles representing child signals are distributed throughout each line. Thin blue curves flow between these circles, signifying connections. 
+
+On the left side of the view, a menu displays expandable and collapsible list of all network devices. Expanding entries in this list displays child signals. Connection lines highlight to red when clicked, and the bottom bar (colored our standard blue) displays the connected signals. Mousing over device lines highlights all connections to that device. The same is true for mousing over individual signals or any item in the list on the left.
+
+A text filter in the bottom right can narrow down the number of blue connection lines, though the black device lines persist. Connection lines can also be hidden by toggling check-boxes to the left of items in the device list on the left.
+
+As of the writing of this thesis the hive view is not as fully interactive as the other two. It is not possible form connections or links by any means, though a dragging-type interaction like the list view would be most desirable. It is possible to modify selected connections using the top toolbar as in the other two views.
+
+	% subsection alternate_views (end)
 
 % section extension_of_control_and_visual_elements (end)
 
@@ -278,12 +388,32 @@ Easily the greatest user complaint about Webmapper was the nature of interaction
 
 	\subsection{Saving \& Loading} % (fold)
 	\label{sec:saving_and_loading}
+
+Saving and loading presents an interesting problem for libmapper networks.  Upon clicking the ``save'' button, connection information is serialized into a JSON file which the user is asked to name. Only visible connections, ones that are present in the selected tab in list view, are recorded to the save file. Saving is not yet fully supported for the grid or hive views.
+
+A ``na\"{i}ve'' interpretation of loading mappings is implemented here. Though device information is encoded into the save file, it is not considered in the loading process. Mappings are loaded for all applicable signals. For example, in the following situation:
+
+\begin{itemize}
+	\item Devices \url{tstick.1}, \url{tstick.2} and \url{granul8.1} exist on the network
+	\item Both \url{tstick.1} and \url{tstick.2} have child signals named \url{raw/accelerometer/1/x} (they both should, as they are both t-sticks)
+	\item A mapping is loaded that contains a connection \url{tstick.1/raw/accelerometer/1/x} $\rightarrow$ \url{granul8.1/filter/envelope/frequency/low}
+\end{itemize}
+
+The connection will be loaded for \emph{both} t-sticks, creating two total connections to \url{granul8.1}'s low filter envelope. If two instances of the granul8 synthesizer exist, than the connection will be loaded four times, one for each iteration of t-stick $\rightarrow$ granul8.
+
+This is done to maintain a modularity for mappings, such that similar devices and equivalent devices with different names can share mappings. This makes sense for libmapper networks, as they are ideally collaborative and the ordinal number appearing after device names is arbitrary. 
 	
 	% subsection saving_&_loading (end)
 
 	\subsection{Creation of a standalone \& distribution} % (fold)
 	\label{sec:creation_of_a_standalone_and_distribution}
 	
+Ideally, the new GUI will be quickly be adopted by many users. This would assist us in debugging and improving the interface. It would also hopefully bring a new set of users to libmapper itself, encouraging use of the API and its implementation into new DMIs. Unfortunately, to get libmapper and this GUI up and running from scratch requires installing some kind of package management software and compiling multiple dependencies. This is rather time consuming and well beyond what should be expected of a non-programmer. 
+
+To aid in ease-of-use and adoption a ``standalone'' version of our GUI was compiled, and is presently available for free download at \url{www.libmapper.org/downloads} under the name Webmapper\footnote{We have yet to invent a suitable new name.}. The standalone includes libmapper code, and thus can be run on a machine that does not have libmapper explicitly installed. To the user it looks like any other Macintosh application: an icon to double-click.
+
+The current version (0.2) is still very much in test phase, and includes a readme file describing likely bugs, and the non-ideal startup method.\footnote{Running the program and navigating to \url{localhost:50000} in the Google Chrome browser.} It presently supports Macintosh OSX only, though Linux and Microsoft Windows releases are planned.
+
 	% subsection creation_of_a_standalone_&_distribution (end)
 
 % section other_gui_features (end)
