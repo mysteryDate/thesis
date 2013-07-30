@@ -99,34 +99,43 @@
 %===== Abstract, Sommaire & Acknowledgments
 \section*{\centering Abstract}
 
-This report describes the use of \LaTeX{} to format a thesis.
-A number of topics are covered: content and organization of the thesis,
- \LaTeX{} macros for controlling the thesis layout, formatting mathematical
- expressions, generating bibliographic references, importing figures and
- graphs, generating graphs in {\small MATLAB}, and formatting tables.
-The \LaTeX{} macros used to format a thesis (and this document) are
- described.
+This thesis project presents MapperGUI, a cross-platform graphical tool for the manipulation of musical mapping networks. Most digital musical instruments (DMIs) gather gestural input from musicians by way of electronic sensors and transform these data into sound through separate synthesis engines. The mapping of control inputs to synthesis parameters in DMIs is arbitrary, multi-faceted and extremely important as to their effectiveness. Software mapping tools exist to aid in this process, attempting to render the task of musical mapping more transparent, swift and configurable. The libmapper software library, developed at the Input Devices and Music Interaction Laboratory, creates a standard framework for DMIs to communicate data on a distributed network and to map their signals collaboratively and in real-time. MapperGUI presents a graphical user interface for libmapper networks, allowing non-expert users to manipulate the computer code-based system. The interface aims to be flexible, such that it can accommodate the vast array of musical networks and tasks that must be performed when mapping. To this end it provides multiple, independent visualization and interaction modes within a single framework. 
+
+This document explores some of the issues challenging the field of musical mapping, and describes the motivations behind the MapperGUI project in this context. Relevant research in the fields of data visualization and interface design is summarized and applied to the task of creating a graphical user interface for libmapper networks. Prior graphical interfaces for libmapper are examined for successful features that can be incorporated into MapperGUI as well as for design failures to be avoided. Specific challenges of implementation and features of the final program are described. Insights gained from interviews with users of MapperGUI are presented, along with future work and possible extensions for the interface.
+
+MapperGUI is available for free download as a standalone application at \url{www.libmapper.org/downloads}. All code is open-source and can be accessed at \url{https://github.com/mysteryDate/webmapper}.
 
 \newpage
 
 \section*{\centering Acknowledgments}
-Acknowledge this, asshole.
+
+\begin{table}
+  \centering
+\begin{tabular}{l l}
+  \hline\hline
+  name&role\\
+  \hline
+  Marcelo Wanderley& Advisor, IDMIL\\
+  Joseph Malloch& libmapper, Maxmapper\\
+  Stephen Sinclair& libmapper\\
+  Vijay Ruraraju& Vizmapper\\
+  Jon Wilansky& GridView, HiveView\\
+  
+\end{tabular}{l l}
+  
+\end{table}
+
 \pagebreak
 
 \section*{Preface}
 
-There are some things I should probably pre-face, certainly not reface.
 %Thesis regulations require that contributions by others in the collection of materials and data, the design and construction of apparatus, the performance of experiments, the analysis of data, and the preparation of the thesis be acknowledged.
 \pagebreak
 
 %========== Tables of contents, figures, tables
 \tableofcontents
 \listoffigures
-	various graphs of response time (discussion)
-	screenshot of drawing
-	screenshot of saving/loading
-	screenshot of main view
-	screenshot of grid view
+
 \listoftables
 
 \newpage
@@ -135,12 +144,12 @@ There are some things I should probably pre-face, certainly not reface.
 \begin{longtable}{ll}
     DMI 	& 	Digital Musical Instrument\\
     GUI		& 	Graphical User Interface\\
-    IDMIL &   Input Devices for Musical Interaction Laboratory\\ 
+    IDMIL &   Input Devices and Music Interaction Laboratory\\ 
     API   &   Application Programming Interface\\
     SWIG  &   Simplified Wrapper and Interface Generator\\
     OSC   &   Open Sound Control\\
     MVC   &   Model View Controller\\
-    HTTP  &   HypterText Transfer Protocol\\
+    HTTP  &   HyperText Transfer Protocol\\
     HTML  &   HyperText Markup Language\\
     CSS   &   Cascading Style Sheet\\
      %URL ?

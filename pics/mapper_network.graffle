@@ -110,10 +110,10 @@
 				<key>Text</key>
 				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 CMUSerif-Roman;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs52 \cf2 MapperGUI}</string>
+\f0\fs52 \cf0 MapperGUI}</string>
 				<key>VerticalPad</key>
 				<integer>0</integer>
 			</dict>
@@ -857,8 +857,8 @@
 			<integer>54</integer>
 			<key>Points</key>
 			<array>
-				<string>{438.80756, 599.13123}</string>
-				<string>{462.79111, 659.55054}</string>
+				<string>{438.73761, 599.15857}</string>
+				<string>{462.64087, 659.5506}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -964,10 +964,10 @@
 				<key>Text</key>
 				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 CMUSerif-Roman;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\fs52 \cf2 libmapper network}</string>
+\f0\fs52 \cf0 libmapper network}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -1101,7 +1101,7 @@
 					<key>Color</key>
 					<dict>
 						<key>a</key>
-						<string>0.51</string>
+						<string>0.98</string>
 						<key>b</key>
 						<string>0.845823</string>
 						<key>g</key>
@@ -1451,8 +1451,8 @@
 			<integer>26</integer>
 			<key>Points</key>
 			<array>
-				<string>{277.78833, 562.62024}</string>
-				<string>{279.8009, 528.95465}</string>
+				<string>{277.78833, 562.62018}</string>
+				<string>{279.8009, 528.95544}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1731,8 +1731,8 @@
 			<integer>18</integer>
 			<key>Points</key>
 			<array>
-				<string>{102.63444, 659.5506}</string>
-				<string>{122.26884, 600.43866}</string>
+				<string>{102.67636, 659.5506}</string>
+				<string>{122.47491, 600.5072}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1890,8 +1890,8 @@
 			<integer>11</integer>
 			<key>Points</key>
 			<array>
-				<string>{222.41306, 528.95508}</string>
-				<string>{335.0567, 528.95422}</string>
+				<string>{222.41306, 528.95551}</string>
+				<string>{335.0567, 528.95538}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2107,7 +2107,7 @@
 					<key>Color</key>
 					<dict>
 						<key>a</key>
-						<string>0.51</string>
+						<string>0.98</string>
 						<key>b</key>
 						<string>0.845823</string>
 						<key>g</key>
@@ -2144,7 +2144,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{54.276642, 436.06219}, {441.60138, 207}}</string>
+			<string>{{54.276642, 436.06268}, {441.60138, 207}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -2176,7 +2176,7 @@
 					<key>Color</key>
 					<dict>
 						<key>a</key>
-						<string>0.51</string>
+						<string>0.98</string>
 						<key>b</key>
 						<string>0.845823</string>
 						<key>g</key>
@@ -2320,7 +2320,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-07-30 16:41:21 +0000</string>
+	<string>2013-07-30 18:52:13 +0000</string>
 	<key>Modifier</key>
 	<string>Aaron Krajeski</string>
 	<key>NotesVisible</key>
