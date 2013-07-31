@@ -3,13 +3,13 @@
 
 	Development of a graphical user interface for libmapper creates a unique challenge. Obviously such an interface is a practical tool, and should function as such, yet it also must work in concert with DMIs which are inherently designed for creative use. For the purposes of this project, the assumed solution to this innate paradox is to provide the user with multiple independent modes of control.  libmapper itself is an extremely flexible API that makes few assumptions as to the network of devices and signals or how they are mapped. It is thus fitting that a GUI for libmapper would be equally as flexible. In lieu of a single perfect solution for network visualization and interactivity, providing users with various independent views offered good compromise.
 
-	Work on MapperGUI began with the Webmapper interface described in section \ref{sub:webmapper}. An MVC structure was built around the code to make the program more extensible and to allow for the easy integration of multiple views. Missing features from Maxmapper were incorporated into the main view mode, ListView. ListView was extended in various ways, taking advantage of the new code base. Two new view modes, GridView and HiveView,\footnote{Both designed by Jonathan Wilansky at IDMIL} were then integrated into the main GUI. Finally, the code was compiled together as a standalone application, ready for wide distribution.
+	Work on MapperGUI began with the Webmapper interface described in section \ref{sub:webmapper}. An MVC structure was built around the code to make the program more extensible and to allow for the easy integration of multiple views. Missing features from Maxmapper were incorporated into the main view mode, ListView. ListView was extended in various ways, taking advantage of the new code base. Two new view modes, GridView and HiveView,\footnote{Both designed by Jonathan Wilansky at the IDMIL} were then integrated into the main GUI. Finally, the code was compiled together as a standalone application, ready for wide distribution.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Development of a Flexible System} % (fold)
 \label{sec:development_of_a_flexible_system}
 
-Prior GUIs for libmapper have been used successfully for some time, but all have failed to become a standard for the same reason: they cannot accommodate all possible use-cases of libmapper. List based views like Maxmapper and Webmapper cannot show hierarchies while the cluster view implemented in Vizmapper can be overly cumbersome for interaction with simple networks. With so much work already completed on prior GUIs, it was more suitable to integrate different approaches into a single GUI, rather than to begin work on some new, hopefully superior approach that would likely prove to be flawed like all that came before. 
+Prior GUIs for libmapper have been used successfully for some time, but all have failed to become a standard for the same reason: they cannot accommodate all possible use-cases of libmapper. List based views like Maxmapper and Webmapper do not show hierarchies while the cluster view implemented in Vizmapper can be overly cumbersome for interaction with simple networks. With so much work already completed on prior GUIs, it was more suitable to integrate different approaches into a single GUI, rather than to begin work on some new, hopefully superior approach that would likely prove to be flawed like all that came before. 
 
 MapperGUI integrates multiple interfaces simply: via a drop-down menu on the upper corner of the window. Options on this menu represent available visualization modes. By selecting a new visualization mode the GUI drastically changes its appearance, replacing nearly every visual element in the display.
 	%Needs to be adaptable, show any metadata
@@ -29,11 +29,11 @@ Because we require a modular design, the Model-View-Controller (MVC) architectur
 
 		\subsubsection{Independent communication}
 
-First and foremost, it is essential that data on the screen reflect data on the network. This is not entirely straightforward, as asynchronous messages are constantly relayed between MapperGUI and libmapper. In a truly distributed system, data on the libmapper network changes continuously as other users add devices and modify mappings. Our system insulates the actual libmapper network, the displayed data and user interaction elements from one another (figure \ref{fig:mapper_network}). For example, a user command to link the two devices \url{source.1} and \url{dest.1} will send the following message to the python monitors:
+First and foremost, it is essential that data on the screen reflect data on the network. This is not entirely straightforward, as asynchronous messages are constantly relayed between MapperGUI and libmapper. In a truly distributed system, data on the libmapper network changes continuously as other users add devices and modify mappings. Our system insulates the actual libmapper network, the displayed data and user interaction elements from one another (figure \ref{fig:mapper_network}). For example, a user command to link the two devices \url{source.1} and \url{dest.1} will cause the controller to send the following message to the python monitors:
 
 \url{ {"cmd":"link","args":["/source.1","/dest.1"]} }
 
-Meaning: a linking command is sent to \url{source.1} and \url{dest.1}.\footnote{The message itself is a python dictionary.} After this, the display does not change, as it has not yet been notified of a new link. The monitor then relays this message to the libmapper network. If the link is successful, the monitor receives notice, and sends a message to the main JavaScript file (main.js):
+Meaning: a linking command is sent to \url{source.1} and \url{dest.1}.\footnote{The message itself is a python dictionary.} After this, the display does not change, as it has not yet been notified of a new link. The monitor then relays this message to the libmapper network. If the link is successful, the monitor receives notice, and sends a message to the model:
 
 \url{("new_link", {"src_name": "/source.1", "dest_name": "/dest.1"}) }
 
@@ -41,7 +41,7 @@ This states that a new link has been formed between the source device \url{sourc
 
 		\subsubsection{The model}
 
-The model consists of an abstract copy of the network residing on the local machine. Independent views can consult these data, but cannot directly modify it. Messages from the python monitor announce new links, modifications to connections, or any other changes on the network. The model records these changes into four data structures:
+The model consists of an abstract copy of the libmapper network. Independent views can consult these data, but cannot directly modify it. Messages from the python monitor announce new links, modifications to connections, or any other changes on the network to the model which records these changes into four data structures:
 
 \begin{itemize}
  	\item \url{model.devices}: Storage of all present devices and device metadata.
@@ -54,7 +54,7 @@ It is possible that previously viewed signals will persist in the model, but the
 
 		\subsubsection{View-controller pairs}
 
-All interaction handlers\footnote{Responses to mouse clicks and keypresses.} and visualizations are stored in modular, view-controller pairs, as recommended by \citeN{MVC_krasnerpope}. Each view-controller pair corresponds with a single view mode. Pairs can have any combination of UI handlers and visual features, but must have the following four functions:
+All interaction handlers (responses to mouse clicks and keypresses) and visualizations are stored in modular, view-controller pairs, as recommended by \citeN{MVC_krasnerpope}. Each view-controller pair corresponds with a single view mode. Pairs can have any combination of UI handlers and visual features, but must implement the following four functions:
 
 \begin{itemize}
 	\item \url{view.initialize()}: Calls upon the view to create its visual elements and add its individual interaction handlers.
@@ -99,7 +99,7 @@ All interface features not present in the top toolbar are part of the current vi
 
 	% subsection top_toolbar (end)
 
-The file and communication structure described in this section allows for quick modification and extension of the interface. Developers can program new visual modes relatively easily, in comparison to prior GUIs. Hopefully this will eventually lead to a GUI with many useful view modes that can accommodate nearly every use-case for libmapper.
+The file and communication structure described in this section allows for quick modification and extension of the interface. All components are modular, so developers can program new visual modes relatively easily. Hopefully this will eventually lead to a GUI with many useful view modes that can accommodate nearly every use-case for libmapper.
 
 % section development_of_a_flexible_system (end)
 
@@ -121,7 +121,7 @@ Of all currently available views, ListView provides the most straightforward way
 \label{fig:list_view_all_devices}
 \end{figure}
 
-The view itself is divided into two major modes: ``All Devices'' and groups of signals. Switching between these modes is accomplished through tabs that appear at the top of the container, much like the tabs in modern web browsers. In the All Devices tab, ListView lists network devices, as in figure \ref{fig:list_view_all_devices}. Source devices inhabit the left table, while the right table lists destination devices. Intermediate devices\footnote{Devices with both inputs and outputs, such as implicit mappers described in \citeN{interpolated_mappings}.} will be listed in both tables. The view displays device metadata as columns of each table. Here arrows represent links between devices. Since no connections or signals are shown, most of the top bar (see section \ref{sec:top_toolbar}) is disabled in the All Devices tab. Saving and loading are also disabled.
+The view itself is divided into two major modes: ``All Devices'' and linked devices. Switching between these modes is accomplished through tabs that appear at the top of the container. In the All Devices tab, ListView lists network devices, as in figure \ref{fig:list_view_all_devices}. Source devices inhabit the left table, while the right table lists destination devices. Intermediate devices\footnote{Devices with both inputs and outputs, such as implicit mappers described in \citeN{interpolated_mappings}.} will be listed in both tables. The view displays device metadata as columns of each table. Here arrows represent links between devices. Since no connections or signals are shown, most of the top bar (see section \ref{sec:top_toolbar}) is disabled in the All Devices tab. Saving and loading are also disabled.
 
 \begin{figure}[ht]
 \centering
@@ -141,7 +141,7 @@ Tables in the original Webmapper interface have no headers. Without these queues
 
 \begin{table}
 	\centering
-	\Tcaption{Metadata available in Webmapper vs list view}
+	\Tcaption{Metadata available in Webmapper versus ListView}
 	\label{tab:webmapper_list_view_metadata}
 		\begin{tabular}{l  l  |  l l }
 		\hline\hline
@@ -157,20 +157,20 @@ Tables in the original Webmapper interface have no headers. Without these queues
 		\end{tabular}
 \end{table}
 
-Incorporating a useful feature of Maxmapper, column headers have been added to the ListView. Also included are new pieces of device and signal metadata, as listed in table \ref{tab:webmapper_list_view_metadata}. Tables draw themselves with invisible extra columns, such that adding extra data can be easily accomplished. If a user embeds extra metadata onto devices or signals that data will automatically include itself in the display.  
+Incorporating a useful feature of Maxmapper, column headers have been added to the ListView. Also included are new pieces of device and signal metadata, as listed in table \ref{tab:webmapper_list_view_metadata}. Tables support additional metadata, as they are filled by a generic function that will include any data found in the model. 
 
-In general, MapperGUI tries to keep possible extensions like this to libmapper in mind. Very little is assumed about the network itself. In turn, the only device metadata that \emph{must} exist is the device name and number of inputs/outputs, MapperGUI uses to place the device in either the source or destination table. For signals, MapperGUI takes vector length into account when deciding whether two signals are compatible and can be connected. However, dis-including length in the signal metadata will not result in an error.
+In general, MapperGUI tries to keep possible extensions like this to libmapper in mind. Very little is assumed about the network itself. In turn, the only device metadata that \emph{must} exist is the device name and number of inputs/outputs. MapperGUI uses the number of inputs/outputs to place a device into either the source or destination tables. For signals, MapperGUI takes vector length into account when deciding whether two signals are compatible and can be connected. However, dis-including length in the signal metadata will not result in an error.
 	
 	% subsection display_libmapper_metadata (end)
 
 	\subsection{Locating devices and signals} % (fold)
 	\label{sub:locating_devices_and_signals}
 
-In networks with dense arrays of devices or signals, it can be difficult to find particular objects. Three features from Maxmapper were adapted for use with ListView to aid in such tasks.
+In networks with lengthy arrays of devices or signals, it can be difficult to find particular objects. Three features from Maxmapper were adapted for use with ListView to aid in such tasks.
 
-First, regular expression\footnote{TODO} supporting search-bars are now present at the top of each table. If the user types an expression of any kind into either of these fields, ListView will filter elements displayed in the table beneath. Table rows can be filtered not just by the names of the signals/devices, but also by length, units, IP address or any other piece of information in the table row. To make the filter more responsive the filtration code runs with every keypress such that the table is dynamically modified as the user inputs characters to the search field. 
+First, regular expression\footnote{TODO} supporting search-bars are now present at the top of each table. If the user types an expression of any kind into either of these fields, ListView will filter elements displayed in the table beneath. Table rows can be filtered not just by the names of the signals/devices, but also by length, units, IP address or any other piece of information in the table row. To make the filter more responsive the code runs with every keypress such that the table is dynamically modified as the user inputs characters to the search field. 
 
-A common use-case for Maxmapper was a large list of signals with only a handful of connections that needed constant modification. Obviously scrolling through a list with hundreds of rows, only to repeatedly select between the same handful of connections can be very tedious. To assist these users Maxmapper features a ``hide-unconnected'' button that was incorporated into ListView as well. The button sits in a previously unused piece of screen above the central canvas (see figures \ref{fig:list_view_all_devices} and \ref{fig:list_view_single_link}). When clicked, the GUI hides all signals not currently connected to any others. The text on this button then changes to ``show-unconnected.''
+A common use-case for Maxmapper was a large list of signals with only a handful of connections that needed constant modification. Obviously scrolling through a list with hundreds of rows, only to repeatedly select between the same handful of connections can be very tedious. To assist these users Maxmapper features a ``hide-unconnected'' button that was incorporated into ListView as well. The button sits in a previously unused piece of screen above the central canvas (see figures \ref{fig:list_view_all_devices} and \ref{fig:list_view_single_link}). When clicked, the GUI hides all signals not currently connected to any others, the text on this button then changes to ``show-unconnected.''
 
 \begin{figure}
 	\centering
@@ -179,7 +179,7 @@ A common use-case for Maxmapper was a large list of signals with only a handful 
 \label{fig:hide_unconnected}
 \end{figure}
 
-Finally, tables can sort themselves by individual columns. Signals and devices are initially placed into the table in whichever order they appear in the model. Upon a click to any column header, the table sorts the information ``descending'' (first numerically, then alphabetically) by that column. A second click on the same header will re-sort the information in an ``ascending'' fashion. Users can sort table rows by any metadata appearing in the table.
+Finally, tables can sort themselves by individual columns. Signals and devices are initially placed into the table in whichever order they appear in the model. Upon a click to any column header, the table sorts the information ``descending'' (lexicographically) by that column. A second click on the same header will re-sort the information in an ``ascending'' fashion. Users can sort table rows by any column appearing in the table.
 
 	% subsection locating_devices_and_signals (end)
 
@@ -189,7 +189,7 @@ Finally, tables can sort themselves by individual columns. Signals and devices a
 User feedback was a very important part of the design process (see section \ref{sec:user_feedback}). One observation re-iterated by nearly all users of MapperGUI and prior GUIs was that it became extremely frustrating when the display became out of sync with the network, or when it seemed like the GUI \emph{might} be out of sync. To ameliorate these difficulties, MapperGUI incorporates a few Maxmapper features entirely for visual feedback.
 		
 		% # of signals/etc.
-At the very bottom of the window is a bar displaying the number of features on the network versus the number currently visible. For example, if there are 36 source devices on the network, but the user has filtered out all but two, then the field underneath the source table will read ``2 of 36 devices'' (as in figure \ref{fig:hide_unconnected}). These data are also shown for destination devices, links, connections and signals. This is done in order to help the user diagnose technical problems. If a desired signal does not appear, perhaps the device has become unresponsive or the user has encountered an error in MapperGUI. If the user has simply filtered out the signal somehow, it is much more straightforward to see this immediately than to begin searching for possible technical problems.\footnote{libmapper and MapperGUI are both at a stage of development where bugs are an inevitable part of the user experience. We like to call them ``features.''}
+At the very bottom of the window is a bar displaying the number of elements on the network versus the number currently visible. For example, if there are 36 source devices on the network, but the user has filtered out all but two, then the field underneath the source table will read ``2 of 36 devices'' (as in figure \ref{fig:hide_unconnected}). These data are also shown for destination devices, links, connections and signals. This is done in order to help the user diagnose technical problems. If a desired signal does not appear, perhaps the device has become unresponsive or the user has encountered an error in MapperGUI. If the user has simply filtered out the signal somehow, it is much more straightforward to see this immediately than to begin searching for possible technical problems.\footnote{libmapper and MapperGUI are both at a stage of development where bugs are an inevitable part of the user experience. We like to call them ``features.''}
 
 		%top toolbar, muting
 The top toolbar automatically reflects metadata for selected connections. Expressions, connection modes and ranges can be observed simply by clicking on the arrow representing a connection. The toolbar displays non-editable fields (depending on connection mode) as slightly more transparent. Arrows are re-drawn with dashed lines for muted connections, as in figure \ref{fig:list_view_single_link}.
@@ -224,9 +224,9 @@ The drag to connect gesture is common among similar interfaces (\citeNP{patchage
 	\label{fig:drawing}
 \end{figure}
 
-The user can click on any table row and drag onto the central canvas. Upon doing so, a slightly-thicker B\'ezier curve begins to follow the mouse pointer about the canvas. Incompatible signals become transparent. Once the mouse pointer comes within 50 pixels of the other table the drawn arrow snaps to the nearest row if it is compatible, highlighting that device or signal. The user then can scroll the mouse up and down the rows of the target table and the drawn arrow will continue snapping to the nearest available row. Once the user lifts up on the mouse button, MapperGUI sends a message to libmapper asking either connect the appropriate signals or to link the appropriate devices.
+The user can click on any table row and drag onto the central canvas. Upon doing so, a slightly-thicker B\'ezier curve begins to follow the mouse pointer about the canvas. Incompatible signals become transparent. Once the mouse pointer comes within 50 pixels of the other table the drawn arrow snaps to the nearest row if it is compatible, highlighting that device or signal. The user then can scroll the mouse up and down the rows of the target table and the drawn arrow will continue snapping to the nearest available row. Once the user releases the mouse button, MapperGUI sends a message to libmapper asking either connect the appropriate signals or to link the appropriate devices.
 
-Of course, ListView does not draw the final linking/connecting arrow until a confirmation message is received from the monitor, by way of libmapper itself. Figure \ref{fig:drawing} demonstrates a dragged connection starting from a source signal and ending on a destination signal, though the same gesture is possible beginning with destination elements.
+ListView does not draw the final linking/connecting arrow until a confirmation message is received from the monitor, by way of libmapper itself. Figure \ref{fig:drawing} demonstrates a dragged connection starting from a source signal and ending on a destination signal, though the same gesture is possible beginning with destination elements.
 
 	%also possible to drag right to left
 
@@ -285,7 +285,7 @@ Unlike in Maxmapper, in our GUI it is possible to select table rows with a mouse
 	\caption{Simultaneous connection of multiple signals}\label{fig:multiple_connect}
 \end{figure}
 
-Users can also depress the ``shift'' key to select multiple rows simultaneously, a functionality common in other list interfaces ,like the Windows and Macintosh file browsers. Clicking anywhere in the container, except for the tables, de-selects all currently selected rows and arrows.
+Users can also depress the ``shift'' key to select multiple rows simultaneously, a functionality common in other list interfaces, like the Windows and Macintosh file browsers. Clicking anywhere in the container, except for the tables, de-selects all currently selected rows and arrows.
 	
 	% subsection multiple_selection (end)
 
@@ -309,12 +309,12 @@ Users can also depress the ``shift'' key to select multiple rows simultaneously,
 	\caption{Resizing the ListView window. Rows condense, scroll bars appear and the top menu collapses in the smaller version.}\label{fig:resizing}
 \end{figure}
 
-One notable shortcoming of the Maxmapper GUI is inability to resize the application window. This creates problems for users with small screens, or those who would like to run Maxmapper side-by-side with other applications. MapperGUI can be resized in the same fashion as any other application, supporting windows as small as 100 x 124 pixels (about 3cm x 3cm).\footnote{All physical screen sizes quoted in this section are for a 96 pixel-per-inch hi-res display. Lower resolution displays will result in larger windows.}
+One notable shortcoming of the Maxmapper GUI is inability to resize the application window. This creates problems for users with small screens, or those who would like to run Maxmapper side-by-side with other applications. MapperGUI can be resized in the same fashion as any other application, supporting windows as small as 100 x 124 pixels (about 3cm x 3cm).\footnote{All physical screen sizes quoted in this section are for a 72 pixel-per-inch hi-res display. Lower resolution displays will result in larger windows.}
 
 Upon resizing, the size and shape of various on-screen elements change dynamically to fit the new window size (see figure \ref{fig:resizing}). The two device/signal tables always occupy two-fifths of the container area each, with the central canvas filling the remaining fifth. The container itself fills the entire window not occupied by the top bar. It will expand to fill any size, but has a programmed minimum height of 150 pixels (about 4cm) and minimum width of 700 pixels (about 18cm). Upon hitting these minimum dimensions, the GUI adds scroll bars to allow the user to view the entire display. Elements within the top menu fold onto multiple lines to accommodate narrower windows.
 
 
-Maxmapper table rows have constant height. Unless many devices or signals are present large parts of the display are often empty. ListView instead calculates table elements to fill the available space, as can be seen in most of the figures of this chapter. Minimum row heights are set to 17 pixels. Once there is not enough space to accommodate all necessary rows, MapperGUI adds a scroll bar to the appropriate table. 
+Maxmapper table rows have fixed height. Unless many devices or signals are present large parts of the display are often empty. ListView instead calculates table elements to fill the available space, as can be seen in most of the figures of this chapter. Minimum row heights are set to 17 pixels. Once there is not enough space to accommodate all necessary rows, MapperGUI adds a scroll bar to the appropriate table. 
 
 	% subsection accomodating_sizes (end)
 
@@ -332,7 +332,7 @@ Keeping in line with visual guidelines summarized in section \ref{sec:data_viz},
 
 First, much of the display area was wasted for simple networks, leading to the dynamic row sizing described above. The display was plagued by $1 + 1 = 3$ noise, causing negative space like the central canvas to attract the eye and making the display seem much more complex than necessary. All black borders were removed and font weight was lightened for all text, drastically reducing visual noise. Arrows now display with one-half of the stroke weight. This too reduces visual clutter and also differentiates arrows that are in the process of being drawn.
 
-The pink background, though whimsical and popular at IDMIL, was deemed too bright to be used effectively over such a large area. It also distracted from the red color used to highlight selected connections and links. A neutral white was selected for the background, both to blend with input areas and to cause more contrast with row striping and highlights. Aside from the red for selected arrows, all colors are now a variation of an unobtrusive gray-blue. This contributes to the visual uniformity of the display, but also allows us to make visual distinctions between odd rows, even rows, selected rows, table headers and table footers without using borders.
+The pink background, though whimsical and popular at the IDMIL, was deemed too bright to be used effectively over such a large area. It also distracted from the red color used to highlight selected connections and links. A neutral white was selected for the background, both to blend with input areas and to cause more contrast with row striping and highlights. Aside from the red for selected arrows, all colors are now a variation of an unobtrusive gray-blue. This contributes to the visual uniformity of the display, but also allows us to make visual distinctions between odd rows, even rows, selected rows, table headers and table footers without using borders.
 
 Finally, a logo was added to the upper left-hand corner of the display. The logo is a simplified version of the overall libmapper logo\footnote{Can be seen at \url{www.libmapper.org}} with a white background. The red highlight color is maintained to match highlighted links and connections.
 
@@ -341,7 +341,7 @@ Finally, a logo was added to the upper left-hand corner of the display. The logo
 	\subsection{Alternate views} % (fold)
 	\label{sec:alternate_views}
 
-Jon Wilansky, a fellow master's student at IDMIL, created two new views for MapperGUI. These took advantage of the new MVC architecture for the program. With these views in place it finally became possible to test our foundational hypothesis that a variety of displays would aid in mapping tasks.
+Jon Wilansky, a fellow master's student at the IDMIL, created two new views for MapperGUI. These took advantage of the new MVC architecture for the program. With these views in place it finally became possible to test our foundational hypothesis that a variety of displays would aid in mapping tasks.
 
 		\subsubsection{GridView}
 
@@ -352,7 +352,7 @@ Jon Wilansky, a fellow master's student at IDMIL, created two new views for Mapp
 \label{fig:grid}
 \end{figure}
 
-First programmed and implemented was the ``grid'' view. The network is represented with two $m$-by-$n$ grids. The leftmost grid lists source devices horizontally and destination devices vertically. Links are formed by clicking on the square at the intersection between the desired source and destination devices. The second grid represents signals and connections. Signals must be explicitly added to this grid from the device grid by selecting the intersection and clicking add, or by pressing the ``a'' key. 
+First programmed and implemented was the ``grid'' view. The network is represented with two $m$-by-$n$ grids. The leftmost grid lists source devices on the horizontal axis and destination devices on the vertical axis. Links are formed by clicking on the square at the intersection between the desired source and destination devices. The second grid represents signals and connections. Signals must be explicitly added to this grid from the device grid by selecting the intersection or labels and clicking ``add'', or by pressing the ``a'' key. 
 
 Both grids are fully filterable using text input fields below, which borrow code from ListView. Grids are also zoom-able using the endpoints of the scroll bars. Either grid can be hidden, allowing the user to focus the entire display on a single grid. Because this view is more customizable than ListView, the designer added an option to save view settings, causing GridView to remember which devices have been added to the signal grid.
 
@@ -369,11 +369,11 @@ The top bar looks and functions in the exact same fashion for GridView as in Lis
 \label{fig:hive}
 \end{figure}
 	
-The ``hive'' view attempts to address the problem of visualizing entire networks simultaneously. This visualization borrows many techniques from Vizmapper (see section \ref{sub:vizmapper}). Solid black lines emanating from the center of the view signify network devices. Small circles representing child signals are distributed throughout each line. Thin blue curves flow between these circles, signifying connections. 
+The ``hive'' view attempts to address the problem of visualizing entire networks simultaneously. This visualization borrows many techniques from Vizmapper (see section \ref{sub:vizmapper}). Solid black lines emanating from the center of the view signify network devices. Source devices are placed in the top half of the display, destination devices on the bottom. Small circles representing child signals are distributed throughout each line. Thin blue curves flow between these circles, signifying connections. 
 
 On the left side of HiveView, a menu displays expandable and collapsible list of all network devices. Expanded entries in this list display child signals. Connection lines highlight to red when clicked, and the bottom bar (colored our standard blue) presents the names of the connected signals. Placing the mouse cursor over device lines highlights all connections to that device. The same is true for mousing over individual signals or any item in the list on the left.
 
-A text filter in the bottom right can narrow down the number of blue connection lines, though the black device lines and signal bubbles persist. Connection lines can also be hidden by toggling check-boxes to the left of items in the device list on the left.
+A text filter in the bottom right will filter the namespace on the left side of the screen. Connection lines can also be hidden by toggling check-boxes to the left of items in the device list on the left.
 
 As of the writing of this thesis HiveView is not yet as fully interactive as the other two views. It is not possible form connections or links by any means, though a dragging-type interaction like in ListView would be most desirable. It is possible to modify selected connections using the top toolbar, as the MVC structure preserves this functionality across views.
 
@@ -409,7 +409,7 @@ This na\"ive implementation is used to maintain a modularity for mappings, such 
 	
 Though it is already in use, we would like for MapperGUI to be quickly be adopted by a greater number of users. This would assist us in debugging and improving the interface. It would also hopefully bring a new set of users to libmapper itself, encouraging use of the API and its implementation into new DMIs. Unfortunately, to get libmapper and MapperGUI up and running from the source code requires installing package management software and compiling multiple dependencies. This is rather time-consuming and well beyond what should be expected of a non-programmer. 
 
-To aid in ease-of-use and adoption, we compiled a ``standalone'' version of MapperGUI. It is presently available for free download at \url{www.libmapper.org/downloads} under the name Webmapper\footnote{The name will be officially changed once Maxmapper has been phase out completely.}. The standalone includes libmapper code, and thus can be run on a machine that does not have libmapper explicitly installed. To the user it looks like any other Macintosh application: an icon on which to double-click.
+To aid in ease-of-use and adoption, we compiled a ``standalone'' version of MapperGUI. It is presently available for free download at \url{www.libmapper.org/downloads} under the name Webmapper\footnote{The name has not yet been officially changed.}. The standalone includes libmapper code, and thus can be run on a machine that does not have libmapper explicitly installed. To the user it looks like any other Macintosh application: an icon on which to double-click.
 
 The current version is still very much in test phase, and includes a readme file describing likely bugs, and the non-ideal startup method.\footnote{Running the program and navigating to \url{localhost:50000} in the Google Chrome browser.} It presently supports Macintosh OSX only, though Linux and Microsoft Windows releases are planned.
 
