@@ -124,13 +124,11 @@ Though concept of ``mapping'' itself is extremely abstract, the libmapper API pl
 	\label{fig:maxmapper}
 \end{figure}
 
-	A list-style interface  section \ref{sub:ListView}.
+At the beginning of this project the most commonly used GUI for libmapper was a Max/MSP application designed by Joseph Malloch at IDMIL, referred to here as Maxmapper. A list-style interface (see section \ref{sub:ListView}), Maxmapper allows users to connect signals by dragging between elements on two tables. All source devices are listed in an array of tabs above, clicking on these tabs displays child signals for the device, as well as child signals for all linked devices. The GUI features a top toolbar for saving, loading and editing signal behavior. Maxmapper is extremely functional, and has been used with a wide variety of projects, performances and experiments. To many libmapper users, Maxmapper \emph{is} libmapper.
 	
-		\subsubsection{Limitations of Max/MSP}
-		%breaks, does not scale well
-	%no resizing (1260 by 777 px)
-	%all tabs
-	%lists at the top
+Though Max/MSP works well for creative uses, as well as for prototyping software, it has some well-known limitations that inhibit the functionality of programs like Maxmapper. All Max/MSP standalones must be bundled with a set of necessary objects from Max/MSP itself. This leads to much larger programs, currently Maxmapper occupies nearly 16 times as much computer memory as the MapperGUI standalone.\footnote{22.1 megabytes versus 1.4 megabyes.} The program is also relatively slow to launch, and requires a larger share of computer resources than other implementations. Due to the dependent nature of the code, it is also difficult to maintain and extend Maxmapper, as updates to Max/MSP can cause errors for the program.
+
+The greatest limitation of Maxmapper, and the principal motivation for this project, is the cross-incompatibilty of Max/MSP. The program does not run on Linux systems, and cannot be ported to mobile applications. For the creators of libmapper, this is seen as a fatal flaw. For libmapper to be successful it must be widely adopted, and to dis-include all non-Widows or Macintosh users is unacceptable.
 	% subsection maxmapper (end)
 
 	\subsection{Vizmapper} % (fold)
@@ -142,9 +140,11 @@ Though concept of ``mapping'' itself is extremely abstract, the libmapper API pl
 	\caption{The Vizmapper interface}
 	\label{fig:vizmapper}
 \end{figure}
+
+List-style views for libmapper do not scale well for large and complex networks. To address this need, the Vizmapper provides a novel visualization tool for libmapper networks \cite{vizmapper}. In Vizmapper devices and signals are symbolized by circles distributed about the perimeter of a central screen. Unlike other interfaces, Vizmapper allows the user to zoom in on particular groups of signals, if their names imply some kind of heirarchical structure. For example, the signals \url{tstick.1/raw/accelerometer/1/x} and \url{tstick.1/raw/accelerometer/1/y} are displayed as two different circles within the circle \url{tstick.1/raw/accelerometer/1}. By clicking on this circle the view redraws the left portion of the display to only show signals which are sub-signals of the T-Stick's first accelerometer. 
+
+In this way Vizmapper is capable of displaying all connections on a network simultanously, giving the user a better impression of overall structure. Unfortuantely many functionalities of Maxmapper are not included in Vizmapper. Notably the user can only form connections and links by navigating menus and editing text (as opposed to dragging between nodes). In order to benefit both from the visualization of Vizmapper and the interactibility of Maxmapper, a user would need to run both simultaneously, hence our motivation to integrate approaches. Vizmapper's ``whole network'' visualization is mimiced in the HiveView visualization for MapperGUI, described in section \ref{sec:alternate_views}.
 	
-	% no resizing
-	% connection editing cumbersome
 	% subsection vizmapper (end)
 
 	\subsection{Webmapper} % (fold)
@@ -165,19 +165,19 @@ Webmapper utilizes the Python bindings for libmapper by registering an administr
 
 The interface itself is written for a web browser using the scripting language JavaScript\footnote{JavaScript | MDN. [Online]. Available: \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}. Accessed July 17, 2013} to control web-standard HyperText Markup Language (HTML) elements and Cascading Style Sheets (CSS). The JavaScript code stores four main data structures: devices, links, connections and signals. The code never directly modifies any of this data, and instead waits for messages relayed from libmapper. For example: if a user creates a new link, Webmapper does not add the link directly to the links array but simply sends a message to the network. If it receives back a `new link' message, only then does it add the new link to the array. This is done to ensure that the data structures within Webmapper always reflect what is actually present.
 
-Figure \ref{fig:webmapper} displays the look of the interface before this project began. Users are able to perform all libmapper functions: connecting, linking and modifying connections, but only the simplest of feature sets is included. In order to form a connection the user must click on a source signal, click on a destination signal and then click on a button labeled ``connect.'' Many useful features of the Max/MSP interface, such as column headers, table sorting, drawing connections and search filtering are not present.
+Figure \ref{fig:webmapper} displays the look of the interface before this project began. Users are able to perform all libmapper functions: connecting, linking and modifying connections, but only the simplest of feature sets is included. In order to form a connection the user must click on a source signal, click on a destination signal and then click on a button labeled ``connect.'' Many useful features of Maxmapper, such as column headers, table sorting, drawing connections and search filtering are not present.
 
 	% subsection webmapper (end)
 
 % section prior_interfaces_for_libmapper (end)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Evaluation of libmapper variables} % (fold)
+\section{Evaluation of libmapper variables as visual data} % (fold)
 \label{sec:evaluation_of_libmapper_variables}
 
-The list in table \ref{tab:metadata_types} is by no means a complete set, as libmapper may yet expand to include data like device position and users are able to tag devices/signals/links/connections with any extra data they may want.
+In order to examine different possibilities for visually encoding libmapper data, we have compiled a list variables and their categories as described by \citeN{visual_dimensions}. The list in table \ref{tab:metadata_types} is by no means a complete set, as libmapper may yet expand to include data like device position and users are able to tag devices/signals/links/connections with any extra data they may want.
 
-A fourth data category \emph{boolean} has been added to specify data that only has two values (\emph{true or false}), as it is a common metadata feature. Boolean information is not covered in the Mackinlay paper. Going forward it will be treated more or less like ordinal data, as \emph{true} obviously has a relationship to \emph{false}, even though there is no quantitative value associated with them.
+A fourth data category \emph{boolean} has been added to specify data that only has two values (\emph{true or false}), as it is a common metadata feature. Boolean information is not covered in the Mackinlay paper. Going forward it will be treated more or less like ordinal data.
 
 \begin{longtable}{l l p{4cm} l}
 \caption[libmapper metadata types]{libmapper metadata types} \label{tab:metadata_types} \\
