@@ -1,46 +1,34 @@
 %!TEX root = ../thesis.tex
 \chapter{Applications \& Discussion}
 
-This chapter presents a discussion of the GUIs software design and its consequences for musical mapping. The interface's features are explored in an attempt to evaluate the successes and failures of the design. Each subview 
+This chapter presents a discussion of MapperGUI's software design and its consequences for musical mapping, as well as revisions made to the code since the initial release. The interface's features are explored in an attempt to evaluate the successes and failures of the design. Feedback from users was gathered throughout the project and through informal interviews after the software's release. This feedback is summarized and presented here. A modification to the code, motivated by feedback from users, is also described. MapperGUI is then compared to similar interfaces, analyzing especially for new features that could be incorporated into our flexible framework. Finally, the system is evaluated overall with respect to the project's initial goals.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Effectiveness of Alternate Views} % (fold)
-\label{sec:effectiveness_of_alternate_views}
-
-	\subsection{List view} % (fold)
-	\label{sub:list_view}
-
-%line heights make different look for different tabs
-
-%list view weaknesses
-%	intermediate devices
-%	heirarchical structures
-%	many-to-one mappings
-	
-	% subsection list_view (end)
-
-	\subsection{Grid view} % (fold)
-	\label{sub:grid_view}
-	
-	% subsection grid_view (end)
-
-	\subsection{Hive view} % (fold)
-	\label{sub:hive_view}
-
-	% bogs down the network with requests
-	
-	% subsection hive_view (end)
-
-% section effectiveness_of_alternate_views (end)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{User Feedback} % (fold)
 \label{sec:user_feedback}
 
-%began and informed our entire process, feedback from prior guis and projects has been alluded to and is important presented here is feedback for our GUI
+The entire MapperGUI project began with user feedback from prior GUIs for libmapper. Throughout the design process functional versions of MapperGUI were provided to libmapper users. Their feedback was crucially important to the evolution of the software. After the first official release of MapperGUI, long-term users were informally interviewed. These users were questioned specifically as to the projects with which utilized MapperGUI in an attempt to learn more concretely about the variety of use-cases for the software.
 
-	\subsection{Present use cases} % (fold)
+	\subsection{Present use-cases} % (fold)
 	\label{sub:present_use_cases}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{l p{5cm} p{5cm}}
+	\hline\hline
+	user&use case&concerns\\
+	\hline
+	Mailis&Intonespacio&saving and loading\\
+	Hakon&Experimenting with vibrotactile feedback and motion capture systems&Switching between various mappings\\
+	Clayton&An interactive space using motion capture&Reliability of network\\
+	Julie&libmapper code for firmata&Speed of function (she's using a rasperry Pi)\\
+	\hline
+	Andrew Stuart&teaches class with libmapper&\\
+	Gestes (Marlon)&Performance, etc.&Hide unconnected\\
+\end{tabular}
+\end{center}	
+\end{table}
 
 		%Mailis, Clayton, Hakon, Julie
 
@@ -55,6 +43,11 @@ This chapter presents a discussion of the GUIs software design and its consequen
 	\label{sub:reliability_and_responsiveness}
 	
 	% subsection reliability_and_responsiveness (end)
+
+	\subsection{Effectiveness of Alternate Views} % (fold)
+	\label{sub:effectiveness_of_alternate_views}
+	
+	% subsection effectiveness_of_alternate_views (end)
 
 	\subsection{Other feedback} % (fold)
 	\label{sub:other_feedback}

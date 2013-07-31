@@ -117,7 +117,14 @@ Though concept of ``mapping'' itself is extremely abstract, the libmapper API pl
 	\subsection{Maxmapper} % (fold)
 	\label{sub:maxmapper}
 
-	A list-style interface described in detail is section \ref{sub:ListView}.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{figures/maxmapper}
+	\caption{The Maxmapper interface}
+	\label{fig:maxmapper}
+\end{figure}
+
+	A list-style interface  section \ref{sub:ListView}.
 	
 		\subsubsection{Limitations of Max/MSP}
 		%breaks, does not scale well
@@ -128,6 +135,13 @@ Though concept of ``mapping'' itself is extremely abstract, the libmapper API pl
 
 	\subsection{Vizmapper} % (fold)
 	\label{sub:vizmapper}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{figures/vizmapper2}
+	\caption{The Vizmapper interface}
+	\label{fig:vizmapper}
+\end{figure}
 	
 	% no resizing
 	% connection editing cumbersome
@@ -141,15 +155,15 @@ Though concept of ``mapping'' itself is extremely abstract, the libmapper API pl
 	%\scalebox{0.42}{
 	\includegraphics[width=1\textwidth]%
 		{figures/webmapper}
-	\caption{The webmapper interface}
+	\caption{The Webmapper interface}
 	\label{fig:webmapper}
 \end{figure}
 
-Work on this project began with a moderately featured, little used GUI for libmapper known as ``webmapper.'' Webmapper was created at IDMIL as an attempt to replace the Max/MSP GUI as the result of limitations described in section \ref{sub:maxmapper}, the principle among which being the cross-platform incompatibility of Max/MSP. It was thought that a browser-based approach would greatly simplify the process of creating cross-compatibility with all major operating systems and even mobile devices. 
+Work on this project began with a moderately featured, little used GUI for libmapper known as ``Webmapper.'' Webmapper was created at IDMIL as an attempt to replace the Max/MSP GUI as the result of limitations described in section \ref{sub:maxmapper}, the principle among which being the cross-platform incompatibility of Max/MSP. It was thought that a browser-based approach would greatly simplify the process of creating cross-compatibility with all major operating systems and even mobile devices. 
 
-Webmapper utilizes the Python bindings for libmapper by registering an administrative monitor to communicate with a libmapper network. The monitor can create and modify connections or links, as well as query the network as to what devices, signals, links and connections are present. The webmapper code creates a simple HTTP server and attempts to open Google Chrome\footnote{Chrome Browser. [Online]. Available: \url{https://www.google.com/intl/en/chrome/browser/}. Accessed July 17, 2013} on the host computer. If Google Chrome is not present, the user must navigate directly to the server using the web address \url{localhost:50000}. The monitor communicates with the libmapper network and the local server, the browser is able to see messages the monitor ``posts'' to the server (such as `new device') and respond to them appropriately. The browser in turn can send messages to the server (like `connect') that will propagate up to libmapper itself, eventually resulting in a message cascading back down to the browser reflecting the change to the network (such as `new connection'). 
+Webmapper utilizes the Python bindings for libmapper by registering an administrative monitor to communicate with a libmapper network. The monitor can create and modify connections or links, as well as query the network as to what devices, signals, links and connections are present. The Webmapper code creates a simple HTTP server and attempts to open Google Chrome\footnote{Chrome Browser. [Online]. Available: \url{https://www.google.com/intl/en/chrome/browser/}. Accessed July 17, 2013} on the host computer. If Google Chrome is not present, the user must navigate directly to the server using the web address \url{localhost:50000}. The monitor communicates with the libmapper network and the local server, the browser is able to see messages the monitor ``posts'' to the server (such as `new device') and respond to them appropriately. The browser in turn can send messages to the server (like `connect') that will propagate up to libmapper itself, eventually resulting in a message cascading back down to the browser reflecting the change to the network (such as `new connection'). 
 
-The interface itself is written for a web browser using the scripting language JavaScript\footnote{JavaScript | MDN. [Online]. Available: \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}. Accessed July 17, 2013} to control web-standard HyperText Markup Language (HTML) elements and Cascading Style Sheets (CSS). The JavaScript code stores four main data structures: devices, links, connections and signals. The code never directly modifies any of this data, and instead waits for messages relayed from libmapper. For example: if a user creates a new link, webmapper does not add the link directly to the links array but simply sends a message to the network. If it receives back a `new link' message, only then does it add the new link to the array. This is done to ensure that the data structures within webmapper always reflect what is actually present.
+The interface itself is written for a web browser using the scripting language JavaScript\footnote{JavaScript | MDN. [Online]. Available: \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}. Accessed July 17, 2013} to control web-standard HyperText Markup Language (HTML) elements and Cascading Style Sheets (CSS). The JavaScript code stores four main data structures: devices, links, connections and signals. The code never directly modifies any of this data, and instead waits for messages relayed from libmapper. For example: if a user creates a new link, Webmapper does not add the link directly to the links array but simply sends a message to the network. If it receives back a `new link' message, only then does it add the new link to the array. This is done to ensure that the data structures within Webmapper always reflect what is actually present.
 
 Figure \ref{fig:webmapper} displays the look of the interface before this project began. Users are able to perform all libmapper functions: connecting, linking and modifying connections, but only the simplest of feature sets is included. In order to form a connection the user must click on a source signal, click on a destination signal and then click on a button labeled ``connect.'' Many useful features of the Max/MSP interface, such as column headers, table sorting, drawing connections and search filtering are not present.
 
@@ -165,7 +179,7 @@ The list in table \ref{tab:metadata_types} is by no means a complete set, as lib
 
 A fourth data category \emph{boolean} has been added to specify data that only has two values (\emph{true or false}), as it is a common metadata feature. Boolean information is not covered in the Mackinlay paper. Going forward it will be treated more or less like ordinal data, as \emph{true} obviously has a relationship to \emph{false}, even though there is no quantitative value associated with them.
 
-\begin{longtable}{l l l l}
+\begin{longtable}{l l p{4cm} l}
 \caption[libmapper metadata types]{libmapper metadata types} \label{tab:metadata_types} \\
 
 	\hline\hline
@@ -192,7 +206,7 @@ A fourth data category \emph{boolean} has been added to specify data that only h
 	\hline
 	& & link name \\
 	& & source device name \\
-	& & destination device name \\
+	& & destination name \\
 	& & scope \\ [0.7cm]
 
 	\hline\hline

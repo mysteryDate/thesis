@@ -857,8 +857,8 @@
 			<integer>54</integer>
 			<key>Points</key>
 			<array>
-				<string>{438.73761, 599.15857}</string>
-				<string>{462.64087, 659.5506}</string>
+				<string>{438.73087, 599.16119}</string>
+				<string>{462.62634, 659.5506}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1451,8 +1451,8 @@
 			<integer>26</integer>
 			<key>Points</key>
 			<array>
-				<string>{277.78833, 562.62018}</string>
-				<string>{279.8009, 528.95544}</string>
+				<string>{277.78836, 562.62024}</string>
+				<string>{279.8009, 528.95557}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1596,7 +1596,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{366.35202, 144.92381}, {68.453865, 63.095509}}</string>
+			<string>{{366.35202, 143.80022}, {68.453865, 63.095509}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -1703,6 +1703,8 @@
 			</dict>
 			<key>Text</key>
 			<dict>
+				<key>Pad</key>
+				<integer>0</integer>
 				<key>Text</key>
 				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 CMUSerif-Bold;\f1\fnil\fcharset0 CMUSerif-Roman;}
@@ -1712,9 +1714,11 @@
 \f0\b\fs24 \cf0 Top Toolbar\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f1\b0 \cf0 (the controller)
+\f1\b0 \cf0 (a view-controller pair)
 \f0\b \
 }</string>
+				<key>VerticalPad</key>
+				<integer>0</integer>
 			</dict>
 			<key>TextPlacement</key>
 			<integer>0</integer>
@@ -1731,8 +1735,8 @@
 			<integer>18</integer>
 			<key>Points</key>
 			<array>
-				<string>{102.67636, 659.5506}</string>
-				<string>{122.47491, 600.5072}</string>
+				<string>{102.68057, 659.5506}</string>
+				<string>{122.49559, 600.51404}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1890,8 +1894,8 @@
 			<integer>11</integer>
 			<key>Points</key>
 			<array>
-				<string>{222.41306, 528.95551}</string>
-				<string>{335.0567, 528.95538}</string>
+				<string>{222.41306, 528.95563}</string>
+				<string>{335.0567, 528.95557}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2144,7 +2148,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{54.276642, 436.06268}, {441.60138, 207}}</string>
+			<string>{{54.276642, 436.06281}, {441.60138, 207}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -2320,7 +2324,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-07-30 18:52:13 +0000</string>
+	<string>2013-07-31 14:12:22 +0000</string>
 	<key>Modifier</key>
 	<string>Aaron Krajeski</string>
 	<key>NotesVisible</key>
@@ -2419,7 +2423,7 @@
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{-354.99997, 0}, {1286.5168, 700}}</string>
+		<string>{{-354.99997, 2.2471912}, {1286.5168, 700.00006}}</string>
 		<key>Zoom</key>
 		<real>0.88999998569488525</real>
 		<key>ZoomValues</key>
