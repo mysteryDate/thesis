@@ -15,7 +15,7 @@ As a C\footnote{An extremely popular, multi-purpose programming language.} libra
 Another advantage of libmapper, which is especially relevant to this project, is the ability to create an administrative device. These ``monitors'' can query libmapper devices for data, and thus collect data on the network overall. Monitors also are able to create, destroy and modify connections on the network. This allows for external visualization and control of a libmapper network.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\section{Open sound control and libmapper syntax} % (fold)
+	\section{Open Sound Control and libmapper Syntax} % (fold)
 	\label{sec:open_sound_control_and_libmapper_syntax}
 
 Like any communication, communication between digital devices functions well only when the devices speak the same language. In the Internet age this becomes particularly relevant: the vast array of continuously connected devices, sending and requesting information would instantly collapse if every developer coded to his or her own idiosyncrasies. To prevent this, computer scientists make use of various communication ``protocols'' when creating software. Hypertext Transfer Protocol (HTTP) is the most famous example of such a system.
@@ -38,7 +38,7 @@ To make signal names as coherent and consistent as possible, libmapper makes use
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% section open_sound_control_and_libmapper_syntax (end)
 
-	\section{Structure of libmapper networks} % (fold)
+	\section{Structure of libmapper Networks} % (fold)
 	\label{sec:structure_of_libmapper_networks}
 
 In order to maintain internal consistency, libmapper introduces a naming convention of its own. At the heart of any libmapper network are \emph{signals}, defined in \citeN{new_libmapper} as:
@@ -61,7 +61,7 @@ Devices and signals can carry a variety of \emph{metadata}. Devices usually list
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% section structure_of_libmapper_networks (end)
 
-	\section{Connection properties} % (fold)
+	\section{Connection Properties} % (fold)
 	\label{sec:connection_properties}
 
 Creation of links and connections is mapping from the systems perspective, but libmapper also allows for functional mapping through the modification of connections. This can be accomplished by altering certain properties possessed by every libmapper connection:
@@ -95,7 +95,7 @@ Creation of links and connections is mapping from the systems perspective, but l
 % section connection_properties (end)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\section{libmapper bindings} % (fold)
+	\section{libmapper Bindings} % (fold)
 	\label{sec:libmapper_bindings}
 
 A final crucial libmapper feature is its multi-language \emph{bindings}. The C language is ``low-level'' in that it is very and does not allow for very abstract data structures. This makes it extremely flexible, but difficult and time consuming to use. To make libmapper more friendly for different kinds of developers, ``bindings'' have been created for the higher-level 
@@ -111,7 +111,7 @@ Though concept of ``mapping'' itself is extremely abstract, the libmapper API pl
 % section libmapper_bindings (end)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Prior interfaces for libmapper} % (fold)
+\section{Prior Interfaces for libmapper} % (fold)
 \label{sec:prior_interfaces_for_libmapper}
 
 	\subsection{Maxmapper} % (fold)
@@ -172,7 +172,7 @@ Figure \ref{fig:webmapper} displays the look of the interface before this projec
 % section prior_interfaces_for_libmapper (end)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Evaluation of libmapper variables as visual data} % (fold)
+\section{Evaluation of libmapper Variables as Visual Data} % (fold)
 \label{sec:evaluation_of_libmapper_variables}
 
 In order to examine different possibilities for visually encoding libmapper data, we have compiled a list variables and their categories as described by \citeN{visual_dimensions}. The list in table \ref{tab:metadata_types} is by no means a complete set, as libmapper may yet expand to include data like device position and users are able to tag devices/signals/links/connections with any extra data they may want.
