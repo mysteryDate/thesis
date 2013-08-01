@@ -102,7 +102,7 @@ As reported by users in Section \ref{sub:reliability_and_responsiveness}, any GU
 
 In order to prevent thousands of unnecessary, display re-draws, a ``waiting'' period was added to certain critical functions. This operating systems process is described in \shortciteN{os_concepts}. Essentially certain functions no longer execute in the code immediately once called, instead, a delay timer starts. If the function is called again during this delay, the delay timer simply restarts. The function is only executed once the delay timer finishes. This way, if a function is called 100 times simultaneously, it will only execute once after a short delay. Figure \ref{fig:waiting_period} shows the effect of the waiting period if the function is called a single time, and if it is called once during the delay.
 
-\begin{figure}[ht]
+\begin{figure}
 	\centering
 		\includegraphics[width=1\textwidth]{figures/waiting_period}
 		\caption{Illustration of a delayed function.}
@@ -148,6 +148,17 @@ The Eaganmatrix \cite{eaganmatrix} partly inspired GridView in MapperGUI. The si
 	% subsection other_similar_interfaces (end)
 
 % section comparison_to_similar_interfaces (end)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Evaluation of Goals} % (fold)
+\label{sec:evaluation_of_goals}
+
+	
+	%Why is what what on the top bar`'
+
+	%maybe write about different views here?
+
+% section evaluation_of_goals (end)
 
 
 
