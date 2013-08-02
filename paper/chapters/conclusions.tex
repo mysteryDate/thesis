@@ -16,23 +16,37 @@ Though it has not yet been the case, in the future MapperGUI will likely be used
 Though MapperGUI has been released and is available for free download, there are still many possible extensions to the interface. 
 
 	\subsection{Unimplemented features}
-	\begin{enumerate}
-		\item Prefix filtering
-		\item Network selection
-		\item Expression Palate 
-		\item Edit scopes
-		\item Send as instance
-	\end{enumerate}
+
+A few features present in Maxmapper have not yet been implemented in MapperGUI. Most importantly, MapperGUI currently does not support sending a signal as an instance. Instances are one of the true strengths of libmapper. To design a way, even an inelegant way, to allow the user to take advantage of this libmapper feature is a high priority for the next release. Users are also unable to edit link scopes in the current version. Support for this will be fairly easy to implement, via a drop-down menu on the top bar and some extensions to the python monitor. 
+
+Our search functions, though usable, are not yet quite as powerful as those found in Maxmapper. Maxmapper allows users to filter signals for common prefixes, by way of a drop-down menu.  MapperGUI also forces users to remain on whichever network on which the program was launched. In the case where multiple networks are available, it would be a good extension to allow users to select and switch between them. Finally, MapperGUI's expression editing was poorly reviewed by users. Upon a double click of the \emph{Expression} button, Maxmapper displays a palate with all possible expression syntax (to create exponential functions, averages, etc.). Incorporating this feature would be a good start.
+
+%	\begin{enumerate}
+	%	\item Prefix filtering
+	%	\item Network selection
+	%	\item Expression Palate 
+	%	\item Edit scopes
+	%	\item Send as instance
+%	\end{enumerate}
+
 	\subsection{Possible extensions} % (fold)
 	\label{sub:possible_extensions}
-	\begin{enumerate}
-		\item HEB for hive
-		\item Integrate vizmapper
-		\item Save/Loading Rehaul
-		\item Standalone for Windows and Linux
-		\item Mobile support
-		\item Area view to make good on variable analysis
-	\end{enumerate}
+
+With the MVC architecture and some alternate views in place, our group has planned extensions to MapperGUI that may be very interesting. Firstly, HiveView should be made fully interactive, allowing the user to create links and connections with a dragging gesture. The hierarchical edge bundling technique described in Section \ref{sec:color} would be very useful for this view, as currently connection lines are drawn somewhat arbitrarily. Attempts were made to integrate Vizmapper into MapperGUI as a single view, as it was an initial goal of the process. Unfortunately idiosyncrasies in the Vizmapper code-base made this more difficult than anticipated. In the future the we hope to restructure the Vizmapper code so that it might be included, as it is a very interesting and effective network visualization. 
+
+Another way that the research in Section \ref{sec:color} could be applied is through a new ``area'' view mode. In this mode network elements would be displayed as shapes on a Cartesian plane, with each axis user-mappable to any kind of quantitative metadata. Other metadata could be visually mapped to these shapes' color, orientation, shape, opacity, etc. This would be a very interesting way to analyze the findings of \citeN{visual_dimensions}, and may be the topic of a future project. 
+
+The saving and loading features of MapperGUI obviously need improvement. Work has already begun on a staging process for loaded mappings, such that saved mappings are only loaded for the desired devices. Finally, standalone support for Windows and Linux systems is definitely required for future releases of MapperGUI. It would also be interesting to begin work on mobile versions of MapperGUI, though that would be a much more time-consuming process. 
+
+	%\begin{enumerate}
+		%\item HEB for hive
+		%\item Integrate vizmapper
+		%\item Save/Loading Rehaul
+		%\item Standalone for Windows and Linux
+		%\item Mobile support
+		%\item Area view to make good on variable analysis
+	%\end{enumerate}
 	% subsection possible_extensions (end)
+
 
 	
