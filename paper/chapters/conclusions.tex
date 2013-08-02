@@ -1,19 +1,21 @@
 %!TEX root = ../thesis.tex
 \chapter{Conclusions \& Future Work}
 
-This chapter summarizes the work presented this thesis, evaluates MapperGUI, and summarizes possible avenues for further research.
+This chapter summarizes the work presented this thesis, presents conclusions, and summarizes possible avenues for further research.
 
 \section{Summary and Conclusions}
 
-This thesis began by exploring issues relevant to musical mapping interfaces. DMI designers typically hard-code mappings into their designs, making collaboration, cross-compatibility and modification difficult. Certain tools exist to aid these designers and their users, but often they are difficult to use for non-experts in computer programming. 
+This thesis began by exploring issues relevant to musical mapping interfaces. DMI designers typically hard-code mappings into their designs, making collaboration, cross-compatibility and modification difficult. Certain tools exist to aid these designers and their users, but often they are difficult to use for non-experts in computer programming. Our work was motivated by this situation in musical mapping software. MapperGUI aimed to lower the barriers to entry for those who wished to use libmapper, a software library for collaborative and configurable musical mapping. The GUI was designed to allow for quick and straightforward manipulation of musical networks. 
 
-This work was motivated by this situation in musical mapping software. MapperGUI aimed to lower the barriers to entry for those who wished to use libmapper, a software library for collaborative and configurable musical mapping. The GUI was designed to allow for quick and straightforward manipulation of musical networks. 
+Techniques from data visualization and user interface design were presented to illustrate general principles used in MapperGUI's design. The ideas and structure of libmapper were summarized to describe the requirements of a GUI for the library. Prior GUIs for libmapper were described, as ideas and code were borrowed from them in the creation of MapperGUI.
 
-Though it has not yet been the case, in the future MapperGUI will likely be used to handle mappings in a live performance context. This will give us a new perspective on how the software performs in a situation where instant reactivity is necessary and errors can be disastrous. 
+The final GUI took the form of a modular interface. Various independent view modes could be swapped in and out by the user, making MapperGUI useful for a wider variety of libmapper networks. The code itself was also structured in a modular fashion such that extensions could be created more easily. The program was made accessible to libmapper users throughout this project, and their feedback became a crucial factor in design decisions. 
+
+MapperGUI has met many of the goals set at the beginning of this thesis work. The interface is available, functional and very accessible. The majority of libmapper variables can be accessed and manipulated from within the GUI. Within ListView connection and linking are easy and intuitive. Two alternate views are present for networks and tasks where list-type views are cumbersome. Users can save and load mappings.
+
+The current release of MapperGUI, however, is still in a test phase. A number of issues need to be resolved before the software can be adopted as standard GUI for libmapper. 
 
 \section{Future Work}
-
-Though MapperGUI has been released and is available for free download, there are still many possible extensions to the interface. 
 
 	\subsection{Unimplemented features}
 
