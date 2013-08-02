@@ -141,7 +141,7 @@ One proposed solution to the cognitive complexity of associating many source and
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Data Visualization}
+\section{Data Visualization and User Interface Design}
 \label{sec:data_viz}
 
 The graphical user interface described in this thesis is a purely visual interface. No means of auditory or haptic response was implemented, or even seriously considered. Creating an auditory tool for controlling musical instruments is obviously problematic and most personal computers provide no means of producing haptic feedback. This obviously limits the usable dimensions, but also greatly simplifies the problem of how to best represent the tremendous variety of libmapper networks.
@@ -255,18 +255,23 @@ In a libmapper system, this would mean that connections between signals on the s
 
 Braun is an application for visualizing OSC data flows on a scrolling graph \cite{braun}. Users are presented with options to adjust what dimension is displayed on the y-axis, the x-axis being reserved for time. Multiple data flows can be viewed on the same set of axes, and time scales can be set arbitrarily, giving the users an overall impression of trends in OSC messages over their networks. An extremely simple visualization, it creates a sort of oscilloscope, but for network OSC data.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{User Interface Design}
-
-\subsection{Collaborative network interfaces}
-	MPG Care Package \shortcite{MPGcarepackage}
 \subsection{The model-view-controller architecture}
 \label{sec:mvc_background}
-	MVC Krasner Pope \shortcite{MVC_krasnerpope}
+
+As computer user interfaces regularly contain many interdependent parts, problems can occur if the code is not rigorously structured. The model-view-controller (MVC) architecture \cite{MVC_krasnerpope} is system by which interface features can be made modular. This is especially relevant to the work of this thesis, as we are attempting to create multiple modular views for the same interface (see Section \ref{sec:mvc_architecture}).
+
+\begin{figure}[h]
+\centering
+	\includegraphics[width=1\textwidth]{figures/MVC}
+\caption{An illustration of Krasner and Pope's MVC structure}
+\label{fig:mvc}
+\end{figure}
+
+The MVC architecture consists of three main parts, the model, the view and the controller. The model consists of an abstract representation of all that is present in the interface. It contains data independently of how it is being viewed. The view contains software elements that actually show on the screen. Typically these use data from the model to affect their display. The controller is the portion of the software that interfaces with the user, relaying messages to the model to change the state of the system. The three sections communicate with one another by a messaging standard defined by the designer. 
+
+The division between the view and the controller is not always clear, and it is sometimes beneficial to program in view-controller pairs \cite{MVC_krasnerpope}. These pairs both display data and accept user interaction, though the data of the model is still treated as a separate class. What is important is that view-controller pairs are written modularly, such that many pairs can interact with the same model. This improves program extensibility, for if a new kind of interaction or display is desired, it simply needs to conform to the established communication standard and it will function properly.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Summary}
 
 	

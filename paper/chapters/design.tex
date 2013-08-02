@@ -17,7 +17,7 @@ MapperGUI integrates multiple via a drop-down menu on the upper corner of the wi
 	\subsection{MVC architecture} % (fold)
 	\label{sec:mvc_architecture}
 
-Because we require a modular design, the Model-View-Controller architecture\footnote{Described in Section \ref{sec:mvc_background}.} was used as a general framework for structuring the application. In fact, the whole-scale swapping of independent visual modes is a very straightforward implementation of MVC. Unfortunately, the \url{libmapper} $\rightarrow$ \url{python monitor} $\rightarrow$ \url{browser} implementation complicates matters slightly.\footnote{Compare Figure \ref{fig:mapper_network} with (TODO).} A few layers of abstraction are added to take into account the monitor, the network itself and control features independent from the view (see Section \ref{sec:top_toolbar}), but the general MVC architecture is maintained.
+Because we require a modular design, the Model-View-Controller architecture\footnote{Described in Section \ref{sec:mvc_background}.} was used as a general framework for structuring the application. In fact, the whole-scale swapping of independent visual modes is a very straightforward implementation of MVC. Unfortunately, the \url{libmapper} $\rightarrow$ \url{python monitor} $\rightarrow$ \url{browser} implementation complicates matters slightly.\footnote{Compare Figure \ref{fig:mapper_network} with Figure \ref{fig:mvc}.} A few layers of abstraction are added to take into account the monitor, the network itself and control features independent from the view (see Section \ref{sec:top_toolbar}), but the general MVC architecture is maintained.
 
 \begin{figure}
 \centering
