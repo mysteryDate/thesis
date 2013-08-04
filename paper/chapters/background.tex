@@ -55,31 +55,32 @@ Two more mapping cardinalities are relevant to instrument design, an example of 
 
 They are not considered to be functions by mathematicians\footnote{In mathematics, a true function can have no more than one output value for every input value.}, but are nonetheless important for our purposes. In equation \ref{eq:one-to-many} a single input can result in multiple outputs (an input of 4 results in the output of \emph{both} 2 and -2), yet each output has only a single input. This is simply the inverse function of equation \ref{eq:many-to-one}, and is an example of a \emph{one-to-many} mapping. On a graph of such a mapping, a \emph{vertical} line may cross at multiple points. The final equation is that of a circle centered at the origin with a radius of one. This is a \emph{many-to-many} mapping, as both it an its inverse result in multiple outputs from a single input.
 
-\begin{figure}[ht]
-	\centering
-	\begin{tikzpicture}
-		\begin{axis}[my style, xtick={-1,...,1}, ytick={-1,...,1}, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
-			\addplot[domain=-1:1]{sqrt(1 - x^2)}; 
-			\addplot[domain=-1:1]{-sqrt(1 - x^2)}; 
-		\end{axis}
-	\end{tikzpicture}
-\caption{Equation \ref{eq:many-to-many}, a many-to-many mapping.}
+%\begin{figure}[ht]
+	%\centering
+	%\begin{tikzpicture}
+		%\begin{axis}[my style, xtick={-1,...,1}, ytick={-1,...,1}, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
+			%\addplot[domain=-1:1]{sqrt(1 - x^2)}; 
+			%\addplot[domain=-1:1]{-sqrt(1 - x^2)}; 
+		%\end{axis}
+	%\end{tikzpicture}
+%\caption{Equation \ref{eq:many-to-many}, a many-to-many mapping.}
+%\end{figure}
+
+\begin{figure}[h]
+\centering
+	\includegraphics[width=0.7\textwidth]{figures/types_of_mapping}
+\caption{The four mapping classes}
+\label{fig:types_of_mapping}
 \end{figure}
 
 Though a graphical plane is the most common way for mathematicians to visualize two-dimensional functions, drawing the direct association between input and output will be more useful going forward. Figure \ref{fig:types_of_mapping} provides an illustration of such an approach. The astute reader will notice a striking similarity to the GUI view mode described in Section \ref{sub:ListView} and these diagrams.  
 
-\begin{figure}[ht]
-\centering
-	\scalebox{1}{\includegraphics{figures/types_of_mapping}}
-\caption{The four mapping classes}
-\label{fig:types_of_mapping}
-\end{figure}
 
 	\subsubsection{Mapping as association}
 
 In computer science, a mapping is less commonly referred to as a function and more usually called an \emph{associative array} or a \emph{dictionary}, though the word \emph{map} is also used \cite{data_structures}. This type of data structure is generally the most flexible way for computers store information. An associative array consists of key/value pairs, where the \emph{value} is the data to be stored and the \emph{key} is the reference to that data. 
 
-\begin{table}
+\begin{table}[!h]
 	\centering
 	\Tcaption{An example of key/value pairs (countries and currencies)}
 	\label{tab:key_value_pairs}
@@ -183,7 +184,7 @@ Visual presentations use marks to encode information by way of their positional,
 \begin{table}
 \setlength{\tabcolsep}{12pt}
 	\centering
-	\Tcaption{Mackinlay's Graphical Rankings}
+	\Tcaption{Mackinlay's graphical rankings}
 	\label{tab:graphical_rankings}
 		\begin{tabular}{l l l}
 		\textbf{quantitative}&	\textbf{ordinal}	&	\textbf{nominal}\\
