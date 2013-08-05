@@ -13,12 +13,12 @@ At the most fundamental level, mapping is the act of associating two or more set
 
 	\subsubsection{Mapping as function and mapping cardinality}
 
-From the perspective of mathematics, the term mapping is very nearly synonymous with ``function'' \cite{native_set_theory}, as both describe how one set of numbers corresponds with another. The first group is commonly referred to as the ``domain'' and the second as the ``codomain'' or ``range''. An in-depth review of functions in mathematics is beyond the scope of this thesis. However, a few fundamental examples will be useful for reference in Section \ref{sec:mappingforDMIs}. The following are instances of two basic types of mathematical functions:
+From the perspective of mathematics, the term mapping is very nearly synonymous with ``function'' \cite{native_set_theory}, as both describe how one set of numbers corresponds with another. The first group is commonly referred to as the ``domain'' and the second as the ``codomain'' or ``range.'' An in-depth review of functions in mathematics is beyond the scope of this thesis. However, a few fundamental examples will be useful for reference in Section \ref{sec:mappingforDMIs}. The following are instances of two basic types of mathematical functions:
 
 \begin{equation} y = 2x - 1 \label{eq:one-to-one} \end{equation} 
 \begin{equation} y = x^2  \label{eq:many-to-one}  \end{equation}
 
-Each function takes a single input value (\emph{x}) and \emph{maps} that number onto its range (\emph{y}). The fact that each of these equations take in only a single number as input and output a single number in turn means they can be graphed in a two dimensional space. This is not necessarily the case, as functions can input and output lists of numbers (vectors). Mathematically, they are not very interesting, but they represent two fundamentally different \emph{kinds} of functions.
+Each function takes a single input value ($x$) and ``maps'' that number onto its range ($y$). The fact that each of these equations take in only a single number as input and output a single number in turn means they can be graphed in a two dimensional space. This is not necessarily the case, as functions can input and output lists of numbers (vectors). Mathematically, they are not very interesting, but they represent two fundamentally different \emph{kinds} of functions.
 
 \begin{figure}[h]
 	\centering
@@ -27,11 +27,11 @@ Each function takes a single input value (\emph{x}) and \emph{maps} that number 
 			\addplot[domain=-100:100]{2*x-1}; 
 		\end{axis}
 	\end{tikzpicture}	
-\caption{The function described in equation \ref{eq:one-to-one} graphed in two dimensions.}
+\caption{The function described in Equation \ref{eq:one-to-one} graphed in two dimensions.}
 \label{fig:one-to-one_graph}
 \end{figure}
 
-For equation \ref{eq:one-to-one}, each input value has \emph{one and only one} corresponding output value. The same is true if the function is to be inverted, as each output value corresponds to only one input value. The range is simply a scaled and shifted version of the domain. The mapping's ``one-to-one'' nature can clearly be seen in Figure \ref{fig:one-to-one_graph}. To mathematicians, this is known as the mapping's ``cardinality''.
+For Equation \ref{eq:one-to-one}, each input value has \emph{one and only one} corresponding output value. The same is true if the function is to be inverted, as each output value corresponds to only one input value. The range is simply a scaled and shifted version of the domain. The mapping's ``one-to-one'' nature can clearly be seen in Figure \ref{fig:one-to-one_graph}. To mathematicians, this is known as the mapping's ``cardinality.''
 
 \begin{figure}[h]
 	\centering
@@ -44,14 +44,14 @@ For equation \ref{eq:one-to-one}, each input value has \emph{one and only one} c
 \label{fig:many-to-one_graph}
 \end{figure}
 
-This is not the case for equation \ref{eq:many-to-one}, for although each input has only one output, single positions in the codomain can have multiple corresponding inputs (e.g. both $3^2$ \emph{and} $-3^2$ are equal to 9). Thus, we can consider equation \ref{eq:many-to-one} to be a classical example of a mapping with a ``many-to-one'' cardinality. In Figure \ref{fig:many-to-one_graph}, the range of the function is wrapped back onto itself such that a horizontal line could intersect the curve twice.
+This is not the case for Equation \ref{eq:many-to-one}, for although each input has only one output, single positions in the codomain can have multiple corresponding inputs (e.g. both $3^2$ \emph{and} $-3^2$ are equal to 9). Thus, Equation \ref{eq:many-to-one} is an example of a mapping with a ``many-to-one'' cardinality. In Figure \ref{fig:many-to-one_graph}, the range of the function is wrapped back onto itself such that a horizontal line could intersect the curve twice.
 
 Two more mapping cardinalities are relevant to instrument design:  
 
 \begin{equation} y = \pm\sqrt{x} \label{eq:one-to-many} \end{equation} 
 \begin{equation} y = \pm\sqrt{1 - x^2} \label{eq:many-to-many} \end{equation} 
 
-They are not considered to be functions by mathematicians\footnote{In mathematics, a true function can have no more than one output value for every input value.}, but are nonetheless important for our purposes. In equation \ref{eq:one-to-many}, a single input can result in multiple outputs (an input of 4 results in the output of \emph{both} 2 and -2), yet each output has only a single input. This is simply the inverse function of equation \ref{eq:many-to-one}, and is an example of a ``one-to-many'' mapping. On a graph of such a mapping, a \emph{vertical} line may cross at multiple points. The final equation is that of a circle centered at the origin with a radius of one. This is a ``many-to-many'' mapping, as both it an its inverse result in multiple outputs from a single input.
+They are not considered to be functions by mathematicians\footnote{In mathematics, a true function can have no more than one output value for every input value.}, but are nonetheless important for our purposes. In Equation \ref{eq:one-to-many}, a single input can result in multiple outputs (an input of 4 results in the output of \emph{both} 2 and -2), yet each output has only a single input. This is simply the inverse function of Equation \ref{eq:many-to-one}, and is an example of a ``one-to-many'' mapping. On a graph of such a mapping a \emph{vertical} line may cross at multiple points. The final equation is that of a circle centered at the origin with a radius of one. This is a ``many-to-many'' mapping, as both it an its inverse result in multiple outputs from a single input.
 
 %\begin{figure}[ht]
 	%\centering
@@ -71,12 +71,12 @@ They are not considered to be functions by mathematicians\footnote{In mathematic
 \label{fig:types_of_mapping}
 \end{figure}
 
-Though a graphical plane is the most common way for mathematicians to visualize two-dimensional functions, drawing the direct association between input and output will be more useful going forward. Figure \ref{fig:types_of_mapping} provides an illustration of such an approach. The astute reader will notice a striking similarity between ListView (described in Section \ref{sub:ListView}) and these diagrams.  
+Though a graphical plane is the most common way for mathematicians to visualize two-dimensional functions, drawing the direct association between input and output will be more useful going forward. Figure \ref{fig:types_of_mapping} provides an illustration of such an approach. The astute reader will notice a striking similarity between these diagrams and ListView (described in Section \ref{sub:ListView}).  
 
 
 	\subsubsection{Mapping as association}
 
-In computer science, a mapping is less commonly referred to as a function and more usually called an ``associative array'' or a ``dictionary'', though the word ``map'' is also used \cite{data_structures}. This type of data structure is generally the most flexible way for computers store information. An associative array consists of key/value pairs where the ``value'' is the data to be stored and the ``key'' is the reference to that data. 
+In computer science, a mapping is less commonly referred to as a function and more usually called an ``associative array'' or a ``dictionary,'' though the word ``map'' is also used \cite{data_structures}. This type of data structure is generally the most flexible way for computers store information. An associative array consists of key/value pairs where the ``value'' is the data to be stored and the ``key'' is the reference to that data. 
 
 \begin{table}[!h]
 	\centering
@@ -96,11 +96,12 @@ In computer science, a mapping is less commonly referred to as a function and mo
 	\end{tabular}
 \end{table}
 
-In table \ref{tab:key_value_pairs}, the data is non-numeric and associations between keys and values are arbitrary (from a mathematical point of view). There obviously exists no distinct function that can transform a country's name into the name of its currency, thus the computer must explicitly remember the associations between the words in the form of a \emph{hash table}. At the lowest level, computers store information in a gigantic array of zeros and ones, and the value ``Kwanza'' only arises through a non-trivial process of encoding and decoding. In order to retrieve it, the computer \emph{must} know where it can be found. The hash table takes the input of a key, finds the address for the value and returns it. In this way, the hash table is literally the association between two sets of data and therefore the mapping between them. 
+In Table \ref{tab:key_value_pairs}, the data is non-numeric and associations between keys and values are arbitrary (from a mathematical point of view). There exists no distinct function that can transform a country's name into the name of its currency, thus the computer must explicitly remember the associations between the words in the form of a ``hash table''. 
+At the lowest level, computers store information in a gigantic array of zeros and ones, and the value ``Kwanza'' only arises through a non-trivial process of encoding and decoding. In order to retrieve it, the computer \emph{must} know where it can be found. The hash table takes the input of a key, finds the address for the value and returns it. In this way, the hash table is literally the association between two sets of data and therefore the mapping between them. 
 
-The four mapping classes outlined in the above section are not limited to the functional domain. The associative array in table \ref{tab:key_value_pairs} is another example of a many-to-one mapping, as many countries have the same currency name. In this vein, a one-to-many mapping could be the same keys with values switched to ``Former Monarchs'' (``France'' would map to both ``Louis XVI'' and ``Napoleon III'', etc.), while a value of ``Official Languages'' would be a many-to-many mapping (``Canada'' maps to both ``English'' and ``French'' while both ``Canada'' and ``France'' map to ``French'').
+The four mapping classes outlined in the above section are not limited to the functional domain. The associative array in Table \ref{tab:key_value_pairs} is another example of a many-to-one mapping, as many countries have the same name for their currencies. In this vein, a one-to-many mapping could be the same keys with values switched to ``Former Monarchs'' (``France'' would map to both ``Louis XVI'' and ``Napoleon III,'' etc.), while a value of ``Official Languages'' would be a many-to-many mapping (``Canada'' maps to both ``English'' and ``French'' while both ``Canada'' and ``France'' map to ``French'').
 
-Though most applicably represented in computer science, data structures like associative arrays appear in many other fields. Library card catalogs (one-to-one), multilingual dictionaries (many-to-many) and address books (many-to-one) are all very straightforward instances of key/value pairs. In a library card catalog, the call number even acts as a sort of hash table. In a large library, a book that is placed in the incorrect position on the shelves will likely be lost for a very long time. Thus the system must not only remember the keys (titles) and associated values (the books themselves), but also their positions in memory and their call numbers.
+Though most applicably represented in computer science, data structures like associative arrays appear in many other fields. Library card catalogs (one-to-one), multilingual dictionaries (many-to-many) and address books (many-to-one) are all very straightforward instances of key/value pairs. In a library card catalog, the call number even acts as a sort of hash table. In a large library, a book that is placed in the incorrect position on the shelves will likely be lost for a very long time. Thus the system must not only remember the keys (titles) and associated values (the books themselves), but also their positions in memory (their call numbers).
 
 %The above concepts from mathematics and computer science supply a base of knowledge for understanding mappings theoretically and provide a starting point for analyzing them in a musical context.
 
@@ -109,7 +110,7 @@ Though most applicably represented in computer science, data structures like ass
 
 With an acoustical musical instrument, a musician must interact directly with the physical object that produces the sound. In this context, the concepts of ``control surface,'' and ``synthesis devices'' are not very relevant, as they are intrinsically linked. In the case of an acoustic guitar, the pick \emph{could} be considered to be a sort of control device (as it is primarily used for instrumental interaction) with the strings and body acting as the sound-producing section. The problem with this type of approach is that changing the material of the pick, perhaps to provide a different feel for the player, will also necessarily modify the sound produced. The same can be said for modifying nearly any aspect of an acoustic instrument: it will change both the control interface and the created sound. This coupling of parameters causes any concept of a ``mapping layer'' to be irrelevant.
 
-As stated in the introduction, this is not the case for electronic instruments \shortcite{wanderley}. Electronic sensors transduce musical gestures into signals, which are in turn converted into auditory phenomena by amplifiers and speakers. Any arbitrary transformation can happen to the signals\footnote{Especially digital signals, which are remarkable for their robustness and mutability.} in between these two phases. This flexibility is most obvious with novel instruments like the T-Stick \cite{malloch_ma_thesis}, but is fundamentally true for any electronic instrument. An electric guitar senses gesture with a magnetic pickup that transforms the signal of a vibrating string into an electronic signal, which is made audible by an amplifier. Though this can happen directly, more or less reproducing the sound of an acoustic guitar, it is also possible to greatly modify this signal before it is amplified, creating tones that may be unrecognizable as the original acoustic instrument.
+As stated in the introduction, this is not the case for electronic instruments \shortcite{wanderley}. Electronic sensors transduce musical gestures into signals, which are in turn converted into auditory phenomena by amplifiers and speakers. Any arbitrary transformation can happen to the signals\footnote{Especially digital signals, which are remarkable for their robustness and mutability.} in between these two phases. This flexibility is most obvious with novel instruments like the T-Stick (see \citeNP{malloch_ma_thesis} for a description of this gestural controller), but is fundamentally true for any electronic instrument. An electric guitar senses gesture with a magnetic pickup that transforms the signal of a vibrating string into an electronic signal, which is made audible by an amplifier. Though this can happen directly, more or less reproducing the sound of an acoustic guitar, it is also possible to greatly modify this signal before it is amplified, creating tones that may be unrecognizable as the original acoustic instrument.
 
 	\subsubsection{The mapping layer}
 
@@ -117,19 +118,19 @@ In response to the importance of this uncoupling of parameters, electronic instr
 
 	\begin{itemize}
 		\item \emph{Gestural Controller}: The device with which the musician interacts directly. It generally has sensors that collect gestural data and can provide haptic feedback. The generated signals are output into the mapping layer.
-		\item \emph{Sound Generation Unit}: This device receives input signals from the mapping layer and uses them to generate sound. This layer can contain melody generating algorithms, sound modifying effects, physical models of acoustical instruments or any other Construct that is directly used to produce sound.
+		\item \emph{Sound Generation Unit}: This device receives input signals from the mapping layer and uses them to generate sound. This layer can contain melody generating algorithms, sound modifying effects, physical models of acoustical instruments or any other construct that is directly used to produce sound.
 		\item \emph{Mapping Layer}: The abstract space that receives input signals from the gestural controller and outputs to the sound generation unit. These signals can be connected and modified independently of actions in the other two layers.
 	\end{itemize}
 
-As can be seen above, the words ``output'' and ``input'' become ambiguous depending on if one is speaking from the perspective of devices (control devices \emph{output} signals that are \emph{input} into the synthesis devices) or the perspective of the mapping layer (the mapping receives \emph{input} from the controller, which is \emph{output} to the synthesizer). This can obviously create confusion for the detailed analysis of mappings and mapping devices. To avoid this, signals arriving at the mapping layer from the control surfaces will henceforth be referred to as ``source'' signals and signals sent from the mapping layer to the sound generation units will be called ``destination'' signals. This follows the nomenclature described in \shortciteN{new_libmapper} and the libmapper API in general.
+As can be seen above, the words ``output'' and ``input'' become ambiguous depending on if one is speaking from the perspective of devices (control devices \emph{output} signals that are \emph{input} into the synthesis devices) or the perspective of the mapping layer (the mapping receives \emph{input} from the controller, which is \emph{output} to the synthesizer). This can create confusion for the detailed analysis of mappings and mapping devices. To avoid this, signals arriving at the mapping layer from the control surfaces will henceforth be referred to as ``source'' signals and signals sent from the mapping layer to the sound generation units will be called ``destination'' signals. This follows the nomenclature described in \shortciteN{new_libmapper} and the libmapper API in general.
 
 	\subsubsection{Functional versus systems perspective on mapping}
 
-Both the more mathematical perspective of mapping as functions and the computer science standpoint of mapping as association are relevant to DMI design. These two concepts are often referred to as the ``functional'' and the ``systems'' points of view for mapping, respectively \cite{two_types_of_mapping}. 
+Both the more mathematical perspective of mapping as functions and the computer science standpoint of mapping as association are relevant to DMI design. These two concepts are referred to as the ``functional'' and the ``systems'' points of view for mapping, respectively \cite{two_types_of_mapping}. 
 
-Once two signals are connected, say the position of a knob and the cutoff frequency of a low-pass filter,\footnote{A standard synthesis parameter that controls the brightness of a sound, think of the difference between the vowel `o' in `food' (low cutoff) and the vowel `a' in `sad' (high cutoff).} it is very possible that the raw numbers sent from the knob are not appropriate as input for the filter. It may be that the knob transmits numbers ranging from 0 - 127 ($2^7$) and the filter accepts numbers from 0 - 1023 ($2^{10}$). As a result, the filter will always be more or less closed no matter how the user turns the knob. To account for this, the mapping needs to scale the source signal (by a factor of 8) to fit the destination range. This is a functional kind of mapping, analogous to Section \ref{sec:mapping_theory}. The source signal may need to be transformed in many ways. 
+Once two signals are connected, say the position of a knob and the cutoff frequency of a low-pass filter,\footnote{A standard synthesis parameter that controls the brightness of a sound, think of the difference between the vowel `o' in `food' (low cutoff) and the vowel `a' in `sad' (high cutoff).} it is very possible that the raw numbers sent from the knob are not appropriate as input for the filter. It may be that the knob transmits numbers ranging from 0 - 127 and the filter accepts numbers from 0 - 1023. As a result, the filter will always be more or less closed no matter how the user turns the knob. To account for this, the mapping needs to scale the source signal by a factor of 8 to fit the destination range. This is a functional kind of mapping, analogous to Section \ref{sec:mapping_theory}. Source signals may need to be transformed in many different ways. 
 
-The other, higher-level perspective on mapping deals with the actual connection of source to destination signals. On any mapping network there can exist several devices, each with numerous signals. The act of associating devices with devices, signals with signals can drastically change the character of a DMI or group of DMIs. This is known as the systems perspective on mapping. It is necessary for libmapper and the GUI to be able to assist with both kinds of mappings.
+The other, higher-level perspective on mapping deals with the actual connection of source to destination signals. On any mapping network there can exist several devices, each with numerous signals. The act of associating devices with devices, signals with signals can drastically change the character of a DMI or group of DMIs. This is known as the systems perspective on mapping. It is necessary for libmapper and the GUI to be able to assist with both types of mappings.
 
 	\subsubsection{Mapping strategies}
 
@@ -143,7 +144,7 @@ One proposed solution to the cognitive complexity of associating many source and
 \section{Data Visualization and User Interface Design}
 \label{sec:data_viz}
 
-The graphical user interface described in this thesis is a purely visual interface. No means of auditory or haptic response was implemented or even seriously considered. Creating an auditory tool for controlling musical instruments is obviously problematic and most personal computers provide no means of producing haptic feedback. This obviously limits the usable dimensions, but also greatly simplifies the problem of how to best represent the tremendous variety of libmapper networks.
+The GUI described in this thesis is a purely visual interface. No means of auditory or haptic response was implemented or even seriously considered. Creating an auditory tool for controlling musical instruments is obviously problematic and most personal computers provide no means of producing haptic feedback. This limits the usable dimensions, but also greatly simplifies the problem of how to best represent the tremendous variety of libmapper networks.
 
 Fortunately, graphic designers and statisticians have already deeply probed the problem of how to best display data visually. It is necessary here to briefly review some of this work, especially the techniques relevant to the creation of a libmapper GUI and visual systems from which inspiration was drawn.
 
@@ -165,6 +166,9 @@ The visual dimension can be broken down into many sub-dimensions. These dimensio
 		\end{tabular}
 \end{table}
 
+
+Visual presentations use marks to encode information by way of their positional, temporal and retinal qualities. In Table \ref{tab:graphical_relationships} \emph{retinal} properties are so called because the eye is sensitive to them independently of their position. Though the third positional dimension is relevant and would be useful, it is currently beyond the scope of this research, not to mention the hardware on which MapperGUI runs. 
+
 \begin{wrapfigure}{r}{0.4\textwidth}
 	\centering
 		\includegraphics[width=0.4\textwidth]{figures/accuracy_of_visual_dimensions}
@@ -172,12 +176,10 @@ The visual dimension can be broken down into many sub-dimensions. These dimensio
 		\label{fig:accuracy_of_visual_dimensions}
 \end{wrapfigure}
 
-Visual presentations use marks to encode information by way of their positional, temporal and retinal qualities. In table \ref{tab:graphical_relationships} \emph{retinal} properties are so called because the eye is sensitive to them independently of their position. Though the third positional dimension is relevant and would be useful, it is currently beyond the scope of this research, not to mention the hardware on which MapperGUI runs. 
-
-
 \citeN{cleveland} expand on this vocabulary, enumerating further sub-dimensions of marks and retinal properties. An experiment is described in which subjects are asked the relative values of various visual objects (e.g. the first box is 50\% larger than the box on the left), for various visual dimensions. From the data, they were able to create a ranking of visual dimensions for quantitative information. In Figure \ref{fig:accuracy_of_visual_dimensions}, differences between objects are more accurately perceived when the difference is encoded using a variable higher up on the chart. Note that variables like shape, texture and opacity are not included. 
 
-\citeN{visual_dimensions} uses this ranking to expand into non-quantitative data sets. Nominal information is that in which elements can be understood to be similar or dissimilar to one another, yet have no definite order or value. libmapper uses nominal information in the form of device, signal, link and connection names, as well as connection modes and boundary conditions. Ordinal data fits between quantitative and nominal, ordinal items are understood to be greater than or less than one another, while having no definite numerical ratios. If multiple devices of the same class are present on the same libmapper network, libmapper will append ordinal numbers to the end of their device names (e.g. \url{tstick.1}, \url{tstick.2} and \url{tstick.3}).
+
+\citeN{visual_dimensions} uses this ranking to expand into non-quantitative data sets. Nominal information is that in which elements can be understood to be similar or dissimilar to one another, yet have no definite order or value. libmapper uses nominal information in the form of device, signal, link and connection names, as well as connection modes and boundary conditions. Ordinal data fits between quantitative and nominal. Ordinal items are understood to be greater than or less than one another, while having no definite numerical ratios. If multiple devices of the same class are present on the same libmapper network, libmapper will append ordinal numbers to the end of their device names (e.g. \url{tstick.1}, \url{tstick.2} and \url{tstick.3}).
 
 \begin{table}
 \setlength{\tabcolsep}{12pt}
@@ -204,7 +206,7 @@ Visual presentations use marks to encode information by way of their positional,
 	\end{tabular}
 \end{table}
 
-In table \ref{tab:graphical_rankings}, items in italics are considered unsuitable by Mackinlay. Though position is the most accurate dimension for all types of data, dimensions like \emph{length} differ widely. For the visualization of libmapper networks, it is often necessary to encode many dimensions of data onto a single mark. Devices, signals, connections and links all have a set of metadata with quantitative, ordinal and nominative information. In the design of an effective GUI it will be necessary to properly associate high-accuracy visual dimensions to network properties that require them and reserve low-accuracy dimensions for those that do not. In this way the problem of this thesis conveniently becomes one of mapping: how can we best correlate visual dimensions with properties of libmapper networks?
+In Table \ref{tab:graphical_rankings}, items in italics are considered unsuitable by Mackinlay. Though position is the most accurate dimension for all types of data, dimensions like \emph{length} differ widely. For the visualization of libmapper networks, it is often necessary to encode many dimensions of data onto a single mark. Devices, signals, connections and links all have a set of metadata with quantitative, ordinal and nominative information (see Table \ref{tab:metadata_types}). In the design of an effective GUI it will be necessary to properly associate high-accuracy visual dimensions to network properties that require them and reserve low-accuracy dimensions for those that do not. In this way the problem of this thesis conveniently becomes one of mapping: how can we best correlate visual dimensions with properties of libmapper networks?
 
 \subsection{Relevant visualization techniques and systems}
 	\label{sec:color}
@@ -213,13 +215,13 @@ In table \ref{tab:graphical_rankings}, items in italics are considered unsuitabl
 
 ``Color'' itself is a multi-dimensional phenomenon that does much to communicate information in modern user interfaces. Since color was previously an uncommon feature of computer displays neither \citeN{bertin_graphics} nor \citeN{cleveland} explore its use in depth. \citeANP{cleveland} simply state that color is not good for encoding quantitative information. \citeN{visual_dimensions} elaborates on this, separating color into ``hue'' and ``saturation,'' and also upgrading its use for ordinal and nominal data. 
 
-\citeN{tufte2} provides a definite procedure for incorporating color into evidence displays\footnote{Tufte's favorite term for data-driven graphics.}. Techniques are gleaned from centuries-old map making and applied to computer interfaces. Principal rules, summarized and expanded from \citeN{imhof}:
+\citeN{tufte2} provides a definite procedure for incorporating color into evidence displays\footnote{Tufte's favorite term for data-driven graphics.}. Techniques are gleaned from centuries-old map making and applied to computer interfaces. Principal rules, summarized and expanded from \citeN{imhof} are:
 
 	\begin{itemize}
 		\item \emph{First rule}: Bright colors are painful when used uninterruptedly over large areas or when placed adjacently to each other, but can be extremely powerful when used sparingly while accompanied by dull tones.
 		\item \emph{Second rule}: Light, bright colors produce unpleasant results when accompanied with the color white.
-		\item \emph{Third rule}: Background and base colors should be muted or neutral. For this reason, \emph{gray} is regarded to be the most versatile color.
-		\item \emph{Fourth rule}: Two or more large, enclosed areas within a single display cause the image to fall apart. Unity can be maintained if the colors of one section are interspersed throughout the other. ``All colors of the main theme should be scattered like islands in the background color.''
+		\item \emph{Third rule}: Background and base colors should be muted or neutral. For this reason, grey is regarded to be the most versatile color.
+		\item \emph{Fourth rule}: Two or more large, enclosed areas within a single display cause the image to ``fall apart.'' Unity can be maintained if the colors of one section are interspersed throughout the other. ``All colors of the main theme should be scattered like islands in the background color.''
 	\end{itemize}
 
 	\subsubsection{Links and causal arrows}
@@ -235,20 +237,20 @@ For the visualization of networks, the idea of a visual ``connection'' becomes v
 \label{fig:1and1equals3}
 \end{figure}
 
-In Figure \ref{fig:1and1equals3} the negative space between the two lines appears as its own white line as opposed to simply empty space. In displays with numerous or thick lines, this can cause negative space to compete with informative features, attenuating the overall effectiveness of the display. $1 + 1 = 3$ noise plagues dense computer user interfaces. Thus borders and other non-essential display features should be lightened, thinned and removed whenever possible.
+In Figure \ref{fig:1and1equals3} the negative space between the two black lines appears as its own white line as opposed to simply empty space. In displays with numerous or thick lines, this can cause negative space to compete with informative features, attenuating the overall effectiveness of the display. $1 + 1 = 3$ noise plagues dense computer user interfaces. Thus borders and other non-essential display features should be lightened, thinned and removed whenever possible.
 
 	\subsubsection{Hierarchical edge bundling}
 
-Of course, in diagrams with tremendous amounts of connections no amount of thinning and coloration can create an informative display. The technique of hierarchical edge bundling \cite{HEB} groups lines based on adjacency relationships. Displays take advantage of hierarchical information encoded within the dataset. Linking arrows are curved towards other arrows that are connected to related elements. Figure \ref{fig:heb} demonstrates this effect for arbitrary data.\footnote{Images courtesy of: mbostock - The d3 visualization library. [Online]. Available: \url{https://github.com/mbostock/d3/wiki/Gallery}. Accessed July 24, 2013} 
-
-In a libmapper system, this would mean that connections between signals on the same device will be pulled towards one another. If a hierarchical structure exists in the naming convention, connections between related signals will experience an even stronger force between each other. For example, the connections from signal \url{tstick.1/raw/accelerometer/1/x} will be bundled tightly with connections from signal \url{tstick.1/raw/accelerometer/1/y}, but less tightly to \url{tstick.1/raw/accelerometer/2/x}. Any of these connections will not be pulled at all towards connections from signals on other devices.
-
-\begin{figure}[ht]
+In diagrams with tremendous amounts of connections no amount of thinning and coloration can create an informative display. The technique of ``hierarchical edge bundling'' \cite{HEB} groups lines based on ``adjacency relationships.'' Displays take advantage of hierarchical information encoded within the dataset. Linking arrows are curved towards other arrows that are connected to related elements. Figure \ref{fig:heb} demonstrates this effect for arbitrary data.\footnote{Images courtesy of: mbostock - The d3 visualization library. [Online]. Available: \url{https://github.com/mbostock/d3/wiki/Gallery}. Accessed July 24, 2013} 
+\begin{figure}[h]
 \centering
-	\includegraphics[width=1\textwidth]{figures/heb}
+	\includegraphics[width=\textwidth]{figures/heb}
 \caption{A dense interconnected network displayed with and without hierarchical edge bundling techniques}
 \label{fig:heb}
 \end{figure}
+
+In a libmapper system, this would mean that connections between signals on the same device will be pulled towards one another. If a hierarchical structure exists in the naming convention, connections between related signals will experience an even stronger force between each other. For example, the connections from signal \url{tstick.1/raw/accelerometer/1/x} will be bundled tightly with connections from signal \url{tstick.1/raw/accelerometer/1/y}, but less tightly to \url{tstick.1/raw/accelerometer/2/x}. Any of these connections will not be pulled at all towards connections from signals on other devices.
+
 
 	\subsubsection{Braun}
 
@@ -266,7 +268,7 @@ As computer user interfaces regularly contain many interdependent parts, problem
 \label{fig:mvc}
 \end{figure}
 
-The MVC architecture consists of three main parts: the model, the view and the controller. The model consists of an abstract representation of all that is present in the interface. It contains data independent of how it is being viewed. The view possesses the software elements that actually show on the screen. Typically, views use data from the model to affect their display. The controller is the portion of the software that interfaces with the user, relaying messages to the model to change the state of the system. The three sections communicate with one another by a messaging standard defined by the designer. 
+The MVC architecture consists of three main parts: the model, the view and the controller. The model consists of an abstract representation of all that is present in the interface. It contains data independent of how it is being viewed. The view possesses the software elements that actually show on the screen. Typically, views use data from the model to affect their display. The controller is the portion of the software that interfaces with the user, relaying messages to the model to change the state of the system. The three sections communicate with one another through a messaging standard defined by the designer. 
 
 The division between the view and the controller is not always clear, and it is sometimes beneficial to program in view-controller pairs \cite{MVC_krasnerpope}. These pairs both display data and accept user interaction, though the data of the model is still treated as a separate class. What is important is that view-controller pairs are written modularly, such that many pairs can interact with the same model. This improves program extensibility, if a new kind of interaction or display is desired, it simply needs to conform to the established communication standard and it will function properly.
 

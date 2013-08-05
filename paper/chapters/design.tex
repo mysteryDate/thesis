@@ -157,7 +157,7 @@ Tables in the original Webmapper interface have no headers. Without these queues
 		\end{tabular}
 \end{table}
 
-By incorporating a useful feature of Maxmapper, column headers have been added to the ListView. New pieces of device and signal metadata are also included, as listed in table \ref{tab:webmapper_list_view_metadata}. Tables support additional metadata, as they are filled by a generic function that will include any data found in the model. 
+By incorporating a useful feature of Maxmapper, column headers have been added to the ListView. New pieces of device and signal metadata are also included, as listed in Table \ref{tab:webmapper_list_view_metadata}. Tables support additional metadata, as they are filled by a generic function that will include any data found in the model. 
 
 In general, MapperGUI tries to keep possible extensions to libmapper like this in mind. Very little is assumed about the network itself. In turn, the only device metadata that \emph{must} exist is the device name and number of inputs/outputs. MapperGUI uses the number of inputs/outputs to place a device into either the source or destination tables. For signals, MapperGUI takes vector length into account when deciding whether two signals are compatible and can be connected. However, not including length in the signal metadata will not result in an error.
 	
@@ -352,7 +352,7 @@ Jon Wilansky, a fellow master's student at the IDMIL, created two new views for 
 \label{fig:grid}
 \end{figure}
 
-First programmed and implemented was the ``grid'' view. The network is represented with two $m$-by-$n$ grids. The leftmost grid lists source devices on the horizontal axis and destination devices on the vertical axis. Links are formed by clicking on the square at the intersection of the desired source and destination devices. The second grid represents signals and connections. Signals must be explicitly added to this grid from the device grid by selecting the intersection or labels and clicking ``add'', or by pressing the ``a'' key. 
+First programmed and implemented was the ``grid'' view. The network is represented with two $m$-by-$n$ grids. The leftmost grid lists source devices on the horizontal axis and destination devices on the vertical axis. Links are formed by clicking on the square at the intersection of the desired source and destination devices. The second grid represents signals and connections. Signals must be explicitly added to this grid from the device grid by selecting the intersection or labels and clicking ``add,'' or by pressing the ``a'' key. 
 
 Both grids are fully filterable using text input fields below, which borrow code from ListView. Grids are also zoom-able using the endpoints of the scroll bars. Either grid can be hidden, allowing the user to focus the entire display on a single grid. Because this view is more customizable than ListView, the designer added an option to save view settings, causing GridView to remember which devices have been added to the signal grid.
 
