@@ -3,7 +3,7 @@
 
 	The development of a graphical user interface for libmapper creates a unique challenge. Obviously such an interface is a practical tool, and yet it must also work in concert with DMIs, which are inherently designed for creative use. For the purposes of this project, the assumed solution to this innate paradox is to provide the user with multiple independent control modes. libmapper itself is an extremely flexible API that makes few assumptions about the network of devices and signals or how they are mapped. It is thus fitting that a GUI for libmapper would be equally flexible. In lieu of a single perfect solution for network visualization and interactivity, providing users with various independent views offers a good compromise.
 
-	Work on MapperGUI began with the Webmapper interface described in Section \ref{sub:webmapper}. An MVC structure was built around the code to make the program more extensible and to easily integrate of multiple views. Missing features from Maxmapper were incorporated into the main view mode, ListView. ListView was extended in various ways, taking advantage of the new code base. Two new view modes, GridView and HiveView,\footnote{Both designed by Jonathan Wilansky at the IDMIL} were then integrated into the main GUI. Finally, the code was compiled together as a standalone application ready for wide distribution.
+	Work on MapperGUI began with the Webmapper interface described in Section \ref{sub:webmapper}. An MVC structure was built around the code to make the program more extensible and to easily integrate of multiple views. Missing features from Maxmapper were incorporated into the main view mode, ListView. ListView was extended in various ways, taking advantage of the new codebase. Two new view modes, GridView and HiveView,\footnote{Both designed by Jonathan Wilansky at the IDMIL} were then integrated into the main GUI. Finally, the code was compiled together as a standalone application ready for wide distribution.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Development of a Flexible System} % (fold)
@@ -261,7 +261,7 @@ For PC users, the ``select all'' key command is ``control + a.'' Tab changing is
 \section{Extension of Control and Visual Elements} % (fold)
 \label{sec:extension_of_control_and_visual_elements}
 
-With the new web-based framework up and running, it is fairly easy to extend interface features beyond that of Maxmapper. Requested features that would have been very difficult to implement in Max/MSP were added to MapperGUI. Also, two new view modes were created, taking advantage of the modular, MVC-style code base.
+With the new web-based framework up and running, it is fairly easy to extend interface features beyond that of Maxmapper. Requested features that would have been very difficult to implement in Max/MSP were added to MapperGUI. Also, two new view modes were created, taking advantage of the modular, MVC-style codebase.
 
 	\subsection{Multiple selection} % (fold)
 	\label{sub:multiple_selection}
@@ -382,10 +382,10 @@ HiveView is not yet as interactive as the other two views. It is not possible fo
 % section extension_of_control_and_visual_elements (end)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Other GUI features} % (fold)
+\section{Other GUI Features} % (fold)
 \label{sec:other_gui_features}
 
-	\subsection{Saving \& Loading} % (fold)
+	\subsection{Saving \& loading} % (fold)
 	\label{sec:saving_and_loading}
 
 Saving and loading presents an interesting problem for libmapper networks. Upon clicking the ``save'' button, connection information is serialized into a JSON\footnote{JavaScript Object Notation. A human-readable data-interchange format. [Online]. Available: \url{www.json.org}. Accessed July 30, 2013} file that the user is asked to name. Only visible connections, ones that are present in the selected tab in ListView, are recorded to the save file. Saving is not yet fully supported for GridView or HiveView.
