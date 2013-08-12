@@ -8,7 +8,7 @@ This chapter presents a discussion of MapperGUI's software design and its conseq
 \section{User Feedback} % (fold)
 \label{sec:user_feedback}
 
-The entire MapperGUI project began with user feedback for prior libmapper GUIs. Throughout the design process, functional versions of MapperGUI were provided to libmapper users. Their feedback was crucial to the evolution of the software. After the first official release of MapperGUI, long-term users were informally interviewed. These users were questioned specifically about their particular applications of MapperGUI.
+The entire MapperGUI project began with user feedback for prior libmapper GUIs. Throughout the design process, functional versions of MapperGUI were provided to libmapper users at the IDMIL. Their feedback was crucial to the evolution of the software. After the first official release of MapperGUI, long-term users were informally interviewed. These users were questioned specifically about their particular applications of MapperGUI.
 
 Even at this early stage of release, users have already incorporated MapperGUI into a wide variety of projects. This reflects our initial assumptions that a successful GUI must be flexible. Throughout development, MapperGUI was used as an experimental tool and aid in designing DMIs. The interface was used in concert with motion capture systems, vibrotactile feedback and even was loaded onto a Raspberry Pi\footnote{Raspberry Pi | An ARM GNU/Linux box for \$25. Take a byte! [Online] Available: \url{http://www.raspberrypi.org}. Accessed August 1, 2013}. During this process, users encountered problems, had ideas for extensions and used the GUI in ways we could not have anticipated.
 
@@ -55,11 +55,11 @@ Some users requested that signal values themselves be available in MapperGUI. Th
 	\subsection{Saving \& loading} % (fold)
 	\label{sub:saving_and_loading}
 
-Nearly all interviewees used the saving and loading features in some way. For both experimental and design-based setups, returning to prior mappings is very useful as it avoids the tedium of performing the same tasks repeatedly.
+Nearly all users made use of the saving and loading features in some way. For both experimental and design-based setups, returning to prior mappings is very useful as it avoids the tedium of performing the same tasks repeatedly.
 
 We received criticism for the na\"ive loading system. One user found it counterintuitive that mappings would accumulate when loading multiple files, as he required rapid switching between the same few mappings for his experiment. Once these mappings were created, there was little that needed modification. For the experiment, it became tedious to erase a previous mapping before loading a new one. In a live-performance context the amount of delay inherent in this task would be unacceptable. 
 
-Another user wished to switch between mappings in his work, but required some kind of intermediate space between the states. For this application, loading would ideally have the option of blending between two mappings such that the transition is not perceived as too sudden or harsh. To maintain this functionality, the actual saving and loading of patches was transferred to Max/MSP for his project, significantly reducing the utility of MapperGUI.
+Another user wished to switch between mappings in his work, but required some kind of intermediate space between the states. Each mapping represented a phase of a performance with a novel DMI. For this application, loading would ideally have the option of blending between two mappings such that the transition is not perceived as too sudden or harsh. To maintain this functionality, the actual saving and loading of patches was transferred to Max/MSP for his project, significantly reducing the utility of MapperGUI.
 
 In a situation with many devices of the same class, loading a single mapping can be somewhat absurd. Because each connection will be loaded $m*n$ times (where $m$ is the number of similarly named input devices and $n$ is the number of relevant output devices), certain simple mappings can result in hundreds of unwanted connections upon loading. Perhaps some kind of staging area wherein the user can explicitly designate devices to use could solve this problem.
 
@@ -123,7 +123,7 @@ After some informal tests of delays between 17 and 1000 milliseconds, a delay of
 \section{Comparison to Similar Interfaces} % (fold)
 \label{sec:comparison_to_similar_interfaces}
 
-Other systems exist to help non-programmers map control inputs to sound synthesis parameters. This section compares this research to these systems.
+Other systems exist to help non-programmers map control inputs to sound synthesis parameters. This section compares this research to these systems, some of which are paid software.
 
 \begin{figure}[h]
 	\centering
@@ -150,7 +150,7 @@ The Eaganmatrix \cite{eaganmatrix} partly inspired GridView in MapperGUI. The si
 % section comparison_to_similar_interfaces (end)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Evaluation of Goals} % (fold)
+\section{Summary \& Evaluation of Goals} % (fold)
 \label{sec:evaluation_of_goals}
 
 A set of goals for the software was established at the beginning of this document. These were to create an interface for libmapper that was easy to use and to make this interface modular and multi-platform. Creating a system that was flexible and intuitive was of primary concern. We also intended to unite features of the three prior GUIs, both to capitalize on work already completed and create a single, standard graphical interface for libmapper. 

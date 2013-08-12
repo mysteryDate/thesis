@@ -3,15 +3,13 @@
 
 	The development of a graphical user interface for libmapper creates a unique challenge. Obviously such an interface is a practical tool, and yet it must also work in concert with DMIs, which are inherently designed for creative use. For the purposes of this project, the assumed solution to this innate paradox is to provide the user with multiple independent control modes. libmapper itself is an extremely flexible API that makes few assumptions about the network of devices and signals or how they are mapped. It is thus fitting that a GUI for libmapper would be equally flexible. In lieu of a single perfect solution for network visualization and interactivity, providing users with various independent views offers a good compromise.
 
-	Work on MapperGUI began with the Webmapper interface described in Section \ref{sub:webmapper}. An MVC structure was built around the code to make the program more extensible and to easily integrate of multiple views. Missing features from Maxmapper were incorporated into the main view mode, ListView. ListView was extended in various ways, taking advantage of the new codebase. Two new view modes, GridView and HiveView,\footnote{Both designed by Jonathan Wilansky at the IDMIL} were then integrated into the main GUI. Finally, the code was compiled together as a standalone application ready for wide distribution.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Development of a Flexible System} % (fold)
 \label{sec:development_of_a_flexible_system}
 
 Prior GUIs for libmapper have been used successfully for some time, but all have failed to become a standard for the same reason: they cannot accommodate all possible use-cases of libmapper. List based views like Maxmapper and Webmapper do not show hierarchies, while the cluster view implemented in Vizmapper can be overly cumbersome for interaction with simple networks. With so much work already completed on prior GUIs, it was more suitable to integrate different approaches into a single GUI, rather than to begin work on some new, hopefully superior approach that would likely prove to be flawed like all others that came before. 
 
-MapperGUI integrates multiple via a drop-down menu on the upper corner of the window. Options on this menu represent available visualization modes. By selecting a new visualization mode the GUI drastically changes its appearance, replacing nearly every visual element in the display.
+MapperGUI integrates multiple views via a drop-down menu on the upper corner of the window. Options on this menu represent available visualization modes. By selecting a new visualization mode the GUI drastically changes its appearance, replacing nearly every visual element in the display.
 	%Needs to be adaptable, show any metadata
 
 	\subsection{MVC architecture} % (fold)
@@ -348,7 +346,7 @@ Jon Wilansky, a fellow master's student at the IDMIL, created two new views for 
 \begin{figure}[ht]
 \centering
 	\includegraphics[width=\textwidth]{figures/grid_w_cursor}
-\caption{GridView}
+\caption{GridView. The grid on the left shows network devices and the grid on the right displays signals and connections.}
 \label{fig:grid}
 \end{figure}
 
@@ -375,7 +373,7 @@ On the left side of HiveView, a menu displays an expandable and collapsible list
 
 A text filter in the bottom right will filter the namespace on the left side of the screen. Connection lines can also be hidden by toggling check-boxes in the device list on the left.
 
-HiveView is not yet as interactive as the other two views. It is not possible form connections or links by any means, though a dragging-type interaction like the one in ListView would be most desirable. It is possible to modify selected connections using the top toolbar, as the MVC structure preserves this functionality across views.
+HiveView is not yet as interactive as the other two views. As of the writing of this document it is not yet possible to form connections or links by any means, though a dragging-type interaction like the one in ListView would be most desirable. It is possible to modify selected connections using the top toolbar, as the MVC structure preserves this functionality across views.
 
 	% subsection alternate_views (end)
 
@@ -409,13 +407,22 @@ This na\"ive implementation is used to maintain a modularity for mappings such t
 	
 Though it is already in use, we would like for MapperGUI to be quickly adopted by a greater number of users. This would assist us in debugging and improving the interface. It would also hopefully bring a new set of users to libmapper itself, encouraging use of the API and its implementation into new DMIs. Unfortunately, to get libmapper and MapperGUI up and running from the source code requires installing package management software and compiling multiple dependencies. This is rather time-consuming and well beyond what should be expected of a non-programmer. 
 
-To aid in ease-of-use and adoption, we compiled a ``standalone'' version of MapperGUI. It is presently available for free download at \url{www.libmapper.org/downloads} under the name Webmapper\footnote{The name has not yet been officially changed.}. The standalone includes libmapper code and can therefore be run on a machine that does not have libmapper explicitly installed. To the user, it looks like any other Macintosh application: an icon on which to double-click.
+To aid in ease-of-use and adoption, a ``standalone'' version was compiled for MapperGUI. It is presently available for free download at \url{www.libmapper.org/downloads} under the name Webmapper\footnote{The name has not yet been officially changed.}. The standalone includes libmapper code and can therefore be run on a machine that does not have libmapper explicitly installed. To the user, it looks like any other Macintosh application: an icon on which to double-click.
 
 The current version is still very much in test phase and includes a readme file describing likely bugs and the non-ideal startup method.\footnote{Running the program and navigating to \url{localhost:50000} in the Google Chrome browser.} It presently supports Macintosh OSX only, though Linux and Microsoft Windows releases are planned.
 
 	% subsection creation_of_a_standalone_&_distribution (end)
 
 % section other_gui_features (end)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Summary} % (fold)
+\label{sec:design_summary}
+
+Work on MapperGUI began with the Webmapper interface described in Section \ref{sub:webmapper}. An MVC structure was built around the code to make the program more extensible and to easily integrate of multiple views. Missing features from Maxmapper were incorporated into the main view mode, ListView. ListView was extended in various ways, taking advantage of the new codebase. Two new view modes, GridView and HiveView,\footnote{Both designed by Jonathan Wilansky at the IDMIL} were then integrated into the main GUI. Finally, the code was compiled together as a standalone application ready for wide distribution.
+
+% section summary (end)
 
 
 

@@ -53,16 +53,30 @@ Two more mapping cardinalities are relevant to instrument design:
 
 They are not considered to be functions by mathematicians\footnote{In mathematics, a true function can have no more than one output value for every input value.}, but are nonetheless important for our purposes. In Equation \ref{eq:one-to-many}, a single input can result in multiple outputs (an input of 4 results in the output of \emph{both} 2 and -2), yet each output has only a single input. This is simply the inverse function of Equation \ref{eq:many-to-one}, and is an example of a ``one-to-many'' mapping. On a graph of such a mapping a \emph{vertical} line may cross at multiple points. The final equation is that of a circle centered at the origin with a radius of one. This is a ``many-to-many'' mapping, as both it an its inverse result in multiple outputs from a single input.
 
-%\begin{figure}[ht]
-	%\centering
-	%\begin{tikzpicture}
-		%\begin{axis}[my style, xtick={-1,...,1}, ytick={-1,...,1}, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
-			%\addplot[domain=-1:1]{sqrt(1 - x^2)}; 
-			%\addplot[domain=-1:1]{-sqrt(1 - x^2)}; 
-		%\end{axis}
-	%\end{tikzpicture}
-%\caption{Equation \ref{eq:many-to-many}, a many-to-many mapping.}
-%\end{figure}
+\begin{figure}
+	\centering
+	\begin{subfigure}[]{0.49\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[my style, xtick={0,...,4}, ytick={-2,...,2}, xmin=0, xmax=4, ymin=-2, ymax=2]
+				\addplot[domain=0:4]{sqrt(x)}; 
+				\addplot[domain=0:4]{-sqrt(x)}; 
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Equation \ref{eq:one-to-many}, a one-to-many mapping.}
+	\end{subfigure}
+	\begin{subfigure}[]{0.49\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[my style, xtick={-1,...,1}, ytick={-1,...,1}, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
+				\addplot[domain=-1:1]{sqrt(1 - x^2)}; 
+				\addplot[domain=-1:1]{-sqrt(1 - x^2)}; 
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Equation \ref{eq:many-to-many}, a many-to-many mapping.}
+	\end{subfigure}
+	\caption{Examples of the final two types of mapping}\label{fig:one_to_many_and_many_to_many}
+\end{figure}
 
 \begin{figure}[h]
 \centering
@@ -110,15 +124,15 @@ Though most applicably represented in computer science, data structures like ass
 
 With an acoustical musical instrument, a musician must interact directly with the physical object that produces the sound. In this context, the concepts of ``control surface,'' and ``synthesis devices'' are not very relevant, as they are intrinsically linked. In the case of an acoustic guitar, the pick \emph{could} be considered to be a sort of control device (as it is primarily used for instrumental interaction) with the strings and body acting as the sound-producing section. The problem with this type of approach is that changing the material of the pick, perhaps to provide a different feel for the player, will also necessarily modify the sound produced. The same can be said for modifying nearly any aspect of an acoustic instrument: it will change both the control interface and the created sound. This coupling of parameters causes any concept of a ``mapping layer'' to be irrelevant.
 
-As stated in the introduction, this is not the case for electronic instruments \shortcite{wanderley}. Electronic sensors transduce musical gestures into signals, which are in turn converted into auditory phenomena by amplifiers and speakers. Any arbitrary transformation can happen to the signals\footnote{Especially digital signals, which are remarkable for their robustness and mutability.} in between these two phases. This flexibility is most obvious with novel instruments like the T-Stick (see \citeNP{malloch_ma_thesis} for a description of this gestural controller), but is fundamentally true for any electronic instrument. An electric guitar senses gesture with a magnetic pickup that transforms the signal of a vibrating string into an electronic signal, which is made audible by an amplifier. Though this can happen directly, more or less reproducing the sound of an acoustic guitar, it is also possible to greatly modify this signal before it is amplified, creating tones that may be unrecognizable as the original acoustic instrument.
+As stated in the introduction, this is not the case for electronic instruments \shortcite{wanderley}. Electronic sensors transduce musical gestures into signals, which are in turn converted into auditory phenomena by amplifiers and speakers. Any arbitrary transformation can happen to the signals\footnote{Especially digital signals, which are remarkable for their robustness and mutability.} in between these two phases. This flexibility is most obvious with novel instruments like the T-Stick (see \citeNP{malloch_ma_thesis} for a description of this gestural controller), but is fundamentally true for any electronic instrument. An electric guitar senses gesture with a magnetic pickup that transforms the signal of a vibrating string into an electric signal, which is made audible by an amplifier. Though this can happen directly, more or less reproducing the sound of an acoustic guitar, it is also possible to greatly modify this signal before it is amplified, creating tones that may be unrecognizable as the original acoustic instrument.
 
 	\subsubsection{The mapping layer}
 
 In response to the importance of this uncoupling of parameters, electronic instruments are often conceptualized as having three independent layers \cite{gestural_control_sound_synthesis}: 
 
 	\begin{itemize}
-		\item \emph{Gestural Controller}: The device with which the musician interacts directly. It generally has sensors that collect gestural data and can provide haptic feedback. The generated signals are output into the mapping layer.
-		\item \emph{Sound Generation Unit}: This device receives input signals from the mapping layer and uses them to generate sound. This layer can contain melody generating algorithms, sound modifying effects, physical models of acoustical instruments or any other construct that is directly used to produce sound.
+		\item \emph{Gestural Controller}: The device with which the musician interacts directly. It generally has sensors that collect gestural data and actuators that can provide haptic feedback. The generated signals are output into the mapping layer.
+		\item \emph{Sound Generation Unit}: This device receives input signals from the mapping layer and uses them to generate sound. This layer can contain melody generating algorithms, sound modifying effects, physical models of acoustical instruments or any other construct that is directly used to produce sound as well as other media and haptics.
 		\item \emph{Mapping Layer}: The abstract space that receives input signals from the gestural controller and outputs to the sound generation unit. These signals can be connected and modified independently of actions in the other two layers.
 	\end{itemize}
 
@@ -128,15 +142,17 @@ As can be seen above, the words ``output'' and ``input'' become ambiguous depend
 
 Both the more mathematical perspective of mapping as functions and the computer science standpoint of mapping as association are relevant to DMI design. These two concepts are referred to as the ``functional'' and the ``systems'' points of view for mapping, respectively \cite{two_types_of_mapping}. 
 
-Once two signals are connected, say the position of a knob and the cutoff frequency of a low-pass filter,\footnote{A standard synthesis parameter that controls the brightness of a sound, think of the difference between the vowel `o' in `food' (low cutoff) and the vowel `a' in `sad' (high cutoff).} it is very possible that the raw numbers sent from the knob are not appropriate as input for the filter. It may be that the knob transmits numbers ranging from 0 - 127 and the filter accepts numbers from 0 - 1023. As a result, the filter will always be more or less closed no matter how the user turns the knob. To account for this, the mapping needs to scale the source signal by a factor of 8 to fit the destination range. This is a functional kind of mapping, analogous to Section \ref{sec:mapping_theory}. Source signals may need to be transformed in many different ways. 
+Once two signals are connected, say the position of a knob and the cutoff frequency of a low-pass filter,\footnote{A standard synthesis parameter that controls the brightness of a sound, think of the difference between the vowel `o' in `food' (low cutoff) and the vowel `a' in `sad' (high cutoff).} it is very possible that the raw numbers sent from the knob are not appropriate as input for the filter. It may be that the knob transmits numbers ranging from 0 - 127 and the filter accepts numbers from 0 - 1023. As a result, the filter will always be more or less closed no matter how the user turns the knob. To account for this, the mapping needs to scale the source signal by a factor of 8 to fit the destination range. This is a functional kind of mapping, analogous to Section \ref{sec:mapping_theory}. In electronics, this process is known as ``signal conditioning'' and includes transformations such as linearization, amplification and filtering.
 
 The other, higher-level perspective on mapping deals with the actual connection of source to destination signals. On any mapping network there can exist several devices, each with numerous signals. The act of associating devices with devices, signals with signals can drastically change the character of a DMI or group of DMIs. This is known as the systems perspective on mapping. It is necessary for libmapper and the GUI to be able to assist with both types of mappings.
 
 	\subsubsection{Mapping strategies}
 
-For expressive musical networks, simple one-to-one mappings are often insufficient. \citeN{describing_mappings} argues that it is extremely rare to find such associations in acoustic instruments, as the control parameters are usually tightly coupled with several acoustic dimensions. Interfaces with hundreds of knobs and sliders, each one connected to a single sound parameter have thus been found to ``...hinder rather than help expressive musical behavior.'' \citeA{describing_mappings} In practical experiments where mappings of varying complexity are compared, the most complex were generally found to be the most expressive and useful \cite{mapping_complexity_experiments}. However, \citeN{interpolated_mappings} states that mappings need to be simple enough for the performer to comprehend. \citeANP{interpolated_mappings} argues for ``...static mappings over dynamic, and simple over complex'' and proposes an algorithmic solution for their computation. These ``interpolated mappings'' are generated by associating single points in the source and destination spaces (i.e. certain performer gestures with certain sounds) and mathematically filling-in the spaces between. This is relevant to our work as interpolated mapping devices function as both sources and destinations within libmapper.
+For expressive musical networks, simple one-to-one mappings are often insufficient. \citeN{describing_mappings} argues that it is extremely rare to find such associations in acoustic instruments, as the control parameters are usually tightly coupled with several acoustic dimensions. Interfaces with hundreds of knobs and sliders, each one connected to a single sound parameter have thus been found to ``...hinder rather than help expressive musical behavior'' \citeA{describing_mappings}. An example for clarinet was presented in \shortciteN{marcelo_recommendation}. In practical experiments where mappings of varying complexity are compared, the most complex were generally found to be the most expressive and useful \cite{mapping_complexity_experiments}. 
 
-One proposed solution to the cognitive complexity of associating many source and destination signals is to create a second mapping layer \shortcite{wanderley}. Instead of dealing with raw sensor output, like acceleration and inclination, musicians can interact with more interesting gestural information such as ``jab'' or ``left-arm swing.'' These ``cooked'' parameters are argued to be more meaningful and useful musical information than the raw signals. This approach is explored in \citeN{mapping_layers} for mapping to both audio and visual synthesis. The conventional wisdom that mappings need to be complex, yet transparent and meaningful all point to the necessity of a tool for the intuitive and expressive configuration of mappings.
+However, \citeN{interpolated_mappings} states that mappings need to be simple enough for the performer to comprehend, though simplicity of a mapping is often a function of training and expertise. \citeANP{interpolated_mappings} argues for ``...static mappings over dynamic, and simple over complex'' and proposes an algorithmic solution for their computation. These ``interpolated mappings'' are generated by associating single points in the source and destination spaces (i.e. certain performer gestures with certain sounds) and mathematically filling-in the spaces between. This is relevant to our work as interpolated mapping devices function as both sources and destinations within libmapper.
+
+One proposed solution to the cognitive complexity of associating many source and destination signals is to create a second mapping layer \shortcite{original_new_layer}. Instead of dealing with raw sensor output, like acceleration and inclination, musicians can interact with more interesting gestural information such as ``jab'' or ``left-arm swing.'' These ``cooked'' parameters are argued to be more meaningful and useful musical information than the raw signals. This approach is explored in \citeN{mapping_layers} for mapping to both audio and visual synthesis. The conventional wisdom is that mappings need to be complex enough to be interesting yet sufficiently simple as to be transparent and meaningful. This dichotomy points to the necessity of a tool for the intuitive and expressive configuration of mappings.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -150,7 +166,7 @@ Fortunately, graphic designers and statisticians have already deeply probed the 
 
 \subsection{Graphical dimensions}
 
-The visual dimension can be broken down into many sub-dimensions. These dimensions are not fully separable, but doing so creates a useful paradigm for understanding and creating solutions for our visual problem. \citeN{bertin_graphics} presents a simple vocabulary for categorizing graphical objects and relationships.
+The visual dimension can be broken down into many sub-dimensions. These dimensions are not fully separable, but doing so creates a useful paradigm for understanding and creating solutions for our visual problem. 
 
 \begin{table}
 	\centering
@@ -166,15 +182,15 @@ The visual dimension can be broken down into many sub-dimensions. These dimensio
 		\end{tabular}
 \end{table}
 
-
-Visual presentations use marks to encode information by way of their positional, temporal and retinal qualities. In Table \ref{tab:graphical_relationships} \emph{retinal} properties are so called because the eye is sensitive to them independently of their position. Though the third positional dimension is relevant and would be useful, it is currently beyond the scope of this research, not to mention the hardware on which MapperGUI runs. 
-
-\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{wrapfigure}{r}{0.38\textwidth}
 	\centering
-		\includegraphics[width=0.4\textwidth]{figures/accuracy_of_visual_dimensions}
+		\includegraphics[width=0.38\textwidth]{figures/accuracy_of_visual_dimensions}
 		\caption{Cleveland and McGill's rankings for quantitative perceptual tasks.}
 		\label{fig:accuracy_of_visual_dimensions}
 \end{wrapfigure}
+
+Visual presentations use marks to encode information by way of their positional, temporal and retinal qualities. \citeN{bertin_graphics} presents a simple vocabulary for categorizing graphical objects and relationships (see Table \ref{tab:graphical_relationships}). \emph{Retinal} properties are so called because the eye is sensitive to them independently of their position. Though depth is relevant and would be useful, it is currently beyond the scope of this research, not to mention the hardware on which MapperGUI runs. 
+
 
 \citeN{cleveland} expand on this vocabulary, enumerating further sub-dimensions of marks and retinal properties. An experiment is described in which subjects are asked the relative values of various visual objects (e.g. the first box is 50\% larger than the box on the left), for various visual dimensions. From the data, they were able to create a ranking of visual dimensions for quantitative information. In Figure \ref{fig:accuracy_of_visual_dimensions}, differences between objects are more accurately perceived when the difference is encoded using a variable higher up on the chart. Note that variables like shape, texture and opacity are not included. 
 
@@ -206,7 +222,9 @@ Visual presentations use marks to encode information by way of their positional,
 	\end{tabular}
 \end{table}
 
-In Table \ref{tab:graphical_rankings}, items in italics are considered unsuitable by Mackinlay. Though position is the most accurate dimension for all types of data, dimensions like \emph{length} differ widely. For the visualization of libmapper networks, it is often necessary to encode many dimensions of data onto a single mark. Devices, signals, connections and links all have a set of metadata with quantitative, ordinal and nominative information (see Table \ref{tab:metadata_types}). In the design of an effective GUI it will be necessary to properly associate high-accuracy visual dimensions to network properties that require them and reserve low-accuracy dimensions for those that do not. In this way the problem of this thesis conveniently becomes one of mapping: how can we best correlate visual dimensions with properties of libmapper networks?
+In Table \ref{tab:graphical_rankings}, items in italics are considered unsuitable by Mackinlay. Though position is the most accurate dimension for all types of data, dimensions like ``length'' differ widely. Through this analysis Mackinlay not only demonstrates the tremendous diversity of visual variables but also how careful evaluation of data is a necessary step in creating expressive displays.
+
+For the visualization of libmapper networks, it is often necessary to encode many dimensions of data onto a single mark. Devices, signals, connections and links all have a set of metadata with quantitative, ordinal and nominative information (see Table \ref{tab:metadata_types}). In the design of an effective GUI it will be necessary to properly associate high-accuracy visual dimensions to network properties that require them and reserve low-accuracy dimensions for those that do not. In this way the problem of this thesis conveniently becomes one of mapping: how can we best correlate visual dimensions with properties of libmapper networks?
 
 \subsection{Relevant visualization techniques and systems}
 	\label{sec:color}
@@ -241,13 +259,13 @@ In Figure \ref{fig:1and1equals3} the negative space between the two black lines 
 
 	\subsubsection{Hierarchical edge bundling}
 
-In diagrams with tremendous amounts of connections no amount of thinning and coloration can create an informative display. The technique of ``hierarchical edge bundling'' \cite{HEB} groups lines based on ``adjacency relationships.'' Displays take advantage of hierarchical information encoded within the dataset. Linking arrows are curved towards other arrows that are connected to related elements. Figure \ref{fig:heb} demonstrates this effect for arbitrary data.\footnote{Images courtesy of: mbostock - The d3 visualization library. [Online]. Available: \url{https://github.com/mbostock/d3/wiki/Gallery}. Accessed July 24, 2013} 
 \begin{figure}[h]
 \centering
 	\includegraphics[width=\textwidth]{figures/heb}
 \caption{A dense interconnected network displayed with and without hierarchical edge bundling techniques}
 \label{fig:heb}
 \end{figure}
+In diagrams with tremendous amounts of connections no amount of thinning and coloration can create an informative display. The technique of ``hierarchical edge bundling'' \cite{HEB} groups lines based on ``adjacency relationships.'' Displays take advantage of hierarchical information encoded within the dataset. Linking arrows are curved towards other arrows that are connected to related elements. Figure \ref{fig:heb} demonstrates this effect for arbitrary data.\footnote{Images courtesy of: mbostock - The d3 visualization library. [Online]. Available: \url{https://github.com/mbostock/d3/wiki/Gallery}. Accessed July 24, 2013} 
 
 In a libmapper system, this would mean that connections between signals on the same device will be pulled towards one another. If a hierarchical structure exists in the naming convention, connections between related signals will experience an even stronger force between each other. For example, the connections from signal \url{tstick.1/raw/accelerometer/1/x} will be bundled tightly with connections from signal \url{tstick.1/raw/accelerometer/1/y}, but less tightly to \url{tstick.1/raw/accelerometer/2/x}. Any of these connections will not be pulled at all towards connections from signals on other devices.
 
@@ -274,5 +292,16 @@ The division between the view and the controller is not always clear, and it is 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Summary} % (fold)
+\label{sec:background_summary}
+
+Mapping is a theoretical concept grounded in mathematics with meaning across a variety of disciplines. Specifically, its usage in computer science and DMI design is highly relevant to this project. Understanding the intricacies of mapping across relevant disciplines and the specialized vocabulary therein is crucially important to designing MapperGUI and communicating its features.
+
+Since the goal is to design a tool that allows for the straightforward manipulation of a variety of musical networks, it is first necessary to describe the visual dimension and the variety of ways that it can be used. Presented in this chapter are a variety of graphical design principals which have informed our design process. These findings can also be used to guide the design of extensions to the present GUI, possibilities for these new features are discussed in the final chapter of this document. 
+
+A rigorously structured codebase is necessary for modular user interfaces. The MVC paradigm described here allows programmers to more easily extend and maintain MapperGUI. This added flexibility creates an environment where a wide variety of mapping networks can be easily manipulated and visualized.
+
+% section summary (end)
 
 	

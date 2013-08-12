@@ -11,7 +11,7 @@ Techniques from data visualization and user interface design were presented to i
 
 The final GUI takes the form of a modular interface. Various independent view modes can be used interchangeably, making MapperGUI useful for a wide variety of libmapper networks. The code itself was structured in a modular fashion such that extensions could be created more easily. The program was made accessible to libmapper users throughout this project, and their feedback became a crucial factor in design decisions. 
 
-MapperGUI has met many of the goals set out at the beginning of this thesis work. The interface is available, functional and very accessible. The majority of libmapper variables can be accessed and manipulated. Within ListView, connection and linking are easy and intuitive. Two alternate views are present for networks and tasks where list-type views are cumbersome. Users can save and load mappings. The current release of MapperGUI is still in a test phase. A number of issues need to be resolved before the software can be adopted as a standard GUI for libmapper. 
+MapperGUI has met many of the goals set out at the beginning of this thesis work. Most importantly, interface is available, functional and very accessible. In this distribution the majority of libmapper variables can be accessed and manipulated, with the notable exceptions of libmapper instances and link scopes. Within ListView, the most fully developed visual mode, connection and linking are easy and intuitive. The program presents GridView and HiveView for networks and tasks where list-type views are cumbersome, though both are not yet as fully featured as ListView. Users can save and load mappings, although these features have some notable shortcomings. The current release of MapperGUI is still in a test phase, a number of issues need to be resolved before the software can be adopted as a standard GUI for libmapper. 
 
 \section{Future Work}
 \label{sec:future_work}
@@ -37,7 +37,9 @@ With the MVC architecture and some alternate views in place, our group has plann
 
 The research from Section \ref{sec:color} could also be applied through a new ``area'' view mode. In this mode. network elements would be displayed as shapes on a Cartesian plane with each axis being user-mappable to quantitative metadata. Other metadata could be visually mapped to these objects' colors, orientations, shapes, opacities, etc. This would be an attractive way to analyze the findings of \citeN{visual_dimensions} and may be the topic of a future project. 
 
-The saving and loading features of MapperGUI obviously need improvement. Work has already begun on a staging process for loaded mappings, such that saved mappings are only loaded for the desired devices. Finally, standalone support for Windows and Linux systems is definitely required for future releases of MapperGUI. It would also be interesting to begin work on mobile versions of the software, though that would be a much more time-consuming process. 
+The saving and loading features of MapperGUI obviously need improvement. Work has already begun on a staging process for loaded mappings, such that saved mappings are only loaded for the desired devices. 
+
+Finally, standalone support for Windows and Linux systems is definitely required for future releases of MapperGUI. It would also be interesting to begin work on mobile versions of the software, though that would be a much more time-consuming process. 
 
 	%\begin{enumerate}
 		%\item HEB for hive
