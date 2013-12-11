@@ -37,7 +37,9 @@ With the MVC architecture and some alternate views in place, our group has plann
 
 The research from Section \ref{sec:color} could also be applied through a new ``area'' view mode. In this mode. network elements would be displayed as shapes on a Cartesian plane with each axis being user-mappable to quantitative metadata. Other metadata could be visually mapped to these objects' colors, orientations, shapes, opacities, etc. This would be an attractive way to analyze the findings of \citeN{visual_dimensions} and may be the topic of a future project. 
 
-The saving and loading features of MapperGUI obviously need improvement. Work has already begun on a staging process for loaded mappings, such that saved mappings are only loaded for the desired devices. 
+Machine learning mapping systems have already been created for libmapper. Unfortunately none of the present view modes are particularly intuitive for devices that necessarily handle both source and destination signals. The list, grid and hive views all work with bi-dimensionality in a way that makes intermediate devices difficult to visualize. New views or modifications to old views will need to be designed if we hope to truly support machine learning algorithms for mapping.
+
+The saving and loading features of MapperGUI obviously need improvement. Work has already begun on a preview process for loaded mappings such that saved mappings are only loaded for the desired devices. Upon loading the GUI will display a ``staging'' area that shows all applicable devices for a selected mapping. This feature could then be extended to truly take advantage of libmapper's modularity. Perhaps a user could create a library of reusable mappings for browsing, combination and to be shared with other users of the same (or similar) devices. 
 
 Finally, standalone support for Windows and Linux systems is definitely required for future releases of MapperGUI. It would also be interesting to begin work on mobile versions of the software, though that would be a much more time-consuming process. 
 
